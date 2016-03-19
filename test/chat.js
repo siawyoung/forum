@@ -5,7 +5,7 @@ var dir     = __dirname.split('/')[__dirname.split('/').length-1];
 var file    = dir + __filename.replace(__dirname, '') + " -> ";
 
 var server   = require('../server.js');
-var chat     = require('../lib/chat');
+var chat     = require('../src/chat');
 var ioclient = require('socket.io-client');
 
 test(file + " Socket.io Tests", function(t) {

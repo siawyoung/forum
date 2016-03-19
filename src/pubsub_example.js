@@ -1,9 +1,9 @@
-var pub = require('redis-connection')();
-var sub = require('redis-connection')('subscriber');
-var msg_count = 0;
+const pub = require('redis-connection')()
+const sub = require('redis-connection')('subscriber')
+let msg_count = 0
 
 // Most clients probably don't do much on "subscribe".  This example uses it to coordinate things within one program.
-sub.on("subscribe", function (channel, count) {
+sub.on("subscribe", (channel, count) => {
     console.log("sub subscribed to " + channel + ", " + count + " total subscriptions");
     if (count === 2) {
         pub.publish("a nice channel", "I am sending a message.");

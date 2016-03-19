@@ -6,7 +6,7 @@ var dir     = __dirname.split('/')[__dirname.split('/').length-1];
 var file    = dir + __filename.replace(__dirname, '') + ' ->';
 
 var server = require('../server.js');
-var chat   = require('../lib/chat.js');
+var chat   = require('../src/chat.js');
 
 test(file + " GET / returns status 200", function(t) {
   var options = {
@@ -38,9 +38,9 @@ test(file + " GET /load returns previous messages", function(t) {
 test(file +" Teardown > End Redis Connection & Stop Hapi Server", function(t) {
   chat.pub.end();
   chat.sub.end();
-  require('../lib/load_messages').redisClient.end();
-  decache('../lib/load_messages'); // uncache redis con  - - - - \\
-  decache('../lib/chat');
+  require('../src/load_messages').redisClient.end();
+  decache('../src/load_messages'); // uncache redis con  - - - - \\
+  decache('../src/chat');
   t.equal(chat.sub.connected, false);
   server.stop(function(){});
   t.end();
