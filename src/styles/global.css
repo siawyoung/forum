@@ -1,0 +1,14 @@
+*, html {
+  box-sizing: border-box;
+  margin:0;
+  padding:0;
+}
+
+*:before, *:after {
+  box-sizing: inherit;
+}
+
+#root {
+  max-width: 960px;
+  margin: 0 auto;
+}

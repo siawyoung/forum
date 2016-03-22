@@ -1,5 +1,5 @@
-var pub = require('redis-connection')();
-var sub = require('redis-connection')('subscriber');
+const pub = require('redis-connection')()
+const sub = require('redis-connection')('subscriber')
 
 var SocketIO = require('socket.io');
 var io;
@@ -8,16 +8,16 @@ function sanitise(txt) {
   /* istanbul ignore else */
   if(txt.indexOf("<") > -1 /* istanbul ignore next */
      || txt.indexOf(">") > -1) {
-    txt = txt.replace(/</g, "&lt").replace(/>/g, "&gt");
+    txt = txt.replace(/</g, "&lt").replace(/>/g, "&gt")
   }
-  return txt;
+  return txt
 }
 
 
 function chatHandler (socket) {
 
   // welcome new clients
-  socket.emit('io:welcome', 'hi!');
+  socket.emit('io:welcome', 'hi!')
 
   socket.on('io:name', function (name) {
     pub.HSET("people", socket.client.conn.id, name);

@@ -1,0 +1,14 @@
+{
+  "use": [
+    "postcss-import",
+    "postcss-url",
+    "postcss-cssnext",
+    "lost",
+    "postcss-browser-reporter",
+    "postcss-reporter"
+  ],
+  "input": "./src/styles/main.css",
+  "output": "./dist/styles/main.css",
+  "watch": true,
+  "local-plugins": true
+}

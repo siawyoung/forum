@@ -1,0 +1,23 @@
+#header {
+  height: 90px;
+  background: rgb(68,68,102);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#newMessage {
+  height: 90px;
+  background: rgb(145,126,236);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chat {
+  
+}
+
+.text {
+  color: #eee;
+}
