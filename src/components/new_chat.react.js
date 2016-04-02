@@ -10,15 +10,84 @@ const getUser = (socket) => {
   return name
 }
 
+const Room = ({
+  room
+}) => {
+  return (
+    <div className="room flex">
+      <div className="user">
+        <img src="http://placehold.it/80x80" alt="" />
+      </div>
+      <div className="info">
+        <div className="username">
+          {room.user.name}
+        </div>
+        <div className="last-message">
+          {room.lastMessage}
+        </div>
+        <div className="time-sent">
+          {room.timeSent}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+const RoomList = ({
+  placeholder
+}) => {
+
+  const rooms = [
+    {
+      user: {
+        name: "BB",
+        profile: "something"
+      },
+      lastMessage: "This was my last message",
+      timeSent: "7:30pm"
+    },
+
+    {
+      user: {
+        name: "Another",
+        profile: "something"
+      },
+      lastMessage: "Another last message",
+      timeSent: "7:30pm"
+    },
+  ]
+
+  return (
+    <div id="RoomList" className="one-third">
+      {rooms.map((room, index) => (
+        <Room key={index} room={room} />
+      ))}
+    </div>
+  )
+}
+
+const MessageList = ({
+  data
+}) => {
+  return (
+    <div id="MessageList">
+      {data.map((msg, index) => (
+        <ChatBubble key={index} text={msg} />
+      ))}
+    </div>
+  )
+}
+
 const ChatView = ({
   data
 }) => {
   return (
-  <div id="chat-view">
-    {data.map((msg, index) => (
-      <ChatBubble key={index} text={msg} />
-    ))}
-    <ChatInput />
+  <div id="ChatView" className="top-level">
+    <RoomList />
+    <div className="two-third">
+      <MessageList data={data} />
+      <ChatInput />
+    </div>
   </div>
 )}
 
@@ -35,11 +104,13 @@ const ChatBubble = ({
   </div>
 )}
 
-const ChatInput = () => (
-
-  <input type="text"/>
-
-)
+const ChatInput = () => {
+  return (
+    <div id="ChatInput">
+      <input type="text" />
+    </div>
+  )
+}
 
 const parseJSONLoad = (payload) => {
   return payload.map(x => JSON.parse(x))

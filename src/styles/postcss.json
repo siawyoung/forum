@@ -2,6 +2,7 @@
   "use": [
     "postcss-import",
     "postcss-url",
+    "postcss-nested",
     "postcss-cssnext",
     "lost",
     "postcss-browser-reporter",

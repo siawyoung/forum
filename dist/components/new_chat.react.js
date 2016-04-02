@@ -11,21 +11,98 @@ var getUser = function getUser(socket) {
   return name;
 };
 
-var ChatView = function ChatView(_ref) {
-  var data = _ref.data;
+var Room = function Room(_ref) {
+  var room = _ref.room;
 
   return React.createElement(
     'div',
-    { id: 'chat-view' },
-    data.map(function (msg, index) {
-      return React.createElement(ChatBubble, { key: index, text: msg });
-    }),
-    React.createElement(ChatInput, null)
+    { className: 'room flex' },
+    React.createElement(
+      'div',
+      { className: 'user' },
+      React.createElement('img', { src: 'http://placehold.it/80x80', alt: '' })
+    ),
+    React.createElement(
+      'div',
+      { className: 'info' },
+      React.createElement(
+        'div',
+        { className: 'username' },
+        room.user.name
+      ),
+      React.createElement(
+        'div',
+        { className: 'last-message' },
+        room.lastMessage
+      ),
+      React.createElement(
+        'div',
+        { className: 'time-sent' },
+        room.timeSent
+      )
+    )
   );
 };
 
-var ChatBubble = function ChatBubble(_ref2) {
-  var text = _ref2.text;
+var RoomList = function RoomList(_ref2) {
+  var placeholder = _ref2.placeholder;
+
+
+  var rooms = [{
+    user: {
+      name: "BB",
+      profile: "something"
+    },
+    lastMessage: "This was my last message",
+    timeSent: "7:30pm"
+  }, {
+    user: {
+      name: "Another",
+      profile: "something"
+    },
+    lastMessage: "Another last message",
+    timeSent: "7:30pm"
+  }];
+
+  return React.createElement(
+    'div',
+    { id: 'RoomList', className: 'one-third' },
+    rooms.map(function (room, index) {
+      return React.createElement(Room, { key: index, room: room });
+    })
+  );
+};
+
+var MessageList = function MessageList(_ref3) {
+  var data = _ref3.data;
+
+  return React.createElement(
+    'div',
+    { id: 'MessageList' },
+    data.map(function (msg, index) {
+      return React.createElement(ChatBubble, { key: index, text: msg });
+    })
+  );
+};
+
+var ChatView = function ChatView(_ref4) {
+  var data = _ref4.data;
+
+  return React.createElement(
+    'div',
+    { id: 'ChatView', className: 'top-level' },
+    React.createElement(RoomList, null),
+    React.createElement(
+      'div',
+      { className: 'two-third' },
+      React.createElement(MessageList, { data: data }),
+      React.createElement(ChatInput, null)
+    )
+  );
+};
+
+var ChatBubble = function ChatBubble(_ref5) {
+  var text = _ref5.text;
 
 
   var isSelf = text.n === Cookies.get('name') ? 'self' : 'other';
@@ -41,7 +118,11 @@ var ChatBubble = function ChatBubble(_ref2) {
 };
 
 var ChatInput = function ChatInput() {
-  return React.createElement('input', { type: 'text' });
+  return React.createElement(
+    'div',
+    { id: 'ChatInput' },
+    React.createElement('input', { type: 'text' })
+  );
 };
 
 var parseJSONLoad = function parseJSONLoad(payload) {

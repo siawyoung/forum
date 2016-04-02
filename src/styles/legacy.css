@@ -1,10 +1,5 @@
 
-body {
-  font: 1.5em Helvetica, Arial;
-  height: 100%;
-  padding-bottom: 2.3em;
-  overflow:auto;
-}
+// styles for the original view, just keeping here until we can delete
 
 form {
   background: #2c3e50;

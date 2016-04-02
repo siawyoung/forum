@@ -2,7 +2,7 @@
 
 import Hapi from 'hapi'
 import Inert from 'inert'
-const Vision = require('vision')
+import Vision from 'vision'
 const server = new Hapi.Server()
 
 server.connection({
@@ -26,28 +26,7 @@ server.register([Inert, Vision], () => {
     {
       method: 'GET', path: '/',
       handler: (req, reply) => {
-        return reply.view('index', { react: 'index' })
-      }
-    },
-
-    {
-      method: 'GET', path: '/chats',
-      handler: (req, reply) => {
-        return reply.view('chats', { react: 'chats' })
-      }
-    },
-
-    {
-      method: 'GET', path: '/chat',
-      handler: (req, reply) => {
-        return reply.view('chat')
-      }
-    },
-
-    {
-      method: 'GET', path: '/new_chat',
-      handler: (req, reply) => {
-        return reply.view('new_chat', { react: 'new_chat' })
+        return reply.view('index', { react: 'new_chat' })
       }
     },
 
@@ -59,8 +38,9 @@ server.register([Inert, Vision], () => {
       }
     },
 
-    // switch these two routes for a /static handler?
+    // Can deprecate this soon
     { method: 'GET', path: '/client.js', handler: { file: './src/scripts/client.js' } },
+
     { method: 'GET', path: '/main.css',  handler: { file: './dist/styles/main.css' } },
     { method: 'GET', path: '/load',      handler: require('./src/load_messages').load }
   ]);

@@ -2,4 +2,7 @@
 @import "global.css";
 @import "legacy.css";
 @import "chats.css";
-@import "chat.css";
+
+@import "ChatView.css";
+@import "MessageList.css";
+@import "RoomList.css";

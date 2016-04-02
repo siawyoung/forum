@@ -1,0 +1,17 @@
+#RoomList {
+  .room {
+    height: 80px;
+  }
+
+  .room .info {
+    padding-left: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: #ddd;
+  }
+
+  .room .info .username {
+    font-weight: bold;
+  }
+}
