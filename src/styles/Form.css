@@ -1,0 +1,79 @@
+
+:root {
+  --form-height: 45px;
+  --form-width: 450px;
+}
+
+#RegisterView, #LoginView {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  width: 100vw;
+}
+
+#LoginView {
+  flex-direction: column;
+}
+
+.jumbo {
+  font-size: 9rem;
+  width: var(--form-width);
+  padding: 0;
+  line-height: 0.9;
+  letter-spacing: -8px;
+  margin-left: -25px;
+  color: var(--main-green);
+}
+
+button[type="submit"] {
+  width: 100%;
+  background: #23CF5F;
+  color: white;
+  height: var(--form-height);
+  border: none;
+  margin-top: 30px;
+}
+
+#RegisterForm, #LoginForm {
+  display: flex;
+  flex-direction: column;
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    margin: 10px 0;
+
+    label {
+      font-size: 1.5rem;
+      margin-bottom: 6px;
+    }
+
+    input[type="text"], input[type="password"] {
+      width: var(--form-width);
+      height: var(--form-height);
+      border: var(--grey-border);
+      padding: 0 10px;
+      font-size: 1.1rem;
+    }
+
+  }
+}
+
+#emotion-avatar-buttons {
+  display: flex;
+  justify-content: space-between;
+
+  button {
+    height: var(--form-height);
+    border: var(--grey-border);
+    background: none;
+    width: 150px;
+  }
+}
+
+#LoginLinks {
+  display: flex;
+  justify-content: space-between;
+  width: var(--form-width);
+}

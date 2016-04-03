@@ -5,6 +5,8 @@ import Inert from 'inert'
 import Vision from 'vision'
 const server = new Hapi.Server()
 
+import * as AuthController from './src/controllers/auth'
+
 server.connection({
   host: '0.0.0.0',
   port: Number(process.env.PORT)
@@ -30,6 +32,20 @@ server.register([Inert, Vision], () => {
       }
     },
 
+    {
+      method: 'GET', path: '/register',
+      handler: (req, reply) => {
+        return reply.view('index', { react: 'register' })
+      }
+    },
+
+    {
+      method: 'GET', path: '/login',
+      handler: (req, reply) => {
+        return reply.view('index', { react: 'login' })
+      }
+    },
+
     { method: 'GET', path: '/{react}.react.js',
       handler: (req, reply) => {
         // if (req.params.react)
@@ -41,8 +57,22 @@ server.register([Inert, Vision], () => {
     // Can deprecate this soon
     { method: 'GET', path: '/client.js', handler: { file: './src/scripts/client.js' } },
 
+    { method: 'GET', path: '/store.min.js', handler: { file: './src/scripts/store.min.js' } },
+
     { method: 'GET', path: '/main.css',  handler: { file: './dist/styles/main.css' } },
-    { method: 'GET', path: '/load',      handler: require('./src/load_messages').load }
+    { method: 'GET', path: '/load',      handler: require('./src/load_messages').load },
+
+    // POST
+    {
+      method: 'POST', path: '/register',
+      handler: AuthController.register
+    },
+
+    {
+      method: 'POST', path: '/login',
+      handler: AuthController.login
+    },
+
   ]);
 
   server.start(() => {

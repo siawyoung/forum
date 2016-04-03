@@ -1,5 +1,7 @@
-const pub = require('redis-connection')()
-const sub = require('redis-connection')('subscriber')
+// const pub = require('redis-connection')()
+// const sub = require('redis-connection')('subscriber')
+
+import { pub, sub } from './redis'
 
 var SocketIO = require('socket.io');
 var io;
