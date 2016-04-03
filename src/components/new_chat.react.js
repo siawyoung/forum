@@ -10,6 +10,41 @@ const getUser = (socket) => {
   return name
 }
 
+const SearchBar = ({
+  something
+}) => {
+  return (
+    <div id="SearchBar">
+      <input type="text" placeholder="Search" />
+    </div>
+  )
+}
+
+const RoomTitle = ({
+  something
+}) => {
+  return (
+    <div id="RoomTitle">
+      Somebody
+    </div>
+  )
+}
+
+const TopBar = ({
+  placeholder
+}) => {
+  return (
+    <div id="TopBar">
+      <div className="one-third faint-right-border">
+        <SearchBar />
+      </div>
+      <div className="two-third">
+        <RoomTitle />
+      </div>
+    </div>
+  )
+}
+
 const Room = ({
   room
 }) => {
@@ -58,7 +93,7 @@ const RoomList = ({
   ]
 
   return (
-    <div id="RoomList" className="one-third">
+    <div id="RoomList">
       {rooms.map((room, index) => (
         <Room key={index} room={room} />
       ))}
@@ -83,7 +118,10 @@ const ChatView = ({
 }) => {
   return (
   <div id="ChatView" className="top-level">
-    <RoomList />
+    <TopBar />
+    <div className="one-third faint-right-border">
+      <RoomList />
+    </div>
     <div className="two-third">
       <MessageList data={data} />
       <ChatInput />
@@ -104,9 +142,11 @@ const ChatBubble = ({
   </div>
 )}
 
-const ChatInput = () => {
+const ChatInput = ({
+  data
+}) => {
   return (
-    <div id="ChatInput">
+    <div id="ChatInput" className="faint-top-border">
       <input type="text" />
     </div>
   )

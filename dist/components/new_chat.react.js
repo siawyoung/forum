@@ -11,8 +11,47 @@ var getUser = function getUser(socket) {
   return name;
 };
 
-var Room = function Room(_ref) {
-  var room = _ref.room;
+var SearchBar = function SearchBar(_ref) {
+  var something = _ref.something;
+
+  return React.createElement(
+    'div',
+    { id: 'SearchBar' },
+    React.createElement('input', { type: 'text', placeholder: 'Search' })
+  );
+};
+
+var RoomTitle = function RoomTitle(_ref2) {
+  var something = _ref2.something;
+
+  return React.createElement(
+    'div',
+    { id: 'RoomTitle' },
+    'Somebody'
+  );
+};
+
+var TopBar = function TopBar(_ref3) {
+  var placeholder = _ref3.placeholder;
+
+  return React.createElement(
+    'div',
+    { id: 'TopBar' },
+    React.createElement(
+      'div',
+      { className: 'one-third faint-right-border' },
+      React.createElement(SearchBar, null)
+    ),
+    React.createElement(
+      'div',
+      { className: 'two-third' },
+      React.createElement(RoomTitle, null)
+    )
+  );
+};
+
+var Room = function Room(_ref4) {
+  var room = _ref4.room;
 
   return React.createElement(
     'div',
@@ -44,8 +83,8 @@ var Room = function Room(_ref) {
   );
 };
 
-var RoomList = function RoomList(_ref2) {
-  var placeholder = _ref2.placeholder;
+var RoomList = function RoomList(_ref5) {
+  var placeholder = _ref5.placeholder;
 
 
   var rooms = [{
@@ -66,15 +105,15 @@ var RoomList = function RoomList(_ref2) {
 
   return React.createElement(
     'div',
-    { id: 'RoomList', className: 'one-third' },
+    { id: 'RoomList' },
     rooms.map(function (room, index) {
       return React.createElement(Room, { key: index, room: room });
     })
   );
 };
 
-var MessageList = function MessageList(_ref3) {
-  var data = _ref3.data;
+var MessageList = function MessageList(_ref6) {
+  var data = _ref6.data;
 
   return React.createElement(
     'div',
@@ -85,13 +124,18 @@ var MessageList = function MessageList(_ref3) {
   );
 };
 
-var ChatView = function ChatView(_ref4) {
-  var data = _ref4.data;
+var ChatView = function ChatView(_ref7) {
+  var data = _ref7.data;
 
   return React.createElement(
     'div',
     { id: 'ChatView', className: 'top-level' },
-    React.createElement(RoomList, null),
+    React.createElement(TopBar, null),
+    React.createElement(
+      'div',
+      { className: 'one-third faint-right-border' },
+      React.createElement(RoomList, null)
+    ),
     React.createElement(
       'div',
       { className: 'two-third' },
@@ -101,8 +145,8 @@ var ChatView = function ChatView(_ref4) {
   );
 };
 
-var ChatBubble = function ChatBubble(_ref5) {
-  var text = _ref5.text;
+var ChatBubble = function ChatBubble(_ref8) {
+  var text = _ref8.text;
 
 
   var isSelf = text.n === Cookies.get('name') ? 'self' : 'other';
@@ -117,10 +161,12 @@ var ChatBubble = function ChatBubble(_ref5) {
   );
 };
 
-var ChatInput = function ChatInput() {
+var ChatInput = function ChatInput(_ref9) {
+  var data = _ref9.data;
+
   return React.createElement(
     'div',
-    { id: 'ChatInput' },
+    { id: 'ChatInput', className: 'faint-top-border' },
     React.createElement('input', { type: 'text' })
   );
 };

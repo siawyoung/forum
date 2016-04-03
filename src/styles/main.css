@@ -1,8 +1,8 @@
 @import "normalize.css";
 @import "global.css";
 @import "legacy.css";
-@import "chats.css";
 
 @import "ChatView.css";
 @import "MessageList.css";
 @import "RoomList.css";
+@import "TopBar.css";

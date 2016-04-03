@@ -439,12 +439,13 @@ html {
 }
 
 body {
-  font-family: "Helvetica Neue", sans-serif;
-  font-size: 16px;
+  font-family: 'Noto Sans', sans-serif;
+  font-size: 15.2px;
+  font-size: 0.95rem;
 }
 
 #root {
-  max-width: 960px;
+  min-width: 960px;
   margin: 0 auto;
 }
 
@@ -456,49 +457,23 @@ body {
 }
 
 .one-third {
-   width: calc(99.99% * 1/3 - (30px - 30px * 1/3));
-}
-
-.one-third:nth-child(1n) {
-  float: left;
-  margin-right: 30px;
-  clear: none;
-}
-
-.one-third:last-child {
-  margin-right: 0;
-}
-
-.one-third:nth-child(0n) {
-  margin-right: 0;
-  float: right;
-}
-
-.one-third:nth-child(0n + 1) {
-  clear: left;
+   width: 33.3333%;
+   float: left;
+   height: 100%;
 }
 
 .two-third {
-  width: calc(99.99% * 2/3 - (30px - 30px * 2/3));
-}
-
-.two-third:nth-child(1n) {
+  width: 66.6666%;
   float: left;
-  margin-right: 30px;
-  clear: none;
+  height: 100%;
 }
 
-.two-third:last-child {
-  margin-right: 0;
+.faint-right-border {
+  border-right: 1px solid rgba(221,221,221,0.07);
 }
 
-.two-third:nth-child(0n) {
-  margin-right: 0;
-  float: right;
-}
-
-.two-third:nth-child(0n + 1) {
-  clear: left;
+.faint-top-border {
+  border-top: 1px solid rgba(221,221,221,0.07);
 }
 
 // styles for the original view, just keeping here until we can delete
@@ -559,48 +534,6 @@ form button {
 
 .name { color: #2980b9; }
 
-#header {
-  height: 90px;
-  background: rgb(68,68,102);
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-}
-
-#newMessage {
-  height: 90px;
-  background: rgb(145,126,236);
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-}
-
-.chat {
-  
-}
-
-.text {
-  color: #eee;
-}
-
 #ChatView {
   overflow: hidden;
   height: 100vh;
@@ -619,10 +552,17 @@ form button {
           align-items: center;
 }
 
+#ChatInput input {
+  margin-left: 55px;
+  width: calc(100% - 110px);
+  height: 40px;
+  padding: 10px;
+}
+
 #MessageList {
-  height: calc(100vh - 80px);
+  height: calc(100vh - 140px);
   overflow-y: scroll;
-  padding: 0 10px;
+  padding: 0 20px;
 }
 
 .chat-bubble {
@@ -689,4 +629,46 @@ form button {
 
 #RoomList .room .info .username {
   font-weight: bold;
+}
+
+#TopBar {
+  overflow: hidden;
+  height: 60px;
+}
+
+#RoomTitle {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  color: #ddd;
+  font-size: 19.2px;
+  font-size: 1.2rem;
+  margin-left: 30px;
+}
+
+#SearchBar {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+#SearchBar input {
+  height: 35px;
+  width: 350px;
+  background: #ddd;
+  margin-left: 10px;
+  border: none;
+  padding-left: 13px;
 }
