@@ -50,16 +50,17 @@ const ChatBubble = ({
   text
 }) => {
 
-  const isSelf = text.n === Cookies.get('name') ? 'self' : 'other'
+  const isSelf = text.user === store.get('forum:name') ? 'self' : 'other'
   return (
   <div className={`chat-bubble ${isSelf}`}>
     <div className="chat-bubble-text">
-      {text.m}
+      {text.message}
     </div>
   </div>
 )}
 
 const MessageList = ({ messages }) => {
+  console.log('messagelist', messages)
   return (
     <div id="MessageList">
       {messages.map((msg, index) => (
@@ -110,7 +111,7 @@ class SearchBar extends React.Component {
   createRoomHandler = (e) => {
     const { socket } = this.props
     socket.emit('rooms:create', {
-      name: 'room4',
+      name: `${Math.random().toString(36).slice(2)}`,
       users: ['jason', 'adam']
     })
   }
@@ -209,6 +210,21 @@ const initialLoad = ({ socket, data }) => {
   renderView({ socket, data })
 }
 
+const preprocessInitialMessages = (res) => {
+  const ppRoom = res.rooms.map(room => {
+    return {
+      ...room,
+      messages: room.messages.map(msg => {
+        return JSON.parse(msg)
+      })
+    }
+  })
+  return {
+    ...res,
+    rooms: ppRoom
+  }
+}
+
 $(document).ready(() => {
   const token = store.get('forum:token')
 
@@ -223,7 +239,7 @@ $(document).ready(() => {
     },
     success: (response) => {
 
-      let data = response
+      let data = preprocessInitialMessages(response)
 
       var socket = io.connect('http://localhost:8000')
       socket.on('connect', function () {
@@ -245,7 +261,15 @@ $(document).ready(() => {
       })
 
       socket.on('messages:new', function(msg) {
-        console.log(msg)
+        const updatedRoom = data.rooms.filter(room => {
+          return room.id === msg.roomId
+        })[0]
+        updatedRoom.messages.push(msg.message)
+        if (data.rooms.indexOf(updatedRoom) > 0) {
+          data.rooms.splice(data.rooms.indexOf(updatedRoom), 1)
+          data.rooms.unshift(updatedRoom)
+        }
+        initialLoad({ socket, data })
       })
 
       initialLoad({ socket, data })

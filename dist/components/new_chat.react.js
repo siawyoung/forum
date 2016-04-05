@@ -79,14 +79,14 @@ var ChatBubble = function ChatBubble(_ref3) {
   var text = _ref3.text;
 
 
-  var isSelf = text.n === Cookies.get('name') ? 'self' : 'other';
+  var isSelf = text.user === store.get('forum:name') ? 'self' : 'other';
   return React.createElement(
     "div",
     { className: "chat-bubble " + isSelf },
     React.createElement(
       "div",
       { className: "chat-bubble-text" },
-      text.m
+      text.message
     )
   );
 };
@@ -94,6 +94,7 @@ var ChatBubble = function ChatBubble(_ref3) {
 var MessageList = function MessageList(_ref4) {
   var messages = _ref4.messages;
 
+  console.log('messagelist', messages);
   return React.createElement(
     "div",
     { id: "MessageList" },
@@ -173,7 +174,7 @@ var SearchBar = function (_React$Component2) {
       var socket = _this2.props.socket;
 
       socket.emit('rooms:create', {
-        name: 'room4',
+        name: "" + Math.random().toString(36).slice(2),
         users: ['jason', 'adam']
       });
     }, _temp), _possibleConstructorReturn(_this2, _ret);
@@ -302,6 +303,19 @@ var initialLoad = function initialLoad(_ref8) {
   renderView({ socket: socket, data: data });
 };
 
+var preprocessInitialMessages = function preprocessInitialMessages(res) {
+  var ppRoom = res.rooms.map(function (room) {
+    return _extends({}, room, {
+      messages: room.messages.map(function (msg) {
+        return JSON.parse(msg);
+      })
+    });
+  });
+  return _extends({}, res, {
+    rooms: ppRoom
+  });
+};
+
 $(document).ready(function () {
   var token = store.get('forum:token');
 
@@ -316,7 +330,7 @@ $(document).ready(function () {
     },
     success: function success(response) {
 
-      var data = response;
+      var data = preprocessInitialMessages(response);
 
       var socket = io.connect('http://localhost:8000');
       socket.on('connect', function () {
@@ -336,7 +350,15 @@ $(document).ready(function () {
       });
 
       socket.on('messages:new', function (msg) {
-        console.log(msg);
+        var updatedRoom = data.rooms.filter(function (room) {
+          return room.id === msg.roomId;
+        })[0];
+        updatedRoom.messages.push(msg.message);
+        if (data.rooms.indexOf(updatedRoom) > 0) {
+          data.rooms.splice(data.rooms.indexOf(updatedRoom), 1);
+          data.rooms.unshift(updatedRoom);
+        }
+        initialLoad({ socket: socket, data: data });
       });
 
       initialLoad({ socket: socket, data: data });

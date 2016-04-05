@@ -8,9 +8,9 @@ export const create = (username, msg) => {
   const name      = msg.name
   const users     = [username, ...msg.users]
   const roomId    = uuid.v4()
-  pub.zaddAsync(`users:${username}:rooms`, timestamp(), roomId)
+  pub.saddAsync(`users:${username}:rooms`, roomId)
   pub.saddAsync(`rooms:${roomId}:users`, ...users)
-  pub.hsetAsync(`rooms:${roomId}`, 'name', name)
+  pub.hmsetAsync(`rooms:${roomId}`, 'name', name, 'latest', timestamp())
 
   pub.publish('rooms:created', JSON.stringify({
     sockets: [username],

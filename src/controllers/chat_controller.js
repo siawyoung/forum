@@ -13,19 +13,31 @@ async function getMessages(roomId) {
   }
 }
 
+function sortRoomOrder(room1, room2) {
+  if (room1.timestamp < room2.timestamp) {
+    return 1
+  } else if (room1.timestamp > room2.timestamp) {
+    return -1
+  } else {
+    return 0
+  }
+}
+
 export const index = async (req, reply) => {
   try {
     const username = verifyToken(req)
     console.log(username)
-    const roomIds = await pub.zrevrangeAsync(`users:${username}:rooms`, 0, -1)
+    const roomIds = await pub.smembersAsync(`users:${username}:rooms`)
     console.log(roomIds)
     const hydratedRooms = await Promise.all(roomIds.map(async (roomId) => {
       return {
         id: roomId,
         name: await pub.hgetAsync(`rooms:${roomId}`, 'name'),
+        timestamp: await pub.hgetAsync(`rooms:${roomId}`, 'latest'),
         messages: await getMessages(roomId)
       }
     }))
+    hydratedRooms.sort(sortRoomOrder)
     reply({
       rooms: hydratedRooms
     })
@@ -38,11 +50,13 @@ export const create = async (username, msg) => {
 
   try {
     const roomId = msg.roomId
+    const messageTime = timestamp()
     const chatMessage = {
-      timestamp: timestamp(),
+      timestamp: messageTime,
       message: msg.message,
       user: username
     }
+    pub.hsetAsync(`rooms:${roomId}`, 'latest', messageTime)
     pub.rpushAsync(`rooms:${roomId}:messages`, JSON.stringify(chatMessage))
 
     pub.publish('messages:new', JSON.stringify({

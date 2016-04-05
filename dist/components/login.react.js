@@ -31,6 +31,7 @@ var LoginForm = function (_React$Component) {
         password: e.target.getElementsByClassName('password')[0].value
       }, function (data) {
         store.set('forum:token', data);
+        store.set('forum:name', e.target.getElementsByClassName('username')[0].value);
         window.location.replace('/');
       });
     };
