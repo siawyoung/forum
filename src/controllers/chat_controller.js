@@ -3,6 +3,7 @@ import uuid from 'node-uuid'
 import { pub, sub } from '../redis'
 
 import { verifyToken } from '../helpers/hash'
+import { timestamp } from '../helpers/time'
 
 async function getMessages(roomId) {
   if (await pub.existsAsync(`rooms:${roomId}:messages`)) {
@@ -33,6 +34,27 @@ export const index = async (req, reply) => {
   }
 }
 
-export const create = (username, msg) => {
+export const create = async (username, msg) => {
+
+  try {
+    const roomId = msg.roomId
+    const chatMessage = {
+      timestamp: timestamp(),
+      message: msg.message,
+      user: username
+    }
+    pub.rpushAsync(`rooms:${roomId}:messages`, JSON.stringify(chatMessage))
+
+    pub.publish('messages:new', JSON.stringify({
+      sockets: await pub.smembersAsync(`rooms:${roomId}:users`),
+      message: {
+        roomId,
+        message: chatMessage
+      }
+    }))
+  } catch(e) {
+    console.log('messages:new error!', e)
+  }
+
 
 }

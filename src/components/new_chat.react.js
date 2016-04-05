@@ -12,8 +12,7 @@ const Room = ({
 
   return (
     <div className="room flex" onClick={function() {
-    console.log('clicked')
-    console.log(index)
+    console.log('clicked', index)
     changeSelectedRoom(index) }}>
       <div className="user">
         <img src="http://placehold.it/80x80" alt="" />
@@ -70,24 +69,50 @@ const MessageList = ({ messages }) => {
   )
 }
 
-const ChatInput = ({
-  data
-}) => {
-  return (
-    <div id="ChatInput" className="faint-top-border">
-      <input type="text" />
-    </div>
-  )
+// const ChatInput = ({
+//   data
+// }) => {
+//   return (
+//     <div id="ChatInput" className="faint-top-border">
+//       <input type="text" />
+//     </div>
+//   )
+// }
+
+class ChatInput extends React.Component {
+  constructor() {
+    super()
+  }
+
+  sendMessage = (e) => {
+    e.preventDefault()
+    const { roomId, socket } = this.props
+    const message = e.target.getElementsByClassName('message')[0].value
+
+    if (message) {
+      socket.emit('messages:new', { roomId, message })
+    }
+  }
+
+  render() {
+    return (
+      <div id="ChatInput" className="faint-top-border">
+        <form onSubmit={this.sendMessage}>
+          <input type="text" className="message" />
+        </form>
+      </div>
+    )
+  }
 }
 
 class SearchBar extends React.Component {
 
   createRoomHandler = (e) => {
     const { socket } = this.props
-    socket.emit('room:create', JSON.stringify({
-      name: 'room3',
+    socket.emit('rooms:create', {
+      name: 'room4',
       users: ['jason', 'adam']
-    }))
+    })
   }
 
   render() {
@@ -141,8 +166,7 @@ class ChatView extends React.Component {
   }
 
   changeSelectedRoom = (id) => {
-    console.log('changeselectedroom')
-    console.log(id)
+    console.log('changeselectedroom', id)
     this.setState({ selectedRoom: id })
   }
 
@@ -151,6 +175,7 @@ class ChatView extends React.Component {
     const rooms = this.props.data.rooms
     const selectedRoom = this.state.selectedRoom
 
+    const roomId   = rooms.length > 0 ? rooms[selectedRoom].id : null
     const messages = rooms.length > 0 ? rooms[selectedRoom].messages : []
     const roomName = rooms.length > 0 ? rooms[selectedRoom].name : ""
 
@@ -162,7 +187,7 @@ class ChatView extends React.Component {
         </div>
         <div className="two-third">
           <MessageList messages={messages} />
-          <ChatInput />
+          <ChatInput roomId={roomId} socket={this.props.socket} />
         </div>
       </div>
     )
@@ -217,6 +242,10 @@ $(document).ready(() => {
           rooms: [msg, ...data.rooms]
         }
         initialLoad({ socket, data })
+      })
+
+      socket.on('messages:new', function(msg) {
+        console.log(msg)
       })
 
       initialLoad({ socket, data })

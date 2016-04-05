@@ -5,10 +5,8 @@ import { timestamp } from '../helpers/time'
 
 export const create = (username, msg) => {
 
-  const parsedMsg = JSON.parse(msg)
-  console.log(parsedMsg)
-  const name      = parsedMsg['name']
-  const users     = [username, ...parsedMsg['users']]
+  const name      = msg.name
+  const users     = [username, ...msg.users]
   const roomId    = uuid.v4()
   pub.zaddAsync(`users:${username}:rooms`, timestamp(), roomId)
   pub.saddAsync(`rooms:${roomId}:users`, ...users)

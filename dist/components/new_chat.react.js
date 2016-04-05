@@ -26,8 +26,7 @@ var Room = function Room(_ref) {
   return React.createElement(
     "div",
     { className: "room flex", onClick: function onClick() {
-        console.log('clicked');
-        console.log(index);
+        console.log('clicked', index);
         changeSelectedRoom(index);
       } },
     React.createElement(
@@ -104,23 +103,65 @@ var MessageList = function MessageList(_ref4) {
   );
 };
 
-var ChatInput = function ChatInput(_ref5) {
-  var data = _ref5.data;
+// const ChatInput = ({
+//   data
+// }) => {
+//   return (
+//     <div id="ChatInput" className="faint-top-border">
+//       <input type="text" />
+//     </div>
+//   )
+// }
 
-  return React.createElement(
-    "div",
-    { id: "ChatInput", className: "faint-top-border" },
-    React.createElement("input", { type: "text" })
-  );
-};
+var ChatInput = function (_React$Component) {
+  _inherits(ChatInput, _React$Component);
 
-var SearchBar = function (_React$Component) {
-  _inherits(SearchBar, _React$Component);
+  function ChatInput() {
+    _classCallCheck(this, ChatInput);
+
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ChatInput).call(this));
+
+    _this.sendMessage = function (e) {
+      e.preventDefault();
+      var _this$props = _this.props;
+      var roomId = _this$props.roomId;
+      var socket = _this$props.socket;
+
+      var message = e.target.getElementsByClassName('message')[0].value;
+
+      if (message) {
+        socket.emit('messages:new', { roomId: roomId, message: message });
+      }
+    };
+
+    return _this;
+  }
+
+  _createClass(ChatInput, [{
+    key: "render",
+    value: function render() {
+      return React.createElement(
+        "div",
+        { id: "ChatInput", className: "faint-top-border" },
+        React.createElement(
+          "form",
+          { onSubmit: this.sendMessage },
+          React.createElement("input", { type: "text", className: "message" })
+        )
+      );
+    }
+  }]);
+
+  return ChatInput;
+}(React.Component);
+
+var SearchBar = function (_React$Component2) {
+  _inherits(SearchBar, _React$Component2);
 
   function SearchBar() {
     var _Object$getPrototypeO;
 
-    var _temp, _this, _ret;
+    var _temp, _this2, _ret;
 
     _classCallCheck(this, SearchBar);
 
@@ -128,14 +169,14 @@ var SearchBar = function (_React$Component) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(SearchBar)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.createRoomHandler = function (e) {
-      var socket = _this.props.socket;
+    return _ret = (_temp = (_this2 = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(SearchBar)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this2), _this2.createRoomHandler = function (e) {
+      var socket = _this2.props.socket;
 
-      socket.emit('room:create', JSON.stringify({
-        name: 'room3',
+      socket.emit('rooms:create', {
+        name: 'room4',
         users: ['jason', 'adam']
-      }));
-    }, _temp), _possibleConstructorReturn(_this, _ret);
+      });
+    }, _temp), _possibleConstructorReturn(_this2, _ret);
   }
 
   _createClass(SearchBar, [{
@@ -157,8 +198,8 @@ var SearchBar = function (_React$Component) {
   return SearchBar;
 }(React.Component);
 
-var RoomTitle = function RoomTitle(_ref6) {
-  var roomName = _ref6.roomName;
+var RoomTitle = function RoomTitle(_ref5) {
+  var roomName = _ref5.roomName;
 
   return React.createElement(
     "div",
@@ -167,10 +208,10 @@ var RoomTitle = function RoomTitle(_ref6) {
   );
 };
 
-var TopBar = function TopBar(_ref7) {
-  var data = _ref7.data;
-  var socket = _ref7.socket;
-  var roomName = _ref7.roomName;
+var TopBar = function TopBar(_ref6) {
+  var data = _ref6.data;
+  var socket = _ref6.socket;
+  var roomName = _ref6.roomName;
 
   return React.createElement(
     "div",
@@ -188,24 +229,23 @@ var TopBar = function TopBar(_ref7) {
   );
 };
 
-var ChatView = function (_React$Component2) {
-  _inherits(ChatView, _React$Component2);
+var ChatView = function (_React$Component3) {
+  _inherits(ChatView, _React$Component3);
 
   function ChatView() {
     _classCallCheck(this, ChatView);
 
-    var _this2 = _possibleConstructorReturn(this, Object.getPrototypeOf(ChatView).call(this));
+    var _this3 = _possibleConstructorReturn(this, Object.getPrototypeOf(ChatView).call(this));
 
-    _this2.changeSelectedRoom = function (id) {
-      console.log('changeselectedroom');
-      console.log(id);
-      _this2.setState({ selectedRoom: id });
+    _this3.changeSelectedRoom = function (id) {
+      console.log('changeselectedroom', id);
+      _this3.setState({ selectedRoom: id });
     };
 
-    _this2.state = {
+    _this3.state = {
       selectedRoom: 0
     };
-    return _this2;
+    return _this3;
   }
 
   _createClass(ChatView, [{
@@ -218,6 +258,7 @@ var ChatView = function (_React$Component2) {
       var rooms = this.props.data.rooms;
       var selectedRoom = this.state.selectedRoom;
 
+      var roomId = rooms.length > 0 ? rooms[selectedRoom].id : null;
       var messages = rooms.length > 0 ? rooms[selectedRoom].messages : [];
       var roomName = rooms.length > 0 ? rooms[selectedRoom].name : "";
 
@@ -234,7 +275,7 @@ var ChatView = function (_React$Component2) {
           "div",
           { className: "two-third" },
           React.createElement(MessageList, { messages: messages }),
-          React.createElement(ChatInput, null)
+          React.createElement(ChatInput, { roomId: roomId, socket: this.props.socket })
         )
       );
     }
@@ -247,16 +288,16 @@ var ChatView = function (_React$Component2) {
 //   return payload.map(x => JSON.parse(x))
 // }
 
-var renderView = function renderView(_ref8) {
-  var data = _ref8.data;
-  var socket = _ref8.socket;
+var renderView = function renderView(_ref7) {
+  var data = _ref7.data;
+  var socket = _ref7.socket;
 
   ReactDOM.render(React.createElement(ChatView, { data: data, socket: socket }), document.getElementById('root'));
 };
 
-var initialLoad = function initialLoad(_ref9) {
-  var socket = _ref9.socket;
-  var data = _ref9.data;
+var initialLoad = function initialLoad(_ref8) {
+  var socket = _ref8.socket;
+  var data = _ref8.data;
 
   renderView({ socket: socket, data: data });
 };
@@ -292,6 +333,10 @@ $(document).ready(function () {
           rooms: [msg].concat(_toConsumableArray(data.rooms))
         });
         initialLoad({ socket: socket, data: data });
+      });
+
+      socket.on('messages:new', function (msg) {
+        console.log(msg);
       });
 
       initialLoad({ socket: socket, data: data });

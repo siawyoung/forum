@@ -1,6 +1,7 @@
 
 import { pub, sub } from './redis'
 import * as RoomController from './controllers/room_controller'
+import * as ChatController from './controllers/chat_controller'
 
 const SocketIO    = require('socket.io')
 const socketioJwt = require("socketio-jwt")
@@ -10,8 +11,12 @@ const sockets = {}
 function chatHandler(socket) {
 
   const username = socket.decoded_token
-  socket.on('room:create', (msg) => {
+  socket.on('rooms:create', (msg) => {
     RoomController.create(username, msg)
+  })
+
+  socket.on('messages:new', (msg) => {
+    ChatController.create(username, msg)
   })
 }
 
@@ -30,14 +35,16 @@ async function init(listener) {
       chatHandler(socket)
     })
 
-    sub.subscribe('message:new', 'rooms:created')
+    sub.subscribe('messages:new', 'rooms:created')
     sub.on('message', (channel, message) => {
       console.log(`${channel}: ${message}`)
-      console.log(sockets)
       const parsedMsg = JSON.parse(message)
       parsedMsg.sockets.forEach(user => {
         console.log(`emitting to ${user}`)
-        io.sockets.connected[sockets[user]].emit(channel, parsedMsg.message)
+        let userSocket = io.sockets.connected[sockets[user]]
+        if (userSocket) {
+          io.sockets.connected[sockets[user]].emit(channel, parsedMsg.message)
+        }
       })
     })
 
