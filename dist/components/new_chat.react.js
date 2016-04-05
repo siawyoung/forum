@@ -291,11 +291,8 @@ $(document).ready(function () {
         data = _extends({}, data, {
           rooms: [msg].concat(_toConsumableArray(data.rooms))
         });
-        console.log(data);
         initialLoad({ socket: socket, data: data });
       });
-
-      console.log(data);
 
       initialLoad({ socket: socket, data: data });
     }

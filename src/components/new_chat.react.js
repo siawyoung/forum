@@ -216,11 +216,8 @@ $(document).ready(() => {
           ...data,
           rooms: [msg, ...data.rooms]
         }
-        console.log(data)
         initialLoad({ socket, data })
       })
-
-      console.log(data)
 
       initialLoad({ socket, data })
 

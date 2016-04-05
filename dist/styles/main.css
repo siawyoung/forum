@@ -553,6 +553,11 @@ body {
   padding: 8px 18px;
 }
 
+#RoomList {
+  height: calc(100vh - 80px);
+  overflow-y: scroll;
+}
+
 #RoomList .room {
   height: 80px;
 }
