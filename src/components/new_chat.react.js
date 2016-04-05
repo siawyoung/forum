@@ -60,7 +60,6 @@ const ChatBubble = ({
 )}
 
 const MessageList = ({ messages }) => {
-  console.log('messagelist', messages)
   return (
     <div id="MessageList">
       {messages.map((msg, index) => (
@@ -69,16 +68,6 @@ const MessageList = ({ messages }) => {
     </div>
   )
 }
-
-// const ChatInput = ({
-//   data
-// }) => {
-//   return (
-//     <div id="ChatInput" className="faint-top-border">
-//       <input type="text" />
-//     </div>
-//   )
-// }
 
 class ChatInput extends React.Component {
   constructor() {

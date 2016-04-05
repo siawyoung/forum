@@ -19,12 +19,13 @@ class LoginForm extends React.Component {
 
   handleFormSubmit = (e) => {
     e.preventDefault()
+    const username = e.target.getElementsByClassName('username')[0].value
     $.post('/login', {
-      username: e.target.getElementsByClassName('username')[0].value,
+      username,
       password: e.target.getElementsByClassName('password')[0].value,
     }, (data) => {
       store.set('forum:token', data)
-      store.set('forum:name', e.target.getElementsByClassName('username')[0].value)
+      store.set('forum:name', username)
       window.location.replace('/')
     })
   }

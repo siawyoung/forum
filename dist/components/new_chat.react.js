@@ -94,7 +94,6 @@ var ChatBubble = function ChatBubble(_ref3) {
 var MessageList = function MessageList(_ref4) {
   var messages = _ref4.messages;
 
-  console.log('messagelist', messages);
   return React.createElement(
     "div",
     { id: "MessageList" },
@@ -103,16 +102,6 @@ var MessageList = function MessageList(_ref4) {
     })
   );
 };
-
-// const ChatInput = ({
-//   data
-// }) => {
-//   return (
-//     <div id="ChatInput" className="faint-top-border">
-//       <input type="text" />
-//     </div>
-//   )
-// }
 
 var ChatInput = function (_React$Component) {
   _inherits(ChatInput, _React$Component);

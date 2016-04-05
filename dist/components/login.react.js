@@ -26,12 +26,13 @@ var LoginForm = function (_React$Component) {
 
     _this.handleFormSubmit = function (e) {
       e.preventDefault();
+      var username = e.target.getElementsByClassName('username')[0].value;
       $.post('/login', {
-        username: e.target.getElementsByClassName('username')[0].value,
+        username: username,
         password: e.target.getElementsByClassName('password')[0].value
       }, function (data) {
         store.set('forum:token', data);
-        store.set('forum:name', e.target.getElementsByClassName('username')[0].value);
+        store.set('forum:name', username);
         window.location.replace('/');
       });
     };
