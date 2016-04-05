@@ -5,6 +5,8 @@ import * as RoomController from './controllers/room_controller'
 const SocketIO    = require('socket.io')
 const socketioJwt = require("socketio-jwt")
 
+const sockets = {}
+
 function chatHandler(socket) {
 
   const username = socket.decoded_token
@@ -15,8 +17,6 @@ function chatHandler(socket) {
 
 async function init(listener) {
 
-  const sockets = {}
-
   try {
 
     const io = SocketIO.listen(listener)
@@ -26,18 +26,19 @@ async function init(listener) {
       secret: 'abcde',
       timeout: 15000 // 15 seconds to send the authentication message
     })).on('authenticated', (socket) => {
-      sockets[socket.decoded_token] = socket
+      sockets[socket.decoded_token] = socket.id
       chatHandler(socket)
     })
 
     sub.subscribe('message:new', 'rooms:created')
     sub.on('message', (channel, message) => {
       console.log(`${channel}: ${message}`)
-      // io.emit
-      // const parsedMsg = JSON.parse(message)
-      // parsedMsg.sockets.forEach((socket) => {
-      //   socket.
-      // })
+      console.log(sockets)
+      const parsedMsg = JSON.parse(message)
+      parsedMsg.sockets.forEach(user => {
+        console.log(`emitting to ${user}`)
+        io.sockets.connected[sockets[user]].emit(channel, parsedMsg.message)
+      })
     })
 
   } catch(e) {

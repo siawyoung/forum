@@ -83,10 +83,16 @@ server.register([Inert, Vision], async () => {
 
   ]);
 
-  await server.start()
-  await init(server.listener)
+  try {
+    await server.start()
+    await init(server.listener)
+    console.log('Server initialized!')
+  } catch(e) {
+    console.log('server start error', e)
+  }
 
-  console.log('Server initialized!')
+
+
 
 })
 

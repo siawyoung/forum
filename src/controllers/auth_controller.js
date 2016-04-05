@@ -10,7 +10,7 @@ export const register = async (req, reply) => {
 
 export const login = async (req, reply) => {
   try {
-    if (await pub.EXISTS(`users:${req.payload.username}`)) {
+    if (await pub.existsAsync(`users:${req.payload.username}`)) {
       const hash = await pub.hgetAsync(`users:${req.payload.username}`, 'password')
       if (await passwordAuthenticate(req.payload.password, hash)) {
         const token = generateToken(req.payload.username)
