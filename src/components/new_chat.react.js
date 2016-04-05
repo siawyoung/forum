@@ -10,36 +10,48 @@ const getUser = (socket) => {
   return name
 }
 
-const SearchBar = ({
-  something
-}) => {
-  return (
-    <div id="SearchBar">
-      <input type="text" placeholder="Search" />
-    </div>
-  )
+class SearchBar extends React.Component {
+
+  createRoomHandler = (e) => {
+    const { socket } = this.props.state
+    socket.emit('room:create', JSON.stringify({
+      name: 'room1',
+      users: ['jason', 'adam']
+    }))
+  }
+
+  render() {
+    return (
+      <div id="SearchBar">
+        <input type="text" placeholder="Search" />
+        <i
+        className="fa fa-plus-square-o"
+        id="NewRoomButton"
+        onClick={this.createRoomHandler}
+        ></i>
+      </div>
+    )
+  }
 }
 
 const RoomTitle = ({
-  something
+  state
 }) => {
   return (
-    <div id="RoomTitle">
+    <div id="RoomTitle" className="faint-bottom-border">
       Somebody
     </div>
   )
 }
 
-const TopBar = ({
-  placeholder
-}) => {
+const TopBar = ({ state }) => {
   return (
     <div id="TopBar">
       <div className="one-third faint-right-border">
-        <SearchBar />
+        <SearchBar state={state} />
       </div>
       <div className="two-third">
-        <RoomTitle />
+        <RoomTitle state={state} />
       </div>
     </div>
   )
@@ -101,34 +113,6 @@ const RoomList = ({
   )
 }
 
-const MessageList = ({
-  data
-}) => {
-  return (
-    <div id="MessageList">
-      {data.map((msg, index) => (
-        <ChatBubble key={index} text={msg} />
-      ))}
-    </div>
-  )
-}
-
-const ChatView = ({
-  data
-}) => {
-  return (
-  <div id="ChatView" className="top-level">
-    <TopBar />
-    <div className="one-third faint-right-border">
-      <RoomList />
-    </div>
-    <div className="two-third">
-      <MessageList data={data} />
-      <ChatInput />
-    </div>
-  </div>
-)}
-
 const ChatBubble = ({
   text
 }) => {
@@ -142,6 +126,16 @@ const ChatBubble = ({
   </div>
 )}
 
+const MessageList = ({ messages }) => {
+  return (
+    <div id="MessageList">
+      {messages.map((msg, index) => (
+        <ChatBubble key={index} text={msg} />
+      ))}
+    </div>
+  )
+}
+
 const ChatInput = ({
   data
 }) => {
@@ -152,27 +146,59 @@ const ChatInput = ({
   )
 }
 
+const ChatView = ({ state }) => {
+  return (
+  <div id="ChatView" className="top-level">
+    <TopBar state={state} />
+    <div className="one-third faint-right-border">
+      <RoomList />
+    </div>
+    <div className="two-third">
+      <MessageList messages={parseJSONLoad(state.messages)} />
+      <ChatInput />
+    </div>
+  </div>
+)}
+
 const parseJSONLoad = (payload) => {
   return payload.map(x => JSON.parse(x))
 }
 
-const renderView = (data) => {
+const renderView = (state) => {
   ReactDOM.render(
-    <ChatView data={parseJSONLoad(data)} />,
+    <ChatView state={state} />,
     document.getElementById('root')
   )
 }
 
-const initialLoad = () => {
-  $.get('/load', (data) => {
-    renderView(data)
+const initialLoad = ({ socket }) => {
+  $.ajax('/load', {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer eyJhbGciOiJIUzI1NiJ9.bG9s.plqu3wmup-JVrGjOt9bJIrM4Uf3th42qSnEjGCjSKiI`
+    },
+    success: (data) => {
+      console.log(data)
+    }
   })
+  // $.ajax()
+  renderView({ socket, messages: [] })
 }
 
 $(document).ready(() => {
-  const socket = io()
-  getUser(socket)
 
-  initialLoad()
+  var socket = io.connect('http://localhost:8000')
+  socket.on('connect', function () {
+    socket.on('authenticated', () => {
+      //do other things
+    }).emit('authenticate', {token: 'eyJhbGciOiJIUzI1NiJ9.bG9s.plqu3wmup-JVrGjOt9bJIrM4Uf3th42qSnEjGCjSKiI'}) //send the jwt
+  })
+
+  socket.on('error', function(s) {
+    console.log('error')
+    console.log(s)
+  })
+
+  initialLoad({ socket })
 
 })

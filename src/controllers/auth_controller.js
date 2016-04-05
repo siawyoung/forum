@@ -1,6 +1,4 @@
 
-import bcrypt from 'bcrypt'
-import uuid from 'node-uuid'
 import { pub, sub } from '../redis'
 
 import { hash, generateToken, passwordAuthenticate } from '../helpers/hash'

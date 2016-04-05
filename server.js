@@ -5,14 +5,18 @@ import Inert from 'inert'
 import Vision from 'vision'
 const server = new Hapi.Server()
 
-import * as AuthController from './src/controllers/auth'
+import * as AuthController from './src/controllers/auth_controller'
+import * as RoomController from './src/controllers/room_controller'
+import * as ChatController from './src/controllers/chat_controller'
+
+import init from './src/chat'
 
 server.connection({
   host: '0.0.0.0',
   port: Number(process.env.PORT)
 })
 
-server.register([Inert, Vision], () => {
+server.register([Inert, Vision], async () => {
 
   server.views({
     engines: {
@@ -60,9 +64,8 @@ server.register([Inert, Vision], () => {
     { method: 'GET', path: '/store.min.js', handler: { file: './src/scripts/store.min.js' } },
 
     { method: 'GET', path: '/main.css',  handler: { file: './dist/styles/main.css' } },
-    { method: 'GET', path: '/load',      handler: require('./src/load_messages').load },
+    // { method: 'GET', path: '/load',      handler: require('./src/load_messages').load },
 
-    // POST
     {
       method: 'POST', path: '/register',
       handler: AuthController.register
@@ -73,13 +76,17 @@ server.register([Inert, Vision], () => {
       handler: AuthController.login
     },
 
+    {
+      method: 'GET', path: '/load',
+      handler: ChatController.index
+    },
+
   ]);
 
-  server.start(() => {
-    require('./src/chat').init(server.listener, () => {
-      console.log('Feeling Chatty?', 'listening on: http://127.0.0.1:' + process.env.PORT)
-    })
-  })
+  await server.start()
+  await init(server.listener)
+
+  console.log('Server initialized!')
 
 })
 

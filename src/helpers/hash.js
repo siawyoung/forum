@@ -21,7 +21,7 @@ export const hash = function(password) {
 
 export const generateToken = (payload) => {
   return jwt.sign(
-    JSON.stringify(payload),
+    payload,
     config.jwtsecret,
     {
       expiresIn: 10080
@@ -39,4 +39,12 @@ export const passwordAuthenticate = (password, hash) => {
       }
     })
   })
+}
+
+export const verifyToken = (req) => {
+  const authHeader = req.headers['authorization'] || req.headers['Authorization']
+  if (!authHeader) {
+    return null
+  }
+  return jwt.verify(authHeader.replace('Bearer ', ''), config.jwtsecret)
 }

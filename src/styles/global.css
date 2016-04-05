@@ -46,3 +46,7 @@ body {
 .faint-top-border {
   border-top: 1px solid rgba(221,221,221,0.07);
 }
+
+.faint-bottom-border {
+  border-bottom: 1px solid rgba(221,221,221,0.07);
+}

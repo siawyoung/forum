@@ -9,7 +9,7 @@
   align-items: center;
   color: #ddd;
   font-size: 1.2rem;
-  margin-left: 30px;
+  padding-left: 30px;
 }
 
 #SearchBar {
@@ -19,10 +19,17 @@
 
   input {
     height: 35px;
-    width: 350px;
+    width: 275px;
     background: #ddd;
     margin-left: 10px;
     border: none;
     padding-left: 13px;
   }
+}
+
+#NewRoomButton {
+  font-size: 2.1rem;
+  margin-left: 16px;
+  margin-top: 5px;
+  color: #ddd;
 }

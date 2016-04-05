@@ -22,7 +22,7 @@ class LoginForm extends React.Component {
     $.post('/login', {
       username: e.target.getElementsByClassName('username')[0].value,
       password: e.target.getElementsByClassName('password')[0].value,
-    }, function(data) {
+    }, (data) => {
       store.set('forum:token', data)
       window.location.replace('/')
     })
