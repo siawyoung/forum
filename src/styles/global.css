@@ -1,3 +1,7 @@
+:root {
+  --sidebar-width: 380px;
+}
+
 *, html {
   box-sizing: border-box;
   margin:0;
@@ -28,16 +32,18 @@ body {
 }
 
 .sidebar {
-  width: 380px;
+  width: var(--sidebar-width);
   float: left;
   height: 100%;
+  overflow-x: hidden;
 }
 
 .main-body {
-  width: calc(100vw - 380px);
+  width: calc(100vw - var(--sidebar-width));
   min-width: 560px;
   float: left;
   height: 100%;
+  overflow-x: hidden;
 }
 
 .faint-right-border {

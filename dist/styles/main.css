@@ -460,6 +460,7 @@ body {
   width: 380px;
   float: left;
   height: 100%;
+  overflow-x: hidden;
 }
 
 .main-body {
@@ -467,6 +468,7 @@ body {
   min-width: 560px;
   float: left;
   height: 100%;
+  overflow-x: hidden;
 }
 
 .faint-right-border {
@@ -800,6 +802,7 @@ button[type="submit"] {
 
 #MessageList {
   height: calc(100vh - 140px);
+  width: calc(100vw - 380px + 15px);
   overflow-y: scroll;
   padding: 0 20px;
 }
@@ -847,6 +850,7 @@ button[type="submit"] {
 #RoomList {
   height: calc(100vh - 80px);
   overflow-y: scroll;
+  width: 395px;
 }
 
 #RoomList .room {
