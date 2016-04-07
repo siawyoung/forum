@@ -9,21 +9,33 @@ class CreateRoomModal extends React.Component {
     })
   }
 
+  createRoomHandler = (e) => {
+    e.preventDefault()
+    const { socket } = this.props
+    const roomname = e.target.getElementsByClassName('roomname')[0].value
+    const recipients = e.target.getElementsByClassName('recipients')[0].value.split(",")
+    socket.emit('rooms:create', {
+      name: roomname,
+      users: recipients
+    })
+    closeDialog()
+  }
+
   render() {
     return (
       <div id="CreateRoomModal" className="avgrund-popup">
 
         <h2>New Room</h2>
 
-        <form>
+        <form onSubmit={this.createRoomHandler}>
           <div className="form-group">
             <label>Name of Room</label>
-            <input type="text"/>
+            <input className="roomname" type="text"/>
           </div>
 
           <div className="form-group">
             <label>Recipients</label>
-            <input type="text" ref="recipients" />
+            <input className="recipients" type="text" ref="recipients" />
           </div>
 
           <div className="form-group">
@@ -138,14 +150,6 @@ class SearchBar extends React.Component {
     Avgrund.show( "#CreateRoomModal" );
   }
 
-  createRoomHandler = (e) => {
-    const { socket } = this.props
-    socket.emit('rooms:create', {
-      name: `${Math.random().toString(36).slice(2)}`,
-      users: ['jason', 'adam']
-    })
-  }
-
   render() {
     return (
       <div id="SearchBar">
@@ -174,7 +178,7 @@ const TopBar = ({ data, socket, roomName }) => {
   return (
     <div id="TopBar">
       <div className="sidebar faint-right-border">
-        <SearchBar socket={socket} />
+        <SearchBar />
       </div>
       <div className="main-body">
         <RoomTitle data={data} roomName={roomName} />
@@ -216,7 +220,7 @@ class ChatView extends React.Component {
           <MessageList messages={messages} />
           <ChatInput roomId={roomId} socket={this.props.socket} />
         </div>
-        <CreateRoomModal />
+        <CreateRoomModal socket={this.props.socket} />
         <div className="avgrund-cover"></div>
       </div>
     )

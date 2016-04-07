@@ -16,9 +16,28 @@ var CreateRoomModal = function (_React$Component) {
   _inherits(CreateRoomModal, _React$Component);
 
   function CreateRoomModal() {
+    var _Object$getPrototypeO;
+
+    var _temp, _this, _ret;
+
     _classCallCheck(this, CreateRoomModal);
 
-    return _possibleConstructorReturn(this, Object.getPrototypeOf(CreateRoomModal).apply(this, arguments));
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(CreateRoomModal)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this), _this.createRoomHandler = function (e) {
+      e.preventDefault();
+      var socket = _this.props.socket;
+
+      var roomname = e.target.getElementsByClassName('roomname')[0].value;
+      var recipients = e.target.getElementsByClassName('recipients')[0].value.split(",");
+      socket.emit('rooms:create', {
+        name: roomname,
+        users: recipients
+      });
+      closeDialog();
+    }, _temp), _possibleConstructorReturn(_this, _ret);
   }
 
   _createClass(CreateRoomModal, [{
@@ -43,7 +62,7 @@ var CreateRoomModal = function (_React$Component) {
         ),
         React.createElement(
           'form',
-          null,
+          { onSubmit: this.createRoomHandler },
           React.createElement(
             'div',
             { className: 'form-group' },
@@ -52,7 +71,7 @@ var CreateRoomModal = function (_React$Component) {
               null,
               'Name of Room'
             ),
-            React.createElement('input', { type: 'text' })
+            React.createElement('input', { className: 'roomname', type: 'text' })
           ),
           React.createElement(
             'div',
@@ -62,7 +81,7 @@ var CreateRoomModal = function (_React$Component) {
               null,
               'Recipients'
             ),
-            React.createElement('input', { type: 'text', ref: 'recipients' })
+            React.createElement('input', { className: 'recipients', type: 'text', ref: 'recipients' })
           ),
           React.createElement(
             'div',
@@ -217,26 +236,19 @@ var SearchBar = function (_React$Component3) {
   _inherits(SearchBar, _React$Component3);
 
   function SearchBar() {
-    var _Object$getPrototypeO;
+    var _Object$getPrototypeO2;
 
-    var _temp, _this3, _ret;
+    var _temp2, _this3, _ret2;
 
     _classCallCheck(this, SearchBar);
 
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
+    for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+      args[_key2] = arguments[_key2];
     }
 
-    return _ret = (_temp = (_this3 = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(SearchBar)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this3), _this3.openCreateRoomModal = function () {
+    return _ret2 = (_temp2 = (_this3 = _possibleConstructorReturn(this, (_Object$getPrototypeO2 = Object.getPrototypeOf(SearchBar)).call.apply(_Object$getPrototypeO2, [this].concat(args))), _this3), _this3.openCreateRoomModal = function () {
       Avgrund.show("#CreateRoomModal");
-    }, _this3.createRoomHandler = function (e) {
-      var socket = _this3.props.socket;
-
-      socket.emit('rooms:create', {
-        name: '' + Math.random().toString(36).slice(2),
-        users: ['jason', 'adam']
-      });
-    }, _temp), _possibleConstructorReturn(_this3, _ret);
+    }, _temp2), _possibleConstructorReturn(_this3, _ret2);
   }
 
   _createClass(SearchBar, [{
@@ -279,7 +291,7 @@ var TopBar = function TopBar(_ref6) {
     React.createElement(
       'div',
       { className: 'sidebar faint-right-border' },
-      React.createElement(SearchBar, { socket: socket })
+      React.createElement(SearchBar, null)
     ),
     React.createElement(
       'div',
@@ -334,7 +346,7 @@ var ChatView = function (_React$Component4) {
           React.createElement(MessageList, { messages: messages }),
           React.createElement(ChatInput, { roomId: roomId, socket: this.props.socket })
         ),
-        React.createElement(CreateRoomModal, null),
+        React.createElement(CreateRoomModal, { socket: this.props.socket }),
         React.createElement('div', { className: 'avgrund-cover' })
       );
     }
