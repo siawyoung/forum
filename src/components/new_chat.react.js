@@ -130,6 +130,7 @@ class ChatInput extends React.Component {
 
     if (message) {
       socket.emit('messages:new', { roomId, message })
+      e.target.getElementsByClassName('message')[0].value = ""
     }
   }
 

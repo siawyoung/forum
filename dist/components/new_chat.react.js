@@ -208,6 +208,7 @@ var ChatInput = function (_React$Component2) {
 
       if (message) {
         socket.emit('messages:new', { roomId: roomId, message: message });
+        e.target.getElementsByClassName('message')[0].value = "";
       }
     };
 

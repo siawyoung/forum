@@ -26,9 +26,9 @@ function sortRoomOrder(room1, room2) {
 export const index = async (req, reply) => {
   try {
     const username = verifyToken(req)
-    console.log(username)
+    // console.log(username)
     const roomIds = await pub.smembersAsync(`users:${username}:rooms`)
-    console.log(roomIds)
+    // console.log(roomIds)
     const hydratedRooms = await Promise.all(roomIds.map(async (roomId) => {
       return {
         id: roomId,
