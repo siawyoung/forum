@@ -857,7 +857,12 @@ button[type="submit"] {
   height: 80px;
 }
 
-#RoomList .room .info {
+#RoomList .user {
+  width: 80px;
+}
+
+#RoomList .info {
+  width: calc(100% - 80px - 15px);
   padding-left: 10px;
   display: -webkit-box;
   display: -webkit-flex;
@@ -875,8 +880,20 @@ button[type="submit"] {
   color: #ddd;
 }
 
-#RoomList .room .info .username {
+#RoomList .info .username {
   font-weight: bold;
+}
+
+#RoomList .info .last-message {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+#RoomList .info .time-sent {
+  text-align: right;
+  font-size: 11.2px;
+  font-size: 0.7rem;
 }
 
 #TopBar {

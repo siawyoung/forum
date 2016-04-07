@@ -100,6 +100,10 @@ var CreateRoomModal = function (_React$Component) {
   return CreateRoomModal;
 }(React.Component);
 
+function timeToString(time) {
+  return time.getHours() + ':' + time.getMinutes();
+}
+
 var Room = function Room(_ref) {
   var room = _ref.room;
   var index = _ref.index;
@@ -109,7 +113,7 @@ var Room = function Room(_ref) {
   var lastMessage = room.messages[room.messages.length - 1];
   var message = lastMessage ? lastMessage.message : "";
   var user = lastMessage ? lastMessage.user : "";
-  var timestamp = lastMessage ? lastMessage.timestamp : "";
+  var timestamp = lastMessage ? new Date(lastMessage.timestamp) : "";
 
   return React.createElement(
     'div',
@@ -142,7 +146,7 @@ var Room = function Room(_ref) {
       React.createElement(
         'div',
         { className: 'time-sent' },
-        timestamp
+        timeToString(timestamp)
       )
     )
   );

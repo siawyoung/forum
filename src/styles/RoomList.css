@@ -1,15 +1,24 @@
+:root {
+  --room-side-length: 80px;
+}
+
 #RoomList {
-  height: calc(100vh - 80px);
+  height: calc(100vh - var(--room-side-length));
   overflow-y: scroll;
   width: calc(var(--sidebar-width) + 15px);
 }
 
 #RoomList {
   .room {
-    height: 80px;
+    height: var(--room-side-length);
   }
 
-  .room .info {
+  .user {
+    width: var(--room-side-length);
+  }
+
+  .info {
+    width: calc(100% - var(--room-side-length) - 15px);
     padding-left: 10px;
     display: flex;
     flex-direction: column;
@@ -17,7 +26,18 @@
     color: #ddd;
   }
 
-  .room .info .username {
+  .info .username {
     font-weight: bold;
+  }
+
+  .info .last-message {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  .info .time-sent {
+    text-align: right;
+    font-size: 0.7rem;
   }
 }

@@ -49,6 +49,10 @@ class CreateRoomModal extends React.Component {
   }
 }
 
+function timeToString(time) {
+  return `${time.getHours()}:${time.getMinutes()}`
+}
+
 const Room = ({
   room,
   index,
@@ -58,7 +62,9 @@ const Room = ({
   const lastMessage = room.messages[room.messages.length - 1]
   const message = lastMessage ? lastMessage.message : ""
   const user    = lastMessage ? lastMessage.user : ""
-  const timestamp = lastMessage ? lastMessage.timestamp : ""
+  const timestamp = lastMessage ? new Date(lastMessage.timestamp) : ""
+
+
 
   return (
     <div className="room flex" onClick={function() {
@@ -77,7 +83,7 @@ const Room = ({
           {message}
         </div>
         <div className="time-sent">
-          {timestamp}
+          {timeToString(timestamp)}
         </div>
       </div>
     </div>
