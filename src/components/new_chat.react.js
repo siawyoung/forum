@@ -177,6 +177,9 @@ const RoomTitle = ({
 }) => {
   return (
     <div id="RoomTitle" className="faint-bottom-border">
+      <div className="back-button">
+        <i className="fa fa-arrow-left"></i>
+      </div>
       {roomName}
     </div>
   )

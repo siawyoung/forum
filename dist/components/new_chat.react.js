@@ -284,6 +284,11 @@ var RoomTitle = function RoomTitle(_ref5) {
   return React.createElement(
     'div',
     { id: 'RoomTitle', className: 'faint-bottom-border' },
+    React.createElement(
+      'div',
+      { className: 'back-button' },
+      React.createElement('i', { className: 'fa fa-arrow-left' })
+    ),
     roomName
   );
 };

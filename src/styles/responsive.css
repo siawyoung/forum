@@ -1,0 +1,24 @@
+
+@media (width <= 1000px) {
+
+  .sidebar {
+    display: none;
+  }
+
+  .main-body {
+    width: 100vw;
+  }
+
+  #MessageList {
+    width: calc(100vw + 15px);
+  }
+
+  #RoomTitle {
+    padding-left: 20px;
+  }
+
+  .back-button {
+    display: block;
+  }
+
+}
