@@ -456,14 +456,15 @@ body {
   display: flex;
 }
 
-.one-third {
-   width: 33.3333%;
-   float: left;
-   height: 100%;
+.sidebar {
+  width: 380px;
+  float: left;
+  height: 100%;
 }
 
-.two-third {
-  width: 66.6666%;
+.main-body {
+  width: calc(100vw - 380px);
+  min-width: 560px;
   float: left;
   height: 100%;
 }
@@ -480,158 +481,174 @@ body {
   border-bottom: 1px solid rgba(221,221,221,0.07);
 }
 
-/* @import "legacy.css"; */
+/*!
+ * avgrund 0.1
+ * http://lab.hakim.se/avgrund
+ * MIT licensed
+ *
+ * Created by Hakim El Hattab, http://hakim.se
+ */
 
-#ChatView {
-  overflow: hidden;
-  height: 100vh;
-  background: rgb(54,54,54);
+.avgrund-active body {
+  -webkit-transform: scale( 0.9 );
+          transform: scale( 0.9 );
 }
 
-#ChatInput {
-  height: 80px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-      -ms-flex-align: center;
-          align-items: center;
+.avgrund-cover {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  visibility: hidden;
+  opacity: 0;
+  background: rgba( 0, 0, 0, 0.5 );
 }
 
-#ChatInput input {
-  margin-left: 55px;
-  width: calc(100% - 110px);
-  height: 40px;
-  padding: 10px;
+.avgrund-active .avgrund-cover {
+    visibility: visible;
+    opacity: 1;
+  }
+
+.avgrund-contents {
+  position: relative;
+  padding: 20px;
+  max-width: 400px;
+  height: 100%;
+  margin: auto;
 }
 
-#MessageList {
-  height: calc(100vh - 140px);
-  overflow-y: scroll;
-  padding: 0 20px;
+.avgrund-active .avgrund-contents {
+    -webkit-filter: blur(2px);
+       -moz-filter: blur(2px);
+        -ms-filter: blur(2px);
+         -o-filter: blur(2px);
+            filter: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg"><filter id="filter"><feGaussianBlur stdDeviation="2" /></filter></svg>#filter');
+            -webkit-filter: blur(2px);
+                    filter: blur(2px);
+  }
+
+.no-blur.avgrund-active .avgrund-contents {
+    -webkit-filter: none;
+       -moz-filter: none;
+        -ms-filter: none;
+         -o-filter: none;
+            filter: none;
+  }
+
+.avgrund-popup {
+  position: absolute;
+  width: 340px;
+  height: 180px;
+  left: 50%;
+  top: 50%;
+  margin: -130px 0 0 -190px;
+  visibility: hidden;
+  opacity: 0;
+  z-index: 2;
+  padding: 20px;
+
+  background: white;
+  box-shadow: 0px 0px 20px rgba( 0, 0, 0, 0.6 );
+  border-radius: 3px;
+
+  -webkit-transform: scale( 0.8 );
+          transform: scale( 0.8 );
 }
 
-.chat-bubble {
-  margin: 20px 0;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
+.avgrund-active .avgrund-popup-animate {
+    visibility: visible;
+    opacity: 1;
+
+    -webkit-transform: scale( 1.1 );
+            transform: scale( 1.1 );
+  }
+
+.avgrund-popup.stack {
+    -webkit-transform: scale( 1.5 );
+            transform: scale( 1.5 );
+  }
+
+.avgrund-active .avgrund-popup.stack {
+    -webkit-transform: scale( 1.1 );
+            transform: scale( 1.1 );
+  }
+
+.avgrund-ready body,
+.avgrund-ready .avgrund-contents,
+.avgrund-ready .avgrund-popup,
+.avgrund-ready .avgrund-cover {
+  -webkit-transform-origin: 50% 50%;
+          transform-origin: 50% 50%;
+
+  -webkit-transition: 0.3s all cubic-bezier(0.250, 0.460, 0.450, 0.940);
+          transition: 0.3s all cubic-bezier(0.250, 0.460, 0.450, 0.940);
 }
 
-.chat-bubble.self {
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: reverse;
-  -webkit-flex-direction: row-reverse;
-      -ms-flex-direction: row-reverse;
-          flex-direction: row-reverse;
+.avgrund-ready .avgrund-popup.no-transition {
+  -webkit-transition: none;
+          transition: none;
 }
 
-.chat-bubble.self .chat-bubble-text {
-  background: rgba(51, 51, 51, 0.9);
-  color: rgb(238, 238, 238);
+div.tagsinput {
+  border: 1px solid rgb(200,200,200);
+  background: #FFF;
+  padding:5px;
+  width:300px;
+  height:150px;
+  overflow-y: auto;
 }
 
-.chat-bubble.other {
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-  -webkit-flex-direction: row;
-      -ms-flex-direction: row;
-          flex-direction: row;
+div.tagsinput span.tag {
+  border: 1px solid #aaa;
+  -moz-border-radius:5px;
+  -webkit-border-radius:5px;
+  display: block;
+  float: left;
+  padding: 5px 10px;
+  text-decoration: none;
+  margin-right: 5px;
+  margin-bottom:5px;
+  font-size: 17.6px;
+  font-size:1.1rem;
 }
 
-.chat-bubble.other .chat-bubble-text {
-  background: rgba(238, 238, 238, 0.9);
-  color: rgb(51, 51, 51);
-}
-
-.chat-bubble-text {
-  max-width: 250px;
-  border-radius: 12px;
-  padding: 8px 18px;
-}
-
-#RoomList {
-  height: calc(100vh - 80px);
-  overflow-y: scroll;
-}
-
-#RoomList .room {
-  height: 80px;
-}
-
-#RoomList .room .info {
-  padding-left: 10px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -webkit-flex-direction: column;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-  color: #ddd;
-}
-
-#RoomList .room .info .username {
+div.tagsinput span.tag a {
   font-weight: bold;
+  color: #82ad2b;
+  text-decoration:none;
+  font-size: 11px;
 }
 
-#TopBar {
-  overflow: hidden;
-  height: 60px;
+div.tagsinput input {
+  width:80px;
+  margin:0px;
+  border:1px solid transparent;
+  padding:5px;
+  background: transparent;
+  color: #000;
+  outline:0px;
+  margin-right:5px;
+  margin-bottom:5px;
+  font-size: 17.6px;
+  font-size: 1.1rem;
 }
 
-#RoomTitle {
-  height: 100%;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-      -ms-flex-align: center;
-          align-items: center;
-  color: #ddd;
-  font-size: 19.2px;
-  font-size: 1.2rem;
-  padding-left: 30px;
+div.tagsinput div {
+  display:block;
+  float: left;
 }
 
-#SearchBar {
-  height: 100%;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-      -ms-flex-align: center;
-          align-items: center;
+.tags_clear {
+  clear: both;
+  width: 100%;
+  height: 0px;
 }
 
-#SearchBar input {
-  height: 35px;
-  width: 275px;
-  background: #ddd;
-  margin-left: 10px;
-  border: none;
-  padding-left: 13px;
-}
-
-#NewRoomButton {
-  font-size: 33.6px;
-  font-size: 2.1rem;
-  margin-left: 16px;
-  margin-top: 5px;
-  color: #ddd;
+.not_valid {
+  background: #FBD8DB !important;
+  color: #90111A !important;
 }
 
 #RegisterView, #LoginView {
@@ -747,4 +764,205 @@ button[type="submit"] {
       -ms-flex-pack: justify;
           justify-content: space-between;
   width: 450px;
+}
+
+#ChatView {
+  overflow: hidden;
+  height: 100vh;
+  background: rgb(54,54,54);
+}
+
+#ChatInput {
+  height: 80px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+#ChatInput form {
+  margin-left: 55px;
+  width: calc(100% - 110px);
+  height: 40px;
+}
+
+#ChatInput input {
+  width: 100%;
+  height: 100%;
+  padding: 13px;
+  background: #ddd;
+  border: none;
+}
+
+#MessageList {
+  height: calc(100vh - 140px);
+  overflow-y: scroll;
+  padding: 0 20px;
+}
+
+.chat-bubble {
+  margin: 20px 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.chat-bubble.self {
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: reverse;
+  -webkit-flex-direction: row-reverse;
+      -ms-flex-direction: row-reverse;
+          flex-direction: row-reverse;
+}
+
+.chat-bubble.self .chat-bubble-text {
+  background: rgba(51, 51, 51, 0.9);
+  color: rgb(238, 238, 238);
+}
+
+.chat-bubble.other {
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+      -ms-flex-direction: row;
+          flex-direction: row;
+}
+
+.chat-bubble.other .chat-bubble-text {
+  background: rgba(238, 238, 238, 0.9);
+  color: rgb(51, 51, 51);
+}
+
+.chat-bubble-text {
+  max-width: 250px;
+  border-radius: 12px;
+  padding: 8px 18px;
+}
+
+#RoomList {
+  height: calc(100vh - 80px);
+  overflow-y: scroll;
+}
+
+#RoomList .room {
+  height: 80px;
+}
+
+#RoomList .room .info {
+  padding-left: 10px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  color: #ddd;
+}
+
+#RoomList .room .info .username {
+  font-weight: bold;
+}
+
+#TopBar {
+  overflow: hidden;
+  height: 60px;
+}
+
+#RoomTitle {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  color: #ddd;
+  font-size: 19.2px;
+  font-size: 1.2rem;
+  padding-left: 30px;
+}
+
+#SearchBar {
+  height: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+#SearchBar input {
+  height: 35px;
+  width: 305px;
+  background: #ddd;
+  margin-left: 10px;
+  border: none;
+  padding-left: 13px;
+}
+
+#NewRoomButton {
+  font-size: 33.6px;
+  font-size: 2.1rem;
+  margin-left: 16px;
+  margin-top: 5px;
+  color: #ddd;
+}
+
+#CreateRoomModal {
+  padding: 30px;
+  width: 400px;
+  height: 390px;
+}
+
+#CreateRoomModal form {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+#CreateRoomModal form .form-group {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+#CreateRoomModal form .form-group label {
+  margin: 10px 0;
+}
+
+#CreateRoomModal form input[type="text"], #CreateRoomModal form input[type="password"] {
+  height: 45px;
+  border: 1px solid rgb(200,200,200);
+  padding: 0 10px;
+  font-size: 17.6px;
+  font-size: 1.1rem;
 }

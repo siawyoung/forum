@@ -9,10 +9,17 @@
   display: flex;
   align-items: center;
 
-  input {
+  form {
     margin-left: 55px;
     width: calc(100% - 110px);
     height: 40px;
-    padding: 10px;
+  }
+
+  input {
+    width: 100%;
+    height: 100%;
+    padding: 13px;
+    background: #ddd;
+    border: none;
   }
 }

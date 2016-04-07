@@ -27,14 +27,15 @@ body {
   display: flex;
 }
 
-.one-third {
-   width: 33.3333%;
-   float: left;
-   height: 100%;
+.sidebar {
+  width: 380px;
+  float: left;
+  height: 100%;
 }
 
-.two-third {
-  width: 66.6666%;
+.main-body {
+  width: calc(100vw - 380px);
+  min-width: 560px;
   float: left;
   height: 100%;
 }

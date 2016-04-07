@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -12,6 +12,75 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var CreateRoomModal = function (_React$Component) {
+  _inherits(CreateRoomModal, _React$Component);
+
+  function CreateRoomModal() {
+    _classCallCheck(this, CreateRoomModal);
+
+    return _possibleConstructorReturn(this, Object.getPrototypeOf(CreateRoomModal).apply(this, arguments));
+  }
+
+  _createClass(CreateRoomModal, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      $(this.refs.recipients).tagsInput({
+        width: 336,
+        'defaultText': '',
+        'removeWithBackspace': true
+      });
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return React.createElement(
+        'div',
+        { id: 'CreateRoomModal', className: 'avgrund-popup' },
+        React.createElement(
+          'h2',
+          null,
+          'New Room'
+        ),
+        React.createElement(
+          'form',
+          null,
+          React.createElement(
+            'div',
+            { className: 'form-group' },
+            React.createElement(
+              'label',
+              null,
+              'Name of Room'
+            ),
+            React.createElement('input', { type: 'text' })
+          ),
+          React.createElement(
+            'div',
+            { className: 'form-group' },
+            React.createElement(
+              'label',
+              null,
+              'Recipients'
+            ),
+            React.createElement('input', { type: 'text', ref: 'recipients' })
+          ),
+          React.createElement(
+            'div',
+            { className: 'form-group' },
+            React.createElement(
+              'button',
+              { type: 'submit' },
+              'Create'
+            )
+          )
+        )
+      );
+    }
+  }]);
+
+  return CreateRoomModal;
+}(React.Component);
+
 var Room = function Room(_ref) {
   var room = _ref.room;
   var index = _ref.index;
@@ -24,37 +93,36 @@ var Room = function Room(_ref) {
   var timestamp = lastMessage ? lastMessage.timestamp : "";
 
   return React.createElement(
-    "div",
-    { className: "room flex", onClick: function onClick() {
-        console.log('clicked', index);
+    'div',
+    { className: 'room flex', onClick: function onClick() {
         changeSelectedRoom(index);
       } },
     React.createElement(
-      "div",
-      { className: "user" },
-      React.createElement("img", { src: "http://placehold.it/80x80", alt: "" })
+      'div',
+      { className: 'user' },
+      React.createElement('img', { src: 'http://placehold.it/80x80', alt: '' })
     ),
     React.createElement(
-      "div",
-      { className: "info" },
+      'div',
+      { className: 'info' },
       React.createElement(
-        "div",
-        { className: "roomName" },
+        'div',
+        { className: 'roomName' },
         room.name
       ),
       React.createElement(
-        "div",
-        { className: "username" },
+        'div',
+        { className: 'username' },
         user
       ),
       React.createElement(
-        "div",
-        { className: "last-message" },
+        'div',
+        { className: 'last-message' },
         message
       ),
       React.createElement(
-        "div",
-        { className: "time-sent" },
+        'div',
+        { className: 'time-sent' },
         timestamp
       )
     )
@@ -67,8 +135,8 @@ var RoomList = function RoomList(_ref2) {
 
 
   return React.createElement(
-    "div",
-    { id: "RoomList" },
+    'div',
+    { id: 'RoomList' },
     rooms.map(function (room, index) {
       return React.createElement(Room, { key: index, index: index, room: room, changeSelectedRoom: changeSelectedRoom });
     })
@@ -81,11 +149,11 @@ var ChatBubble = function ChatBubble(_ref3) {
 
   var isSelf = text.user === store.get('forum:name') ? 'self' : 'other';
   return React.createElement(
-    "div",
-    { className: "chat-bubble " + isSelf },
+    'div',
+    { className: 'chat-bubble ' + isSelf },
     React.createElement(
-      "div",
-      { className: "chat-bubble-text" },
+      'div',
+      { className: 'chat-bubble-text' },
       text.message
     )
   );
@@ -95,27 +163,27 @@ var MessageList = function MessageList(_ref4) {
   var messages = _ref4.messages;
 
   return React.createElement(
-    "div",
-    { id: "MessageList" },
+    'div',
+    { id: 'MessageList' },
     messages.map(function (msg, index) {
       return React.createElement(ChatBubble, { key: index, text: msg });
     })
   );
 };
 
-var ChatInput = function (_React$Component) {
-  _inherits(ChatInput, _React$Component);
+var ChatInput = function (_React$Component2) {
+  _inherits(ChatInput, _React$Component2);
 
   function ChatInput() {
     _classCallCheck(this, ChatInput);
 
-    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ChatInput).call(this));
+    var _this2 = _possibleConstructorReturn(this, Object.getPrototypeOf(ChatInput).call(this));
 
-    _this.sendMessage = function (e) {
+    _this2.sendMessage = function (e) {
       e.preventDefault();
-      var _this$props = _this.props;
-      var roomId = _this$props.roomId;
-      var socket = _this$props.socket;
+      var _this2$props = _this2.props;
+      var roomId = _this2$props.roomId;
+      var socket = _this2$props.socket;
 
       var message = e.target.getElementsByClassName('message')[0].value;
 
@@ -124,19 +192,19 @@ var ChatInput = function (_React$Component) {
       }
     };
 
-    return _this;
+    return _this2;
   }
 
   _createClass(ChatInput, [{
-    key: "render",
+    key: 'render',
     value: function render() {
       return React.createElement(
-        "div",
-        { id: "ChatInput", className: "faint-top-border" },
+        'div',
+        { id: 'ChatInput', className: 'faint-top-border' },
         React.createElement(
-          "form",
+          'form',
           { onSubmit: this.sendMessage },
-          React.createElement("input", { type: "text", className: "message" })
+          React.createElement('input', { type: 'text', className: 'message' })
         )
       );
     }
@@ -145,13 +213,13 @@ var ChatInput = function (_React$Component) {
   return ChatInput;
 }(React.Component);
 
-var SearchBar = function (_React$Component2) {
-  _inherits(SearchBar, _React$Component2);
+var SearchBar = function (_React$Component3) {
+  _inherits(SearchBar, _React$Component3);
 
   function SearchBar() {
     var _Object$getPrototypeO;
 
-    var _temp, _this2, _ret;
+    var _temp, _this3, _ret;
 
     _classCallCheck(this, SearchBar);
 
@@ -159,27 +227,29 @@ var SearchBar = function (_React$Component2) {
       args[_key] = arguments[_key];
     }
 
-    return _ret = (_temp = (_this2 = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(SearchBar)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this2), _this2.createRoomHandler = function (e) {
-      var socket = _this2.props.socket;
+    return _ret = (_temp = (_this3 = _possibleConstructorReturn(this, (_Object$getPrototypeO = Object.getPrototypeOf(SearchBar)).call.apply(_Object$getPrototypeO, [this].concat(args))), _this3), _this3.openCreateRoomModal = function () {
+      Avgrund.show("#CreateRoomModal");
+    }, _this3.createRoomHandler = function (e) {
+      var socket = _this3.props.socket;
 
       socket.emit('rooms:create', {
-        name: "" + Math.random().toString(36).slice(2),
+        name: '' + Math.random().toString(36).slice(2),
         users: ['jason', 'adam']
       });
-    }, _temp), _possibleConstructorReturn(_this2, _ret);
+    }, _temp), _possibleConstructorReturn(_this3, _ret);
   }
 
   _createClass(SearchBar, [{
-    key: "render",
+    key: 'render',
     value: function render() {
       return React.createElement(
-        "div",
-        { id: "SearchBar" },
-        React.createElement("input", { type: "text", placeholder: "Search" }),
-        React.createElement("i", {
-          className: "fa fa-plus-square-o",
-          id: "NewRoomButton",
-          onClick: this.createRoomHandler
+        'div',
+        { id: 'SearchBar' },
+        React.createElement('input', { type: 'text', placeholder: 'Search' }),
+        React.createElement('i', {
+          className: 'fa fa-plus-square-o',
+          id: 'NewRoomButton',
+          onClick: this.openCreateRoomModal
         })
       );
     }
@@ -192,8 +262,8 @@ var RoomTitle = function RoomTitle(_ref5) {
   var roomName = _ref5.roomName;
 
   return React.createElement(
-    "div",
-    { id: "RoomTitle", className: "faint-bottom-border" },
+    'div',
+    { id: 'RoomTitle', className: 'faint-bottom-border' },
     roomName
   );
 };
@@ -204,45 +274,42 @@ var TopBar = function TopBar(_ref6) {
   var roomName = _ref6.roomName;
 
   return React.createElement(
-    "div",
-    { id: "TopBar" },
+    'div',
+    { id: 'TopBar' },
     React.createElement(
-      "div",
-      { className: "one-third faint-right-border" },
+      'div',
+      { className: 'sidebar faint-right-border' },
       React.createElement(SearchBar, { socket: socket })
     ),
     React.createElement(
-      "div",
-      { className: "two-third" },
+      'div',
+      { className: 'main-body' },
       React.createElement(RoomTitle, { data: data, roomName: roomName })
     )
   );
 };
 
-var ChatView = function (_React$Component3) {
-  _inherits(ChatView, _React$Component3);
+var ChatView = function (_React$Component4) {
+  _inherits(ChatView, _React$Component4);
 
   function ChatView() {
     _classCallCheck(this, ChatView);
 
-    var _this3 = _possibleConstructorReturn(this, Object.getPrototypeOf(ChatView).call(this));
+    var _this4 = _possibleConstructorReturn(this, Object.getPrototypeOf(ChatView).call(this));
 
-    _this3.changeSelectedRoom = function (id) {
+    _this4.changeSelectedRoom = function (id) {
       console.log('changeselectedroom', id);
-      _this3.setState({ selectedRoom: id });
+      _this4.setState({ selectedRoom: id });
     };
 
-    _this3.state = {
+    _this4.state = {
       selectedRoom: 0
     };
-    return _this3;
+    return _this4;
   }
 
   _createClass(ChatView, [{
-    key: "componentWillMount",
-    value: function componentWillMount() {}
-  }, {
-    key: "render",
+    key: 'render',
     value: function render() {
 
       var rooms = this.props.data.rooms;
@@ -253,20 +320,22 @@ var ChatView = function (_React$Component3) {
       var roomName = rooms.length > 0 ? rooms[selectedRoom].name : "";
 
       return React.createElement(
-        "div",
-        { id: "ChatView", className: "top-level" },
+        'div',
+        { id: 'ChatView', className: 'top-level' },
         React.createElement(TopBar, { data: this.props.data, socket: this.props.socket, roomName: roomName }),
         React.createElement(
-          "div",
-          { className: "one-third faint-right-border" },
+          'div',
+          { className: 'sidebar faint-right-border' },
           React.createElement(RoomList, { rooms: rooms, changeSelectedRoom: this.changeSelectedRoom })
         ),
         React.createElement(
-          "div",
-          { className: "two-third" },
+          'div',
+          { className: 'main-body' },
           React.createElement(MessageList, { messages: messages }),
           React.createElement(ChatInput, { roomId: roomId, socket: this.props.socket })
-        )
+        ),
+        React.createElement(CreateRoomModal, null),
+        React.createElement('div', { className: 'avgrund-cover' })
       );
     }
   }]);
@@ -305,6 +374,10 @@ var preprocessInitialMessages = function preprocessInitialMessages(res) {
   });
 };
 
+function closeDialog() {
+  Avgrund.hide();
+}
+
 $(document).ready(function () {
   var token = store.get('forum:token');
 
@@ -315,7 +388,7 @@ $(document).ready(function () {
   $.ajax('/load', {
     method: 'GET',
     headers: {
-      'Authorization': "Bearer " + token
+      'Authorization': 'Bearer ' + token
     },
     success: function success(response) {
 

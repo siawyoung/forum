@@ -1,4 +1,42 @@
 
+class CreateRoomModal extends React.Component {
+
+  componentDidMount() {
+    $(this.refs.recipients).tagsInput({
+      width: 336,
+      'defaultText': '',
+      'removeWithBackspace' : true
+    })
+  }
+
+  render() {
+    return (
+      <div id="CreateRoomModal" className="avgrund-popup">
+
+        <h2>New Room</h2>
+
+        <form>
+          <div className="form-group">
+            <label>Name of Room</label>
+            <input type="text"/>
+          </div>
+
+          <div className="form-group">
+            <label>Recipients</label>
+            <input type="text" ref="recipients" />
+          </div>
+
+          <div className="form-group">
+            <button type="submit">Create</button>
+          </div>
+
+        </form>
+
+      </div>
+    )
+  }
+}
+
 const Room = ({
   room,
   index,
@@ -12,7 +50,6 @@ const Room = ({
 
   return (
     <div className="room flex" onClick={function() {
-    console.log('clicked', index)
     changeSelectedRoom(index) }}>
       <div className="user">
         <img src="http://placehold.it/80x80" alt="" />
@@ -97,6 +134,10 @@ class ChatInput extends React.Component {
 
 class SearchBar extends React.Component {
 
+  openCreateRoomModal = () => {
+    Avgrund.show( "#CreateRoomModal" );
+  }
+
   createRoomHandler = (e) => {
     const { socket } = this.props
     socket.emit('rooms:create', {
@@ -112,7 +153,7 @@ class SearchBar extends React.Component {
         <i
         className="fa fa-plus-square-o"
         id="NewRoomButton"
-        onClick={this.createRoomHandler}
+        onClick={this.openCreateRoomModal}
         ></i>
       </div>
     )
@@ -132,10 +173,10 @@ const RoomTitle = ({
 const TopBar = ({ data, socket, roomName }) => {
   return (
     <div id="TopBar">
-      <div className="one-third faint-right-border">
+      <div className="sidebar faint-right-border">
         <SearchBar socket={socket} />
       </div>
-      <div className="two-third">
+      <div className="main-body">
         <RoomTitle data={data} roomName={roomName} />
       </div>
     </div>
@@ -149,10 +190,6 @@ class ChatView extends React.Component {
     this.state = {
       selectedRoom: 0
     }
-  }
-
-  componentWillMount() {
-
   }
 
   changeSelectedRoom = (id) => {
@@ -172,13 +209,15 @@ class ChatView extends React.Component {
     return (
       <div id="ChatView" className="top-level">
         <TopBar data={this.props.data} socket={this.props.socket} roomName={roomName} />
-        <div className="one-third faint-right-border">
+        <div className="sidebar faint-right-border">
           <RoomList rooms={rooms} changeSelectedRoom={this.changeSelectedRoom} />
         </div>
-        <div className="two-third">
+        <div className="main-body">
           <MessageList messages={messages} />
           <ChatInput roomId={roomId} socket={this.props.socket} />
         </div>
+        <CreateRoomModal />
+        <div className="avgrund-cover"></div>
       </div>
     )
   }
@@ -212,6 +251,10 @@ const preprocessInitialMessages = (res) => {
     ...res,
     rooms: ppRoom
   }
+}
+
+function closeDialog() {
+  Avgrund.hide();
 }
 
 $(document).ready(() => {
