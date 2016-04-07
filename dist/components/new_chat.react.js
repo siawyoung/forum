@@ -262,10 +262,19 @@ var SearchBar = function (_React$Component3) {
   _createClass(SearchBar, [{
     key: 'render',
     value: function render() {
+
+      var toggleSidebar = this.props.toggleSidebar;
+
       return React.createElement(
         'div',
         { id: 'SearchBar' },
-        React.createElement('input', { type: 'text', placeholder: 'Search' }),
+        React.createElement('i', {
+          className: 'fa fa-arrow-left',
+          id: 'CloseSidebar',
+          onClick: function onClick() {
+            toggleSidebar(false);
+          }
+        }),
         React.createElement('i', {
           className: 'fa fa-plus-square-o',
           id: 'NewRoomButton',
@@ -280,6 +289,7 @@ var SearchBar = function (_React$Component3) {
 
 var RoomTitle = function RoomTitle(_ref5) {
   var roomName = _ref5.roomName;
+  var toggleSidebar = _ref5.toggleSidebar;
 
   return React.createElement(
     'div',
@@ -287,30 +297,11 @@ var RoomTitle = function RoomTitle(_ref5) {
     React.createElement(
       'div',
       { className: 'back-button' },
-      React.createElement('i', { className: 'fa fa-arrow-left' })
+      React.createElement('i', { className: 'fa fa-bars', onClick: function onClick() {
+          toggleSidebar(true);
+        } })
     ),
     roomName
-  );
-};
-
-var TopBar = function TopBar(_ref6) {
-  var data = _ref6.data;
-  var socket = _ref6.socket;
-  var roomName = _ref6.roomName;
-
-  return React.createElement(
-    'div',
-    { id: 'TopBar' },
-    React.createElement(
-      'div',
-      { className: 'sidebar faint-right-border' },
-      React.createElement(SearchBar, null)
-    ),
-    React.createElement(
-      'div',
-      { className: 'main-body' },
-      React.createElement(RoomTitle, { data: data, roomName: roomName })
-    )
   );
 };
 
@@ -327,8 +318,13 @@ var ChatView = function (_React$Component4) {
       _this4.setState({ selectedRoom: id });
     };
 
+    _this4.toggleSidebar = function (s) {
+      _this4.setState({ sidebarOpen: s });
+    };
+
     _this4.state = {
-      selectedRoom: 0
+      selectedRoom: 0,
+      sidebarOpen: false
     };
     return _this4;
   }
@@ -344,18 +340,21 @@ var ChatView = function (_React$Component4) {
       var messages = rooms.length > 0 ? rooms[selectedRoom].messages : [];
       var roomName = rooms.length > 0 ? rooms[selectedRoom].name : "";
 
+      var sideOpen = this.state.sidebarOpen ? "sidebarOpen" : "";
+
       return React.createElement(
         'div',
         { id: 'ChatView', className: 'top-level' },
-        React.createElement(TopBar, { data: this.props.data, socket: this.props.socket, roomName: roomName }),
         React.createElement(
           'div',
-          { className: 'sidebar faint-right-border' },
+          { className: 'sidebar faint-right-border ' + sideOpen },
+          React.createElement(SearchBar, { toggleSidebar: this.toggleSidebar }),
           React.createElement(RoomList, { rooms: rooms, changeSelectedRoom: this.changeSelectedRoom })
         ),
         React.createElement(
           'div',
           { className: 'main-body' },
+          React.createElement(RoomTitle, { toggleSidebar: this.toggleSidebar, roomName: roomName }),
           React.createElement(MessageList, { messages: messages }),
           React.createElement(ChatInput, { roomId: roomId, socket: this.props.socket })
         ),
@@ -372,16 +371,16 @@ var ChatView = function (_React$Component4) {
 //   return payload.map(x => JSON.parse(x))
 // }
 
-var renderView = function renderView(_ref7) {
-  var data = _ref7.data;
-  var socket = _ref7.socket;
+var renderView = function renderView(_ref6) {
+  var data = _ref6.data;
+  var socket = _ref6.socket;
 
   ReactDOM.render(React.createElement(ChatView, { data: data, socket: socket }), document.getElementById('root'));
 };
 
-var initialLoad = function initialLoad(_ref8) {
-  var socket = _ref8.socket;
-  var data = _ref8.data;
+var initialLoad = function initialLoad(_ref7) {
+  var socket = _ref7.socket;
+  var data = _ref7.data;
 
   renderView({ socket: socket, data: data });
 };

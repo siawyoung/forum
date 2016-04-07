@@ -5,6 +5,11 @@
     display: none;
   }
 
+  .sidebarOpen {
+    display: block;
+    position: fixed;
+  }
+
   .main-body {
     width: 100vw;
   }

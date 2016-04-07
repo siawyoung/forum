@@ -159,9 +159,17 @@ class SearchBar extends React.Component {
   }
 
   render() {
+
+    const toggleSidebar = this.props.toggleSidebar
+
     return (
       <div id="SearchBar">
-        <input type="text" placeholder="Search" />
+        {/*<input type="text" placeholder="Search" />*/}
+        <i
+        className="fa fa-arrow-left"
+        id="CloseSidebar"
+        onClick={function() { toggleSidebar(false) }}
+        ></i>
         <i
         className="fa fa-plus-square-o"
         id="NewRoomButton"
@@ -173,27 +181,15 @@ class SearchBar extends React.Component {
 }
 
 const RoomTitle = ({
-  roomName
+  roomName,
+  toggleSidebar
 }) => {
   return (
     <div id="RoomTitle" className="faint-bottom-border">
       <div className="back-button">
-        <i className="fa fa-arrow-left"></i>
+        <i className="fa fa-bars" onClick={function() { toggleSidebar(true) }}></i>
       </div>
       {roomName}
-    </div>
-  )
-}
-
-const TopBar = ({ data, socket, roomName }) => {
-  return (
-    <div id="TopBar">
-      <div className="sidebar faint-right-border">
-        <SearchBar />
-      </div>
-      <div className="main-body">
-        <RoomTitle data={data} roomName={roomName} />
-      </div>
     </div>
   )
 }
@@ -203,13 +199,18 @@ class ChatView extends React.Component {
   constructor() {
     super()
     this.state = {
-      selectedRoom: 0
+      selectedRoom: 0,
+      sidebarOpen: false
     }
   }
 
   changeSelectedRoom = (id) => {
     console.log('changeselectedroom', id)
     this.setState({ selectedRoom: id })
+  }
+
+  toggleSidebar = (s) => {
+    this.setState({ sidebarOpen: s })
   }
 
   render() {
@@ -221,13 +222,16 @@ class ChatView extends React.Component {
     const messages = rooms.length > 0 ? rooms[selectedRoom].messages : []
     const roomName = rooms.length > 0 ? rooms[selectedRoom].name : ""
 
+    const sideOpen = this.state.sidebarOpen ? "sidebarOpen" : ""
+
     return (
       <div id="ChatView" className="top-level">
-        <TopBar data={this.props.data} socket={this.props.socket} roomName={roomName} />
-        <div className="sidebar faint-right-border">
+        <div className={`sidebar faint-right-border ${sideOpen}`}>
+          <SearchBar toggleSidebar={this.toggleSidebar} />
           <RoomList rooms={rooms} changeSelectedRoom={this.changeSelectedRoom} />
         </div>
         <div className="main-body">
+          <RoomTitle toggleSidebar={this.toggleSidebar} roomName={roomName} />
           <MessageList messages={messages} />
           <ChatInput roomId={roomId} socket={this.props.socket} />
         </div>

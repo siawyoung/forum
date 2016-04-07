@@ -1,7 +1,7 @@
 #ChatView {
   overflow: hidden;
   height: 100vh;
-  background: rgb(54,54,54);
+  background: var(--dark-grey);
 }
 
 #ChatInput {

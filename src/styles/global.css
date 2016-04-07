@@ -31,29 +31,21 @@ body {
   display: flex;
 }
 
-.sidebar {
-  width: var(--sidebar-width);
-  float: left;
-  height: 100%;
-  overflow-x: hidden;
-}
-
 .main-body {
   width: calc(100vw - var(--sidebar-width));
-  min-width: 560px;
   float: left;
   height: 100%;
   overflow-x: hidden;
 }
 
 .faint-right-border {
-  border-right: 1px solid rgba(221,221,221,0.07);
+  border-right: var(--faint-border);
 }
 
 .faint-top-border {
-  border-top: 1px solid rgba(221,221,221,0.07);
+  border-top: var(--faint-border);
 }
 
 .faint-bottom-border {
-  border-bottom: 1px solid rgba(221,221,221,0.07);
+  border-bottom: var(--faint-border);
 }

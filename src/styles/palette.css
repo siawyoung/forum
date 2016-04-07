@@ -1,5 +1,8 @@
 
 :root {
+  --light: #ddd;
+  --dark-grey: rgb(54,54,54);
   --grey-border: 1px solid rgb(200,200,200);
+  --faint-border: 1px solid rgba(221,221,221,0.07);
   --main-green: #23CF5F;
 }

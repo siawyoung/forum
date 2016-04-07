@@ -456,16 +456,8 @@ body {
   display: flex;
 }
 
-.sidebar {
-  width: 380px;
-  float: left;
-  height: 100%;
-  overflow-x: hidden;
-}
-
 .main-body {
   width: calc(100vw - 380px);
-  min-width: 560px;
   float: left;
   height: 100%;
   overflow-x: hidden;
@@ -847,6 +839,27 @@ button[type="submit"] {
   padding: 8px 18px;
 }
 
+#RoomTitle {
+  height: 60px;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  color: #ddd;
+  font-size: 19.2px;
+  font-size: 1.2rem;
+  padding-left: 30px;
+}
+
+.back-button {
+  margin-right: 20px;
+  display: none;
+}
+
 #RoomList {
   height: calc(100vh - 80px);
   overflow-y: scroll;
@@ -896,38 +909,24 @@ button[type="submit"] {
   font-size: 0.7rem;
 }
 
-#TopBar {
-  overflow: hidden;
-  height: 60px;
-}
-
-#RoomTitle {
+.sidebar {
+  width: 380px;
+  float: left;
   height: 100%;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-      -ms-flex-align: center;
-          align-items: center;
-  color: #ddd;
-  font-size: 19.2px;
-  font-size: 1.2rem;
-  padding-left: 30px;
-}
-
-.back-button {
-  margin-right: 20px;
-  display: none;
+  overflow-x: hidden;
+  background: rgb(54,54,54);
 }
 
 #SearchBar {
-  height: 100%;
+  height: 60px;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
   display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
   -webkit-box-align: center;
   -webkit-align-items: center;
       -ms-flex-align: center;
@@ -946,9 +945,17 @@ button[type="submit"] {
 #NewRoomButton {
   font-size: 33.6px;
   font-size: 2.1rem;
-  margin-left: 16px;
-  margin-top: 5px;
   color: #ddd;
+  margin-top: 4px;
+  margin-right: 18px;
+}
+
+#CloseSidebar {
+  font-size: 27.2px;
+  font-size: 1.7rem;
+  color: #ddd;
+  margin-top: -4px;
+  margin-left: 15px;
 }
 
 #CreateRoomModal {
@@ -997,6 +1004,11 @@ button[type="submit"] {
 
   .sidebar {
     display: none;
+  }
+
+  .sidebarOpen {
+    display: block;
+    position: fixed;
   }
 
   .main-body {

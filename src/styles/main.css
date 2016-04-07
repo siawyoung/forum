@@ -8,8 +8,9 @@
 
 @import "ChatView.css";
 @import "MessageList.css";
+@import "RoomTitle.css";
 @import "RoomList.css";
-@import "TopBar.css";
+@import "Sidebar.css";
 
 @import "CreateRoomModal.css";
 
