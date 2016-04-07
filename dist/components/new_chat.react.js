@@ -101,6 +101,9 @@ var CreateRoomModal = function (_React$Component) {
 }(React.Component);
 
 function timeToString(time) {
+  if (!time) {
+    return "";
+  }
   return time.getHours() + ':' + time.getMinutes();
 }
 
@@ -411,7 +414,7 @@ $(document).ready(function () {
 
       var data = preprocessInitialMessages(response);
 
-      var socket = io.connect('http://localhost:8000');
+      var socket = io.connect();
       socket.on('connect', function () {
         socket.on('authenticated', function () {}).emit('authenticate', { token: token }); //send the jwt
       });

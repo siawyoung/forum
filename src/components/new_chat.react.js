@@ -50,6 +50,9 @@ class CreateRoomModal extends React.Component {
 }
 
 function timeToString(time) {
+  if (!time) {
+    return ""
+  }
   return `${time.getHours()}:${time.getMinutes()}`
 }
 
@@ -63,8 +66,6 @@ const Room = ({
   const message = lastMessage ? lastMessage.message : ""
   const user    = lastMessage ? lastMessage.user : ""
   const timestamp = lastMessage ? new Date(lastMessage.timestamp) : ""
-
-
 
   return (
     <div className="room flex" onClick={function() {
@@ -284,7 +285,7 @@ $(document).ready(() => {
 
       let data = preprocessInitialMessages(response)
 
-      var socket = io.connect('http://localhost:8000')
+      var socket = io.connect()
       socket.on('connect', function () {
         socket.on('authenticated', () => {
         }).emit('authenticate', { token }) //send the jwt
