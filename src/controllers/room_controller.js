@@ -12,14 +12,15 @@ export const create = (username, msg) => {
     pub.saddAsync(`users:${user}:rooms`, roomId)
   })
   pub.saddAsync(`rooms:${roomId}:users`, ...users)
-  pub.hmsetAsync(`rooms:${roomId}`, 'name', name, 'latest', timestamp())
+  pub.hmsetAsync(`rooms:${roomId}`, 'name', name, 'latest', timestamp(), 'color', '#333333')
 
   pub.publish('rooms:created', JSON.stringify({
     sockets: users,
     message: {
       id: roomId,
       name: name,
-      messages: []
+      messages: [],
+      color: '#333333',
     }
   }))
 

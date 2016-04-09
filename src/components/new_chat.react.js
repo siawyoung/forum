@@ -221,11 +221,12 @@ class ChatView extends React.Component {
     const roomId   = rooms.length > 0 ? rooms[selectedRoom].id : null
     const messages = rooms.length > 0 ? rooms[selectedRoom].messages : []
     const roomName = rooms.length > 0 ? rooms[selectedRoom].name : ""
+    const roomColor = rooms.length > 0 ? rooms[selectedRoom].color : '#333333'
 
     const sideOpen = this.state.sidebarOpen ? "sidebarOpen" : ""
 
     return (
-      <div id="ChatView" className="top-level">
+      <div id="ChatView" className="top-level" style={{ background: roomColor }}>
         <div className={`sidebar faint-right-border ${sideOpen}`}>
           <SearchBar toggleSidebar={this.toggleSidebar} />
           <RoomList rooms={rooms} changeSelectedRoom={this.changeSelectedRoom} />

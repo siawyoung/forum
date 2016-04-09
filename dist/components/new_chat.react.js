@@ -339,12 +339,13 @@ var ChatView = function (_React$Component4) {
       var roomId = rooms.length > 0 ? rooms[selectedRoom].id : null;
       var messages = rooms.length > 0 ? rooms[selectedRoom].messages : [];
       var roomName = rooms.length > 0 ? rooms[selectedRoom].name : "";
+      var roomColor = rooms.length > 0 ? rooms[selectedRoom].color : '#333333';
 
       var sideOpen = this.state.sidebarOpen ? "sidebarOpen" : "";
 
       return React.createElement(
         'div',
-        { id: 'ChatView', className: 'top-level' },
+        { id: 'ChatView', className: 'top-level', style: { background: roomColor } },
         React.createElement(
           'div',
           { className: 'sidebar faint-right-border ' + sideOpen },

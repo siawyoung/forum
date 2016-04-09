@@ -39,5 +39,6 @@
   .info .time-sent {
     text-align: right;
     font-size: 0.7rem;
+    padding-right: 10px;
   }
 }

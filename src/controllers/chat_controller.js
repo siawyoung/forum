@@ -34,6 +34,7 @@ export const index = async (req, reply) => {
         id: roomId,
         name: await pub.hgetAsync(`rooms:${roomId}`, 'name'),
         timestamp: await pub.hgetAsync(`rooms:${roomId}`, 'latest'),
+        color: await pub.hgetAsync(`rooms:${roomId}`, 'color'),
         messages: await getMessages(roomId)
       }
     }))
