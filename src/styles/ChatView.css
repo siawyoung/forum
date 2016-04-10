@@ -2,6 +2,7 @@
   overflow: hidden;
   height: 100vh;
   background: var(--dark-grey);
+  transition: background 0.5s;
 }
 
 #ChatInput {

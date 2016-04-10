@@ -763,6 +763,8 @@ button[type="submit"] {
   overflow: hidden;
   height: 100vh;
   background: rgb(54,54,54);
+  -webkit-transition: background 0.5s;
+  transition: background 0.5s;
 }
 
 #ChatInput {
