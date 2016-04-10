@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 
 import 'babel-polyfill'
 import Hapi from 'hapi'
@@ -14,19 +13,19 @@ import init from './chat'
 
 server.connection({
   host: '0.0.0.0',
-  port: Number(process.env.PORT)
+  port: Number(8000)
 })
 
 server.register([Inert, Vision], async () => {
 
-  console.log(`${__dirname}/views`)
+  console.log(__dirname)
 
   server.views({
     engines: {
       html: require('handlebars')
     },
-    path: `${__dirname}/views`,
-    layoutPath: `${__dirname}/views/layouts`,
+    path: `./views`,
+    layoutPath: `./views/layouts`,
     layout: 'main'
   })
 
@@ -57,15 +56,15 @@ server.register([Inert, Vision], async () => {
       handler: (req, reply) => {
         // if (req.params.react)
         // check for malicious request params
-        return reply.file(`${__dirname}/../dist/components/${req.params.react}.react.js`)
+        return reply.file(`./components/${req.params.react}.react.js`)
       }
     },
 
-    { method: 'GET', path: '/store.min.js', handler: { file: `${__dirname}/scripts/store.min.js` } },
-    { method: 'GET', path: '/avgrund.js', handler: { file: `${__dirname}/scripts/avgrund.js` } },
-    { method: 'GET', path: '/jquery.tagsinput.js', handler: { file: `${__dirname}/scripts/jquery.tagsinput.js` } },
+    { method: 'GET', path: '/store.min.js', handler: { file: `./scripts/store.min.js` } },
+    { method: 'GET', path: '/avgrund.js', handler: { file: `./scripts/avgrund.js` } },
+    { method: 'GET', path: '/jquery.tagsinput.js', handler: { file: `./scripts/jquery.tagsinput.js` } },
 
-    { method: 'GET', path: '/main.css',  handler: { file: `${__dirname}/../dist/main.css` } },
+    { method: 'GET', path: '/main.css',  handler: { file: `./main.css` } },
 
     {
       method: 'POST', path: '/register',
