@@ -20,6 +20,10 @@ const happyPhrases = combine([
   'rofl',
   'funny',
   'hehe',
+  'good',
+  'great',
+  'happy',
+  'omg',
 ])
 
 const sadPhrases = combine([
@@ -29,6 +33,7 @@ const sadPhrases = combine([
   'hard',
   'sux',
   'suck',
+  'meh'
 ])
 
 const angryPhrases = combine([
@@ -39,6 +44,15 @@ const angryPhrases = combine([
   'fuck',
   'ass',
   'hate',
+  'angry',
+  'pissed',
+  'pisses',
+  'piss',
+  'hate',
+  'dislike',
+  'crazy',
+  'idiot',
+  'stupid',
 ])
 
 const lovingPhrases = combine([

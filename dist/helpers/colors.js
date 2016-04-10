@@ -19,11 +19,11 @@ function combine(wordArr) {
   return new RegExp(wordArr.join('|'), 'i');
 }
 
-var happyPhrases = combine(['haha', 'lol', 'rofl', 'funny', 'hehe']);
+var happyPhrases = combine(['haha', 'lol', 'rofl', 'funny', 'hehe', 'good', 'great', 'happy', 'omg']);
 
-var sadPhrases = combine(['sian', 'zz', 'sigh', 'hard', 'sux', 'suck']);
+var sadPhrases = combine(['sian', 'zz', 'sigh', 'hard', 'sux', 'suck', 'meh']);
 
-var angryPhrases = combine(['oi', 'wtf', 'fk', 'shit', 'fuck', 'ass', 'hate']);
+var angryPhrases = combine(['oi', 'wtf', 'fk', 'shit', 'fuck', 'ass', 'hate', 'angry', 'pissed', 'pisses', 'piss', 'hate', 'dislike', 'crazy', 'idiot', 'stupid']);
 
 var lovingPhrases = combine(['love', 'darling', 'like', 'luv', '<3', 'best']);
 
