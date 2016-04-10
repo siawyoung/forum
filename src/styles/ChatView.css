@@ -9,9 +9,10 @@
   height: 80px;
   display: flex;
   align-items: center;
+  justify-content: space-around;
+  padding: 0 10px;
 
   form {
-    margin-left: 55px;
     width: calc(100% - 110px);
     height: 40px;
   }
@@ -27,4 +28,16 @@
       outline: none;
     }
   }
+}
+
+#StickerButton, #SendButton {
+  color: var(--light);
+}
+
+#StickerButton {
+  font-size: 2.1rem;
+}
+
+#SendButton {
+  font-size: 1.6rem;
 }

@@ -21,11 +21,11 @@ function combine(wordArr) {
 
 var happyPhrases = combine(['haha', 'lol', 'rofl', 'funny', 'hehe']);
 
-var sadPhrases = combine(['sian', 'sucks', 'zz', 'sigh']);
+var sadPhrases = combine(['sian', 'zz', 'sigh', 'hard', 'sux', 'suck']);
 
-var angryPhrases = combine(['oi', 'wtf', 'fk', 'shit']);
+var angryPhrases = combine(['oi', 'wtf', 'fk', 'shit', 'fuck', 'ass', 'hate']);
 
-var lovingPhrases = combine(['love', 'darling', 'like', 'luv']);
+var lovingPhrases = combine(['love', 'darling', 'like', 'luv', '<3', 'best']);
 
 var calculateColorOfMessage = exports.calculateColorOfMessage = function calculateColorOfMessage(msg) {
   if (msg.contains(happyPhrases)) {

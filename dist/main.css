@@ -777,10 +777,13 @@ button[type="submit"] {
   -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center;
+  -webkit-justify-content: space-around;
+      -ms-flex-pack: distribute;
+          justify-content: space-around;
+  padding: 0 10px;
 }
 
 #ChatInput form {
-  margin-left: 55px;
   width: calc(100% - 110px);
   height: 40px;
 }
@@ -797,11 +800,26 @@ button[type="submit"] {
   outline: none;
 }
 
+#StickerButton, #SendButton {
+  color: #eee;
+}
+
+#StickerButton {
+  font-size: 33.6px;
+  font-size: 2.1rem;
+}
+
+#SendButton {
+  font-size: 25.6px;
+  font-size: 1.6rem;
+}
+
 #MessageList {
   height: calc(100vh - 140px);
   width: calc(100vw - 380px + 15px);
   overflow-y: scroll;
-  padding: 0 20px;
+  padding-left: 15px;
+  padding-right: 30px;
 }
 
 .chat-bubble {
@@ -854,7 +872,7 @@ button[type="submit"] {
   -webkit-align-items: center;
       -ms-flex-align: center;
           align-items: center;
-  color: #ddd;
+  color: #eee;
   font-size: 19.2px;
   font-size: 1.2rem;
   padding-left: 30px;

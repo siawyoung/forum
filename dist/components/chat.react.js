@@ -198,14 +198,12 @@ var MessageList = function (_React$Component2) {
     key: 'componentDidUpdate',
     value: function componentDidUpdate() {
       var x = document.getElementById('MessageList');
-      console.log(x);
       x.scrollTop = x.scrollHeight;
     }
   }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
       var x = document.getElementById('MessageList');
-      console.log(x);
       x.scrollTop = x.scrollHeight;
     }
   }, {
@@ -255,11 +253,13 @@ var ChatInput = function (_React$Component3) {
       return React.createElement(
         'div',
         { id: 'ChatInput', className: 'faint-top-border' },
+        React.createElement('i', { id: 'StickerButton', className: 'fa fa-smile-o' }),
         React.createElement(
           'form',
           { onSubmit: this.sendMessage },
           React.createElement('input', { type: 'text', className: 'message' })
-        )
+        ),
+        React.createElement('i', { id: 'SendButton', className: 'fa fa-paper-plane' })
       );
     }
   }]);

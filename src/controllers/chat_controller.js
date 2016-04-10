@@ -79,6 +79,4 @@ export const create = async (username, msg) => {
   } catch(e) {
     console.log('messages:new error!', e)
   }
-
-
 }

@@ -3,7 +3,7 @@
   height: 60px;
   display: flex;
   align-items: center;
-  color: #ddd;
+  color: var(--light);
   font-size: 1.2rem;
   padding-left: 30px;
   background: rgba(54,54,54,0.4);

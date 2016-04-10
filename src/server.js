@@ -21,68 +21,68 @@ server.register([Inert, Vision], async () => {
 
   try {
 
-  server.views({
-    engines: {
-      html: require('handlebars')
-    },
-    path: `${__dirname}/views`,
-    layoutPath: `${__dirname}/views/layouts`,
-    layout: 'main'
-  })
+    server.views({
+      engines: {
+        html: require('handlebars')
+      },
+      path: `${__dirname}/views`,
+      layoutPath: `${__dirname}/views/layouts`,
+      layout: 'main'
+    })
 
-  server.route([
+    server.route([
 
-    {
-      method: 'GET', path: '/',
-      handler: (req, reply) => {
-        return reply.view('index', { react: 'chat' })
-      }
-    },
+      {
+        method: 'GET', path: '/',
+        handler: (req, reply) => {
+          return reply.view('index', { react: 'chat' })
+        }
+      },
 
-    {
-      method: 'GET', path: '/register',
-      handler: (req, reply) => {
-        return reply.view('index', { react: 'register' })
-      }
-    },
+      {
+        method: 'GET', path: '/register',
+        handler: (req, reply) => {
+          return reply.view('index', { react: 'register' })
+        }
+      },
 
-    {
-      method: 'GET', path: '/login',
-      handler: (req, reply) => {
-        return reply.view('index', { react: 'login' })
-      }
-    },
+      {
+        method: 'GET', path: '/login',
+        handler: (req, reply) => {
+          return reply.view('index', { react: 'login' })
+        }
+      },
 
-    { method: 'GET', path: '/{react}.react.js',
-      handler: (req, reply) => {
-        // if (req.params.react)
-        // check for malicious request params
-        return reply.file(`${__dirname}/../dist/components/${req.params.react}.react.js`)
-      }
-    },
+      { method: 'GET', path: '/{react}.react.js',
+        handler: (req, reply) => {
+          // if (req.params.react)
+          // check for malicious request params
+          return reply.file(`${__dirname}/../dist/components/${req.params.react}.react.js`)
+        }
+      },
 
-    { method: 'GET', path: '/store.min.js', handler: { file: `${__dirname}/scripts/store.min.js` } },
-    { method: 'GET', path: '/avgrund.js', handler: { file: `${__dirname}/scripts/avgrund.js` } },
-    { method: 'GET', path: '/jquery.tagsinput.js', handler: { file: `${__dirname}/scripts/jquery.tagsinput.js` } },
+      { method: 'GET', path: '/store.min.js', handler: { file: `${__dirname}/scripts/store.min.js` } },
+      { method: 'GET', path: '/avgrund.js', handler: { file: `${__dirname}/scripts/avgrund.js` } },
+      { method: 'GET', path: '/jquery.tagsinput.js', handler: { file: `${__dirname}/scripts/jquery.tagsinput.js` } },
 
-    { method: 'GET', path: '/main.css',  handler: { file: `${__dirname}/../dist/main.css` } },
+      { method: 'GET', path: '/main.css',  handler: { file: `${__dirname}/../dist/main.css` } },
 
-    {
-      method: 'POST', path: '/register',
-      handler: AuthController.register
-    },
+      {
+        method: 'POST', path: '/register',
+        handler: AuthController.register
+      },
 
-    {
-      method: 'POST', path: '/login',
-      handler: AuthController.login
-    },
+      {
+        method: 'POST', path: '/login',
+        handler: AuthController.login
+      },
 
-    {
-      method: 'GET', path: '/load',
-      handler: ChatController.index
-    },
+      {
+        method: 'GET', path: '/load',
+        handler: ChatController.index
+      },
 
-  ]);
+    ]);
 
     await server.start()
     await init(server.listener)

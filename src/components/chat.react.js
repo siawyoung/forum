@@ -119,13 +119,11 @@ class MessageList extends React.Component {
 
   componentDidUpdate() {
     const x = document.getElementById('MessageList')
-    console.log(x)
     x.scrollTop = x.scrollHeight
   }
 
   componentDidMount() {
     const x = document.getElementById('MessageList')
-    console.log(x)
     x.scrollTop = x.scrollHeight
   }
 
@@ -159,9 +157,11 @@ class ChatInput extends React.Component {
   render() {
     return (
       <div id="ChatInput" className="faint-top-border">
+        <i id="StickerButton" className="fa fa-smile-o"></i>
         <form onSubmit={this.sendMessage}>
           <input type="text" className="message" />
         </form>
+        <i id="SendButton" className="fa fa-paper-plane"></i>
       </div>
     )
   }
