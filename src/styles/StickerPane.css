@@ -1,0 +1,41 @@
+.StickerPane {
+  position: fixed;
+  bottom: -275px;
+  background: var(--dark-grey);
+  width: calc(100vw - 380px + 15px);
+  height: 275px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: bottom 0.5s;
+}
+
+.StickerPaneOpen {
+  bottom: 0;
+  transition: bottom 0.5s;
+}
+
+#StickerList {
+  height: 160px;
+  width: 100%;
+  margin: 10px 0;
+  lost-column: 1/5;
+}
+
+#CloseStickerPaneDiv {
+  width: 100%;
+}
+
+#CloseStickerPane {
+  font-size: 2rem;
+  color: var(--light);
+  float: right;
+  margin-right: 21px;
+  margin-top: 5px;
+}
+
+#CreateStickerButton {
+  margin-top: 0;
+  width: 200px;
+  height: 40px;
+}

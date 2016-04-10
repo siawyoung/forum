@@ -155,9 +155,12 @@ class ChatInput extends React.Component {
   }
 
   render() {
+
+    const toggleStickerPane = this.props.toggleStickerPane
+
     return (
       <div id="ChatInput" className="faint-top-border">
-        <i id="StickerButton" className="fa fa-smile-o"></i>
+        <i id="StickerButton" className="fa fa-smile-o" onClick={function() {toggleStickerPane(true)}}></i>
         <form onSubmit={this.sendMessage}>
           <input type="text" className="message" />
         </form>
@@ -209,23 +212,51 @@ const RoomTitle = ({
   )
 }
 
+class StickerPane extends React.Component {
+
+  render() {
+
+    const stickers = [
+      {image: 'http://placehold.it/80x80', audio: ''}
+    ]
+
+    const toggleStickerPane = this.props.toggleStickerPane
+    const isOpen = this.props.isOpen ? "StickerPaneOpen" : ""
+
+    return(
+      <div className={`StickerPane ${isOpen}`}>
+        <div id="CloseStickerPaneDiv">
+          <i id="CloseStickerPane" className="fa fa-times" onClick={function() {toggleStickerPane(false)}}></i>
+        </div>
+        <div id="StickerList">
+        </div>
+        <button type="submit" id="CreateStickerButton">Create Sticker</button>
+      </div>
+    )
+  }
+}
+
 class ChatView extends React.Component {
 
   constructor() {
     super()
     this.state = {
       selectedRoom: 0,
-      sidebarOpen: false
+      sidebarOpen: false,
+      stickerPaneOpen: false
     }
   }
 
   changeSelectedRoom = (id) => {
-    console.log('changeselectedroom', id)
     this.setState({ selectedRoom: id })
   }
 
   toggleSidebar = (s) => {
     this.setState({ sidebarOpen: s })
+  }
+
+  toggleStickerPane = (s) => {
+    this.setState({ stickerPaneOpen: s })
   }
 
   render() {
@@ -249,7 +280,8 @@ class ChatView extends React.Component {
         <div className="main-body">
           <RoomTitle toggleSidebar={this.toggleSidebar} roomName={roomName} />
           <MessageList messages={messages} />
-          <ChatInput roomId={roomId} socket={this.props.socket} />
+          <ChatInput roomId={roomId} socket={this.props.socket} toggleStickerPane={this.toggleStickerPane} />
+          <StickerPane isOpen={this.state.stickerPaneOpen} toggleStickerPane={this.toggleStickerPane} />
         </div>
         <CreateRoomModal socket={this.props.socket} />
         <div className="avgrund-cover"></div>
@@ -293,6 +325,12 @@ function closeDialog() {
 }
 
 $(document).ready(() => {
+
+  const getUserMedia = navigator.getUserMedia ||
+                       navigator.webkitGetUserMedia ||
+                       navigator.mozGetUserMedia ||
+                       navigator.msGetUserMedia
+
   const token = store.get('forum:token')
 
   if (!token) {

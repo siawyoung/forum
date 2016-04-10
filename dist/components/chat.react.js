@@ -250,10 +250,15 @@ var ChatInput = function (_React$Component3) {
   _createClass(ChatInput, [{
     key: 'render',
     value: function render() {
+
+      var toggleStickerPane = this.props.toggleStickerPane;
+
       return React.createElement(
         'div',
         { id: 'ChatInput', className: 'faint-top-border' },
-        React.createElement('i', { id: 'StickerButton', className: 'fa fa-smile-o' }),
+        React.createElement('i', { id: 'StickerButton', className: 'fa fa-smile-o', onClick: function onClick() {
+            toggleStickerPane(true);
+          } }),
         React.createElement(
           'form',
           { onSubmit: this.sendMessage },
@@ -332,28 +337,73 @@ var RoomTitle = function RoomTitle(_ref4) {
   );
 };
 
-var ChatView = function (_React$Component5) {
-  _inherits(ChatView, _React$Component5);
+var StickerPane = function (_React$Component5) {
+  _inherits(StickerPane, _React$Component5);
+
+  function StickerPane() {
+    _classCallCheck(this, StickerPane);
+
+    return _possibleConstructorReturn(this, Object.getPrototypeOf(StickerPane).apply(this, arguments));
+  }
+
+  _createClass(StickerPane, [{
+    key: 'render',
+    value: function render() {
+
+      var stickers = [{ image: 'http://placehold.it/80x80', audio: '' }];
+
+      var toggleStickerPane = this.props.toggleStickerPane;
+      var isOpen = this.props.isOpen ? "StickerPaneOpen" : "";
+
+      return React.createElement(
+        'div',
+        { className: 'StickerPane ' + isOpen },
+        React.createElement(
+          'div',
+          { id: 'CloseStickerPaneDiv' },
+          React.createElement('i', { id: 'CloseStickerPane', className: 'fa fa-times', onClick: function onClick() {
+              toggleStickerPane(false);
+            } })
+        ),
+        React.createElement('div', { id: 'StickerList' }),
+        React.createElement(
+          'button',
+          { type: 'submit', id: 'CreateStickerButton' },
+          'Create Sticker'
+        )
+      );
+    }
+  }]);
+
+  return StickerPane;
+}(React.Component);
+
+var ChatView = function (_React$Component6) {
+  _inherits(ChatView, _React$Component6);
 
   function ChatView() {
     _classCallCheck(this, ChatView);
 
-    var _this5 = _possibleConstructorReturn(this, Object.getPrototypeOf(ChatView).call(this));
+    var _this6 = _possibleConstructorReturn(this, Object.getPrototypeOf(ChatView).call(this));
 
-    _this5.changeSelectedRoom = function (id) {
-      console.log('changeselectedroom', id);
-      _this5.setState({ selectedRoom: id });
+    _this6.changeSelectedRoom = function (id) {
+      _this6.setState({ selectedRoom: id });
     };
 
-    _this5.toggleSidebar = function (s) {
-      _this5.setState({ sidebarOpen: s });
+    _this6.toggleSidebar = function (s) {
+      _this6.setState({ sidebarOpen: s });
     };
 
-    _this5.state = {
+    _this6.toggleStickerPane = function (s) {
+      _this6.setState({ stickerPaneOpen: s });
+    };
+
+    _this6.state = {
       selectedRoom: 0,
-      sidebarOpen: false
+      sidebarOpen: false,
+      stickerPaneOpen: false
     };
-    return _this5;
+    return _this6;
   }
 
   _createClass(ChatView, [{
@@ -384,7 +434,8 @@ var ChatView = function (_React$Component5) {
           { className: 'main-body' },
           React.createElement(RoomTitle, { toggleSidebar: this.toggleSidebar, roomName: roomName }),
           React.createElement(MessageList, { messages: messages }),
-          React.createElement(ChatInput, { roomId: roomId, socket: this.props.socket })
+          React.createElement(ChatInput, { roomId: roomId, socket: this.props.socket, toggleStickerPane: this.toggleStickerPane }),
+          React.createElement(StickerPane, { isOpen: this.state.stickerPaneOpen, toggleStickerPane: this.toggleStickerPane })
         ),
         React.createElement(CreateRoomModal, { socket: this.props.socket }),
         React.createElement('div', { className: 'avgrund-cover' })
@@ -431,6 +482,9 @@ function closeDialog() {
 }
 
 $(document).ready(function () {
+
+  var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+
   var token = store.get('forum:token');
 
   if (!token) {

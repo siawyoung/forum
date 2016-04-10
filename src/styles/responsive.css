@@ -1,20 +1,16 @@
 
-@keyframes sidebar-fade {
-  from {opacity: 0;}
-  to {opacity: 1;}
-}
 
 @media (width <= 1000px) {
 
   .sidebar {
-    display: none;
-    animation: sidebar-fade 250ms ease-in-out both;
+    position: fixed;
+    left: -380px;
+    transition: left 0.5s;
   }
 
   .sidebarOpen {
-    animation: sidebar-fade 250ms ease-in-out both;
-    display: block;
-    position: fixed;
+    left: 0;
+    transition: left 0.5s;
   }
 
   .main-body {
@@ -22,6 +18,10 @@
   }
 
   #MessageList {
+    width: calc(100vw + 15px);
+  }
+
+  .StickerPane {
     width: calc(100vw + 15px);
   }
 
