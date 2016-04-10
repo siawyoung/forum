@@ -91,9 +91,6 @@ server.register([Inert, Vision], async () => {
     console.log('server start error', e)
   }
 
-
-
-
 })
 
 module.exports = server
