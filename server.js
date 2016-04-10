@@ -32,7 +32,7 @@ server.register([Inert, Vision], async () => {
     {
       method: 'GET', path: '/',
       handler: (req, reply) => {
-        return reply.view('index', { react: 'new_chat' })
+        return reply.view('index', { react: 'chat' })
       }
     },
 
@@ -57,9 +57,6 @@ server.register([Inert, Vision], async () => {
         return reply.file(`./dist/components/${req.params.react}.react.js`)
       }
     },
-
-    // Can deprecate this soon
-    { method: 'GET', path: '/client.js', handler: { file: './src/scripts/client.js' } },
 
     { method: 'GET', path: '/store.min.js', handler: { file: './src/scripts/store.min.js' } },
     { method: 'GET', path: '/avgrund.js', handler: { file: './src/scripts/avgrund.js' } },
