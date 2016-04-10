@@ -4,7 +4,7 @@
   float: left;
   height: 100%;
   overflow-x: hidden;
-  background: inherit;
+  background: var(--dark-grey);
 }
 
 #SearchBar {

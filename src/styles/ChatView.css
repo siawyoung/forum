@@ -22,5 +22,9 @@
     padding: 13px;
     background: #ddd;
     border: none;
+
+    &:focus {
+      outline: none;
+    }
   }
 }

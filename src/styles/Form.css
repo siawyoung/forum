@@ -28,7 +28,7 @@
 
 button[type="submit"] {
   width: 100%;
-  background: #23CF5F;
+  background: var(--main-green);
   color: white;
   height: var(--form-height);
   border: none;

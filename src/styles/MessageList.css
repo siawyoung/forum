@@ -13,16 +13,16 @@
   &.self {
     flex-direction: row-reverse;
     .chat-bubble-text {
-      background: color(#333);
-      color: color(#eee);
+      background: var(--dark-grey);
+      color: var(--light);
     }
   }
 
   &.other {
     flex-direction: row;
     .chat-bubble-text {
-      background: color(#eee alpha(-10%));
-      color: color(#333);
+      background: var(--light);
+      color: var(--dark-grey-solid);
     }
   }
 }

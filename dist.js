@@ -9,7 +9,31 @@ var _inert = require('inert');
 
 var _inert2 = _interopRequireDefault(_inert);
 
+var _vision = require('vision');
+
+var _vision2 = _interopRequireDefault(_vision);
+
+var _auth_controller = require('./src/controllers/auth_controller');
+
+var AuthController = _interopRequireWildcard(_auth_controller);
+
+var _room_controller = require('./src/controllers/room_controller');
+
+var RoomController = _interopRequireWildcard(_room_controller);
+
+var _chat_controller = require('./src/controllers/chat_controller');
+
+var ChatController = _interopRequireWildcard(_chat_controller);
+
+var _chat = require('./src/chat');
+
+var _chat2 = _interopRequireDefault(_chat);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { return step("next", value); }, function (err) { return step("throw", err); }); } } return step("next"); }); }; }
 
 var server = new _hapi2.default.Server();
 
@@ -18,17 +42,78 @@ server.connection({
   port: Number(process.env.PORT)
 });
 
-server.register(_inert2.default, function () {
+server.register([_inert2.default, _vision2.default], _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
+  return regeneratorRuntime.wrap(function _callee$(_context) {
+    while (1) {
+      switch (_context.prev = _context.next) {
+        case 0:
 
-  server.route([{ method: 'GET', path: '/', handler: { file: "./src/front/index.html" } },
-  // switch these two routes for a /static handler?
-  { method: 'GET', path: '/client.js', handler: { file: './src/front/client.js' } }, { method: 'GET', path: '/style.css', handler: { file: './src/front/style.css' } }, { method: 'GET', path: '/load', handler: require('./src/load_messages').load }]);
+          server.views({
+            engines: {
+              html: require('handlebars')
+            },
+            path: __dirname + '/src/views',
+            layoutPath: './src/views/layouts',
+            layout: 'main'
+          });
 
-  server.start(function () {
-    require('./src/chat').init(server.listener, function () {
-      console.log('Feeling Chatty?', 'listening on: http://127.0.0.1:' + process.env.PORT);
-    });
-  });
-});
+          server.route([{
+            method: 'GET', path: '/',
+            handler: function handler(req, reply) {
+              return reply.view('index', { react: 'chat' });
+            }
+          }, {
+            method: 'GET', path: '/register',
+            handler: function handler(req, reply) {
+              return reply.view('index', { react: 'register' });
+            }
+          }, {
+            method: 'GET', path: '/login',
+            handler: function handler(req, reply) {
+              return reply.view('index', { react: 'login' });
+            }
+          }, { method: 'GET', path: '/{react}.react.js',
+            handler: function handler(req, reply) {
+              // if (req.params.react)
+              // check for malicious request params
+              return reply.file('./dist/components/' + req.params.react + '.react.js');
+            }
+          }, { method: 'GET', path: '/store.min.js', handler: { file: './src/scripts/store.min.js' } }, { method: 'GET', path: '/avgrund.js', handler: { file: './src/scripts/avgrund.js' } }, { method: 'GET', path: '/jquery.tagsinput.js', handler: { file: './src/scripts/jquery.tagsinput.js' } }, { method: 'GET', path: '/main.css', handler: { file: './dist/styles/main.css' } }, {
+            method: 'POST', path: '/register',
+            handler: AuthController.register
+          }, {
+            method: 'POST', path: '/login',
+            handler: AuthController.login
+          }, {
+            method: 'GET', path: '/load',
+            handler: ChatController.index
+          }]);
+
+          _context.prev = 2;
+          _context.next = 5;
+          return server.start();
+
+        case 5:
+          _context.next = 7;
+          return (0, _chat2.default)(server.listener);
+
+        case 7:
+          console.log('Server initialized!');
+          _context.next = 13;
+          break;
+
+        case 10:
+          _context.prev = 10;
+          _context.t0 = _context['catch'](2);
+
+          console.log('server start error', _context.t0);
+
+        case 13:
+        case 'end':
+          return _context.stop();
+      }
+    }
+  }, _callee, undefined, [[2, 10]]);
+})));
 
 module.exports = server;

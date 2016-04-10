@@ -463,15 +463,15 @@ body {
 }
 
 .faint-right-border {
-  border-right: 1px solid rgba(221,221,221,0.07);
+  border-right: 1px solid rgba(221,221,221,0.27);
 }
 
 .faint-top-border {
-  border-top: 1px solid rgba(221,221,221,0.07);
+  border-top: 1px solid rgba(221,221,221,0.27);
 }
 
 .faint-bottom-border {
-  border-bottom: 1px solid rgba(221,221,221,0.07);
+  border-bottom: 1px solid rgba(221,221,221,0.27);
 }
 
 /*!
@@ -762,7 +762,7 @@ button[type="submit"] {
 #ChatView {
   overflow: hidden;
   height: 100vh;
-  background: rgb(54,54,54);
+  background: rgba(54,54,54,0.8);
   -webkit-transition: background 0.5s;
   transition: background 0.5s;
 }
@@ -793,6 +793,10 @@ button[type="submit"] {
   border: none;
 }
 
+#ChatInput input:focus {
+  outline: none;
+}
+
 #MessageList {
   height: calc(100vh - 140px);
   width: calc(100vw - 380px + 15px);
@@ -817,8 +821,8 @@ button[type="submit"] {
 }
 
 .chat-bubble.self .chat-bubble-text {
-  background: rgb(51, 51, 51);
-  color: rgb(238, 238, 238);
+  background: rgba(54,54,54,0.8);
+  color: #eee;
 }
 
 .chat-bubble.other {
@@ -830,8 +834,8 @@ button[type="submit"] {
 }
 
 .chat-bubble.other .chat-bubble-text {
-  background: rgba(238, 238, 238, 0.9);
-  color: rgb(51, 51, 51);
+  background: #eee;
+  color: rgba(54,54,54);
 }
 
 .chat-bubble-text {
@@ -854,6 +858,7 @@ button[type="submit"] {
   font-size: 19.2px;
   font-size: 1.2rem;
   padding-left: 30px;
+  background: rgba(54,54,54,0.4);
 }
 
 .back-button {
@@ -908,7 +913,7 @@ button[type="submit"] {
   text-align: right;
   font-size: 11.2px;
   font-size: 0.7rem;
-  padding-right: 10px;
+  padding-right: 15px;
 }
 
 .sidebar {
@@ -916,7 +921,7 @@ button[type="submit"] {
   float: left;
   height: 100%;
   overflow-x: hidden;
-  background: inherit;
+  background: rgba(54,54,54,0.8);
 }
 
 #SearchBar {
@@ -947,7 +952,7 @@ button[type="submit"] {
 #NewRoomButton {
   font-size: 33.6px;
   font-size: 2.1rem;
-  color: #ddd;
+  color: #eee;
   margin-top: 4px;
   margin-right: 18px;
 }
@@ -955,7 +960,7 @@ button[type="submit"] {
 #CloseSidebar {
   font-size: 27.2px;
   font-size: 1.7rem;
-  color: #ddd;
+  color: #eee;
   margin-top: -4px;
   margin-left: 15px;
   opacity: 0;
@@ -1003,13 +1008,27 @@ button[type="submit"] {
   font-size: 1.1rem;
 }
 
+@-webkit-keyframes sidebar-fade {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+@keyframes sidebar-fade {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
 @media (max-width: 1000px) {
 
   .sidebar {
     display: none;
+    -webkit-animation: sidebar-fade 250ms ease-in-out both;
+            animation: sidebar-fade 250ms ease-in-out both;
   }
 
   .sidebarOpen {
+    -webkit-animation: sidebar-fade 250ms ease-in-out both;
+            animation: sidebar-fade 250ms ease-in-out both;
     display: block;
     position: fixed;
   }
