@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 'use strict';
 
+require('babel-polyfill');
+
 var _hapi = require('hapi');
 
 var _hapi2 = _interopRequireDefault(_hapi);
@@ -13,19 +15,19 @@ var _vision = require('vision');
 
 var _vision2 = _interopRequireDefault(_vision);
 
-var _auth_controller = require('./src/controllers/auth_controller');
+var _auth_controller = require('./controllers/auth_controller');
 
 var AuthController = _interopRequireWildcard(_auth_controller);
 
-var _room_controller = require('./src/controllers/room_controller');
+var _room_controller = require('./controllers/room_controller');
 
 var RoomController = _interopRequireWildcard(_room_controller);
 
-var _chat_controller = require('./src/controllers/chat_controller');
+var _chat_controller = require('./controllers/chat_controller');
 
 var ChatController = _interopRequireWildcard(_chat_controller);
 
-var _chat = require('./src/chat');
+var _chat = require('./chat');
 
 var _chat2 = _interopRequireDefault(_chat);
 
@@ -48,12 +50,14 @@ server.register([_inert2.default, _vision2.default], _asyncToGenerator(regenerat
       switch (_context.prev = _context.next) {
         case 0:
 
+          console.log(__dirname + '/views');
+
           server.views({
             engines: {
               html: require('handlebars')
             },
-            path: __dirname + '/src/views',
-            layoutPath: './src/views/layouts',
+            path: __dirname + '/views',
+            layoutPath: __dirname + '/views/layouts',
             layout: 'main'
           });
 
@@ -76,9 +80,9 @@ server.register([_inert2.default, _vision2.default], _asyncToGenerator(regenerat
             handler: function handler(req, reply) {
               // if (req.params.react)
               // check for malicious request params
-              return reply.file('./dist/components/' + req.params.react + '.react.js');
+              return reply.file(__dirname + '/../dist/components/' + req.params.react + '.react.js');
             }
-          }, { method: 'GET', path: '/store.min.js', handler: { file: './src/scripts/store.min.js' } }, { method: 'GET', path: '/avgrund.js', handler: { file: './src/scripts/avgrund.js' } }, { method: 'GET', path: '/jquery.tagsinput.js', handler: { file: './src/scripts/jquery.tagsinput.js' } }, { method: 'GET', path: '/main.css', handler: { file: './dist/styles/main.css' } }, {
+          }, { method: 'GET', path: '/store.min.js', handler: { file: __dirname + '/scripts/store.min.js' } }, { method: 'GET', path: '/avgrund.js', handler: { file: __dirname + '/scripts/avgrund.js' } }, { method: 'GET', path: '/jquery.tagsinput.js', handler: { file: __dirname + '/scripts/jquery.tagsinput.js' } }, { method: 'GET', path: '/main.css', handler: { file: __dirname + '/../dist/main.css' } }, {
             method: 'POST', path: '/register',
             handler: AuthController.register
           }, {
@@ -89,31 +93,31 @@ server.register([_inert2.default, _vision2.default], _asyncToGenerator(regenerat
             handler: ChatController.index
           }]);
 
-          _context.prev = 2;
-          _context.next = 5;
+          _context.prev = 3;
+          _context.next = 6;
           return server.start();
 
-        case 5:
-          _context.next = 7;
+        case 6:
+          _context.next = 8;
           return (0, _chat2.default)(server.listener);
 
-        case 7:
+        case 8:
           console.log('Server initialized!');
-          _context.next = 13;
+          _context.next = 14;
           break;
 
-        case 10:
-          _context.prev = 10;
-          _context.t0 = _context['catch'](2);
+        case 11:
+          _context.prev = 11;
+          _context.t0 = _context['catch'](3);
 
           console.log('server start error', _context.t0);
 
-        case 13:
+        case 14:
         case 'end':
           return _context.stop();
       }
     }
-  }, _callee, undefined, [[2, 10]]);
+  }, _callee, undefined, [[3, 11]]);
 })));
 
 module.exports = server;

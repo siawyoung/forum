@@ -9,7 +9,7 @@
     "postcss-reporter"
   ],
   "input": "./src/styles/main.css",
-  "output": "./dist/styles/main.css",
+  "output": "./dist/main.css",
   "watch": true,
   "local-plugins": true
 }

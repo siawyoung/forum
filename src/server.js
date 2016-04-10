@@ -1,15 +1,16 @@
 #!/usr/bin/env node
 
+import 'babel-polyfill'
 import Hapi from 'hapi'
 import Inert from 'inert'
 import Vision from 'vision'
 const server = new Hapi.Server()
 
-import * as AuthController from './src/controllers/auth_controller'
-import * as RoomController from './src/controllers/room_controller'
-import * as ChatController from './src/controllers/chat_controller'
+import * as AuthController from './controllers/auth_controller'
+import * as RoomController from './controllers/room_controller'
+import * as ChatController from './controllers/chat_controller'
 
-import init from './src/chat'
+import init from './chat'
 
 server.connection({
   host: '0.0.0.0',
@@ -18,12 +19,14 @@ server.connection({
 
 server.register([Inert, Vision], async () => {
 
+  console.log(`${__dirname}/views`)
+
   server.views({
     engines: {
       html: require('handlebars')
     },
-    path: `${__dirname}/src/views`,
-    layoutPath: './src/views/layouts',
+    path: `${__dirname}/views`,
+    layoutPath: `${__dirname}/views/layouts`,
     layout: 'main'
   })
 
@@ -54,15 +57,15 @@ server.register([Inert, Vision], async () => {
       handler: (req, reply) => {
         // if (req.params.react)
         // check for malicious request params
-        return reply.file(`./dist/components/${req.params.react}.react.js`)
+        return reply.file(`${__dirname}/../dist/components/${req.params.react}.react.js`)
       }
     },
 
-    { method: 'GET', path: '/store.min.js', handler: { file: './src/scripts/store.min.js' } },
-    { method: 'GET', path: '/avgrund.js', handler: { file: './src/scripts/avgrund.js' } },
-    { method: 'GET', path: '/jquery.tagsinput.js', handler: { file: './src/scripts/jquery.tagsinput.js' } },
+    { method: 'GET', path: '/store.min.js', handler: { file: `${__dirname}/scripts/store.min.js` } },
+    { method: 'GET', path: '/avgrund.js', handler: { file: `${__dirname}/scripts/avgrund.js` } },
+    { method: 'GET', path: '/jquery.tagsinput.js', handler: { file: `${__dirname}/scripts/jquery.tagsinput.js` } },
 
-    { method: 'GET', path: '/main.css',  handler: { file: './dist/styles/main.css' } },
+    { method: 'GET', path: '/main.css',  handler: { file: `${__dirname}/../dist/main.css` } },
 
     {
       method: 'POST', path: '/register',
