@@ -185,31 +185,58 @@ var ChatBubble = function ChatBubble(_ref3) {
   );
 };
 
-var MessageList = function MessageList(_ref4) {
-  var messages = _ref4.messages;
+var MessageList = function (_React$Component2) {
+  _inherits(MessageList, _React$Component2);
 
-  return React.createElement(
-    'div',
-    { id: 'MessageList' },
-    messages.map(function (msg, index) {
-      return React.createElement(ChatBubble, { key: index, text: msg });
-    })
-  );
-};
+  function MessageList() {
+    _classCallCheck(this, MessageList);
 
-var ChatInput = function (_React$Component2) {
-  _inherits(ChatInput, _React$Component2);
+    return _possibleConstructorReturn(this, Object.getPrototypeOf(MessageList).apply(this, arguments));
+  }
+
+  _createClass(MessageList, [{
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate() {
+      var x = document.getElementById('MessageList');
+      console.log(x);
+      x.scrollTop = x.scrollHeight;
+    }
+  }, {
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      var x = document.getElementById('MessageList');
+      console.log(x);
+      x.scrollTop = x.scrollHeight;
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return React.createElement(
+        'div',
+        { id: 'MessageList' },
+        this.props.messages.map(function (msg, index) {
+          return React.createElement(ChatBubble, { key: index, text: msg });
+        })
+      );
+    }
+  }]);
+
+  return MessageList;
+}(React.Component);
+
+var ChatInput = function (_React$Component3) {
+  _inherits(ChatInput, _React$Component3);
 
   function ChatInput() {
     _classCallCheck(this, ChatInput);
 
-    var _this2 = _possibleConstructorReturn(this, Object.getPrototypeOf(ChatInput).call(this));
+    var _this3 = _possibleConstructorReturn(this, Object.getPrototypeOf(ChatInput).call(this));
 
-    _this2.sendMessage = function (e) {
+    _this3.sendMessage = function (e) {
       e.preventDefault();
-      var _this2$props = _this2.props;
-      var roomId = _this2$props.roomId;
-      var socket = _this2$props.socket;
+      var _this3$props = _this3.props;
+      var roomId = _this3$props.roomId;
+      var socket = _this3$props.socket;
 
       var message = e.target.getElementsByClassName('message')[0].value;
 
@@ -219,7 +246,7 @@ var ChatInput = function (_React$Component2) {
       }
     };
 
-    return _this2;
+    return _this3;
   }
 
   _createClass(ChatInput, [{
@@ -240,13 +267,13 @@ var ChatInput = function (_React$Component2) {
   return ChatInput;
 }(React.Component);
 
-var SearchBar = function (_React$Component3) {
-  _inherits(SearchBar, _React$Component3);
+var SearchBar = function (_React$Component4) {
+  _inherits(SearchBar, _React$Component4);
 
   function SearchBar() {
     var _Object$getPrototypeO2;
 
-    var _temp2, _this3, _ret2;
+    var _temp2, _this4, _ret2;
 
     _classCallCheck(this, SearchBar);
 
@@ -254,9 +281,9 @@ var SearchBar = function (_React$Component3) {
       args[_key2] = arguments[_key2];
     }
 
-    return _ret2 = (_temp2 = (_this3 = _possibleConstructorReturn(this, (_Object$getPrototypeO2 = Object.getPrototypeOf(SearchBar)).call.apply(_Object$getPrototypeO2, [this].concat(args))), _this3), _this3.openCreateRoomModal = function () {
+    return _ret2 = (_temp2 = (_this4 = _possibleConstructorReturn(this, (_Object$getPrototypeO2 = Object.getPrototypeOf(SearchBar)).call.apply(_Object$getPrototypeO2, [this].concat(args))), _this4), _this4.openCreateRoomModal = function () {
       Avgrund.show("#CreateRoomModal");
-    }, _temp2), _possibleConstructorReturn(_this3, _ret2);
+    }, _temp2), _possibleConstructorReturn(_this4, _ret2);
   }
 
   _createClass(SearchBar, [{
@@ -287,9 +314,9 @@ var SearchBar = function (_React$Component3) {
   return SearchBar;
 }(React.Component);
 
-var RoomTitle = function RoomTitle(_ref5) {
-  var roomName = _ref5.roomName;
-  var toggleSidebar = _ref5.toggleSidebar;
+var RoomTitle = function RoomTitle(_ref4) {
+  var roomName = _ref4.roomName;
+  var toggleSidebar = _ref4.toggleSidebar;
 
   return React.createElement(
     'div',
@@ -305,28 +332,28 @@ var RoomTitle = function RoomTitle(_ref5) {
   );
 };
 
-var ChatView = function (_React$Component4) {
-  _inherits(ChatView, _React$Component4);
+var ChatView = function (_React$Component5) {
+  _inherits(ChatView, _React$Component5);
 
   function ChatView() {
     _classCallCheck(this, ChatView);
 
-    var _this4 = _possibleConstructorReturn(this, Object.getPrototypeOf(ChatView).call(this));
+    var _this5 = _possibleConstructorReturn(this, Object.getPrototypeOf(ChatView).call(this));
 
-    _this4.changeSelectedRoom = function (id) {
+    _this5.changeSelectedRoom = function (id) {
       console.log('changeselectedroom', id);
-      _this4.setState({ selectedRoom: id });
+      _this5.setState({ selectedRoom: id });
     };
 
-    _this4.toggleSidebar = function (s) {
-      _this4.setState({ sidebarOpen: s });
+    _this5.toggleSidebar = function (s) {
+      _this5.setState({ sidebarOpen: s });
     };
 
-    _this4.state = {
+    _this5.state = {
       selectedRoom: 0,
       sidebarOpen: false
     };
-    return _this4;
+    return _this5;
   }
 
   _createClass(ChatView, [{
@@ -372,16 +399,16 @@ var ChatView = function (_React$Component4) {
 //   return payload.map(x => JSON.parse(x))
 // }
 
-var renderView = function renderView(_ref6) {
-  var data = _ref6.data;
-  var socket = _ref6.socket;
+var renderView = function renderView(_ref5) {
+  var data = _ref5.data;
+  var socket = _ref5.socket;
 
   ReactDOM.render(React.createElement(ChatView, { data: data, socket: socket }), document.getElementById('root'));
 };
 
-var initialLoad = function initialLoad(_ref7) {
-  var socket = _ref7.socket;
-  var data = _ref7.data;
+var initialLoad = function initialLoad(_ref6) {
+  var socket = _ref6.socket;
+  var data = _ref6.data;
 
   renderView({ socket: socket, data: data });
 };

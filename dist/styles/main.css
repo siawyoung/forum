@@ -958,6 +958,7 @@ button[type="submit"] {
   color: #ddd;
   margin-top: -4px;
   margin-left: 15px;
+  opacity: 0;
 }
 
 #CreateRoomModal {
@@ -1027,6 +1028,10 @@ button[type="submit"] {
 
   .back-button {
     display: block;
+  }
+
+  #CloseSidebar {
+    opacity: 1;
   }
 
 }

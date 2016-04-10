@@ -115,14 +115,29 @@ const ChatBubble = ({
   </div>
 )}
 
-const MessageList = ({ messages }) => {
-  return (
-    <div id="MessageList">
-      {messages.map((msg, index) => (
-        <ChatBubble key={index} text={msg} />
-      ))}
-    </div>
-  )
+class MessageList extends React.Component {
+
+  componentDidUpdate() {
+    const x = document.getElementById('MessageList')
+    console.log(x)
+    x.scrollTop = x.scrollHeight
+  }
+
+  componentDidMount() {
+    const x = document.getElementById('MessageList')
+    console.log(x)
+    x.scrollTop = x.scrollHeight
+  }
+
+  render() {
+    return (
+      <div id="MessageList">
+        {this.props.messages.map((msg, index) => (
+          <ChatBubble key={index} text={msg} />
+        ))}
+      </div>
+    )
+  }
 }
 
 class ChatInput extends React.Component {

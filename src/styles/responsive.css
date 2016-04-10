@@ -26,4 +26,8 @@
     display: block;
   }
 
+  #CloseSidebar {
+    opacity: 1;
+  }
+
 }
