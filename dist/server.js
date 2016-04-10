@@ -41,7 +41,7 @@ var server = new _hapi2.default.Server();
 
 server.connection({
   host: '0.0.0.0',
-  port: Number(8000)
+  port: Number(process.env.PORT)
 });
 
 server.register([_inert2.default, _vision2.default], _asyncToGenerator(regeneratorRuntime.mark(function _callee() {

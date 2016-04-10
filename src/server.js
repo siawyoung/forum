@@ -14,7 +14,7 @@ import init from './chat'
 
 server.connection({
   host: '0.0.0.0',
-  port: Number(8000)
+  port: Number(process.env.PORT)
 })
 
 server.register([Inert, Vision], async () => {
