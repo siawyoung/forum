@@ -4,6 +4,9 @@ import { pub, sub } from '../redis'
 
 import { verifyToken } from '../helpers/hash'
 import { timestamp } from '../helpers/time'
+import { calculateColorOfMessage } from '../helpers/colors'
+
+const rybColorMixer = require('../helpers/mix')
 
 async function getMessages(roomId) {
   if (await pub.existsAsync(`rooms:${roomId}:messages`)) {
@@ -52,18 +55,24 @@ export const create = async (username, msg) => {
   try {
     const roomId = msg.roomId
     const messageTime = timestamp()
+
+    const oldColor = await pub.hgetAsync(`rooms:${roomId}`, 'color')
+    const msgColor = calculateColorOfMessage(msg.message)
+    const newColor = `#${rybColorMixer.mix([oldColor, msgColor])}`
+
     const chatMessage = {
       timestamp: messageTime,
       message: msg.message,
-      user: username
+      user: username,
     }
-    pub.hsetAsync(`rooms:${roomId}`, 'latest', messageTime)
+    pub.hmsetAsync(`rooms:${roomId}`, 'latest', messageTime, 'color', newColor)
     pub.rpushAsync(`rooms:${roomId}:messages`, JSON.stringify(chatMessage))
 
     pub.publish('messages:new', JSON.stringify({
       sockets: await pub.smembersAsync(`rooms:${roomId}:users`),
       message: {
         roomId,
+        color: newColor,
         message: chatMessage
       }
     }))

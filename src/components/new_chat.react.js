@@ -316,6 +316,7 @@ $(document).ready(() => {
         const updatedRoom = data.rooms.filter(room => {
           return room.id === msg.roomId
         })[0]
+        updatedRoom.color = msg.color
         updatedRoom.messages.push(msg.message)
         if (data.rooms.indexOf(updatedRoom) > 0) {
           data.rooms.splice(data.rooms.indexOf(updatedRoom), 1)
