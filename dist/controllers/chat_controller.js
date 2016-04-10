@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.create = exports.index = undefined;
+exports.create_sticker = exports.create = exports.index = undefined;
 
 var getMessages = function () {
   var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(roomId) {
@@ -166,7 +166,7 @@ var index = exports.index = function () {
 
 var create = exports.create = function () {
   var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee4(username, msg) {
-    var roomId, messageTime, oldColor, msgColor, newColor, chatMessage;
+    var roomId, messageTime, newColors, mixedColor, chatMessage;
     return regeneratorRuntime.wrap(function _callee4$(_context4) {
       while (1) {
         switch (_context4.prev = _context4.next) {
@@ -174,32 +174,35 @@ var create = exports.create = function () {
             _context4.prev = 0;
             roomId = msg.roomId;
             messageTime = (0, _time.timestamp)();
-            _context4.next = 5;
-            return _redis.pub.hgetAsync('rooms:' + roomId, 'color');
 
-          case 5:
-            oldColor = _context4.sent;
-            msgColor = (0, _colors.calculateColorOfMessage)(msg.message);
-            newColor = '#' + rybColorMixer.mix([oldColor, msgColor]);
+
+            _redis.pub.lpushAsync('rooms:' + roomId + ':colors', (0, _colors.calculateColorOfMessage)(msg.message));
+            _redis.pub.ltrimAsync('rooms:' + roomId + ':colors', 0, 9);
+            _context4.next = 7;
+            return _redis.pub.lrangeAsync('rooms:' + roomId + ':colors', 0, 9);
+
+          case 7:
+            newColors = _context4.sent;
+            mixedColor = '#' + rybColorMixer.mix(newColors);
             chatMessage = {
               timestamp: messageTime,
               message: msg.message,
               user: username
             };
 
-            _redis.pub.hmsetAsync('rooms:' + roomId, 'latest', messageTime, 'color', newColor);
+            _redis.pub.hmsetAsync('rooms:' + roomId, 'latest', messageTime);
             _redis.pub.rpushAsync('rooms:' + roomId + ':messages', JSON.stringify(chatMessage));
 
             _context4.t0 = _redis.pub;
             _context4.t1 = JSON;
-            _context4.next = 15;
+            _context4.next = 16;
             return _redis.pub.smembersAsync('rooms:' + roomId + ':users');
 
-          case 15:
+          case 16:
             _context4.t2 = _context4.sent;
             _context4.t3 = {
               roomId: roomId,
-              color: newColor,
+              color: mixedColor,
               message: chatMessage
             };
             _context4.t4 = {
@@ -210,24 +213,47 @@ var create = exports.create = function () {
 
             _context4.t0.publish.call(_context4.t0, 'messages:new', _context4.t5);
 
-            _context4.next = 25;
+            _context4.next = 26;
             break;
 
-          case 22:
-            _context4.prev = 22;
+          case 23:
+            _context4.prev = 23;
             _context4.t6 = _context4['catch'](0);
 
             console.log('messages:new error!', _context4.t6);
 
-          case 25:
+          case 26:
           case 'end':
             return _context4.stop();
         }
       }
-    }, _callee4, undefined, [[0, 22]]);
+    }, _callee4, undefined, [[0, 23]]);
   }));
 
   return function create(_x5, _x6) {
+    return ref.apply(this, arguments);
+  };
+}();
+
+var create_sticker = exports.create_sticker = function () {
+  var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee5(username, msg) {
+    return regeneratorRuntime.wrap(function _callee5$(_context5) {
+      while (1) {
+        switch (_context5.prev = _context5.next) {
+          case 0:
+            try {} catch (e) {
+              console.log('create sticker error', e);
+            }
+
+          case 1:
+          case 'end':
+            return _context5.stop();
+        }
+      }
+    }, _callee5, undefined);
+  }));
+
+  return function create_sticker(_x7, _x8) {
     return ref.apply(this, arguments);
   };
 }();

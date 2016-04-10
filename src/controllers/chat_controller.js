@@ -56,27 +56,36 @@ export const create = async (username, msg) => {
     const roomId = msg.roomId
     const messageTime = timestamp()
 
-    const oldColor = await pub.hgetAsync(`rooms:${roomId}`, 'color')
-    const msgColor = calculateColorOfMessage(msg.message)
-    const newColor = `#${rybColorMixer.mix([oldColor, msgColor])}`
+    pub.lpushAsync(`rooms:${roomId}:colors`, calculateColorOfMessage(msg.message))
+    pub.ltrimAsync(`rooms:${roomId}:colors`, 0, 9)
+    const newColors = await pub.lrangeAsync(`rooms:${roomId}:colors`, 0, 9)
+    const mixedColor = `#${rybColorMixer.mix(newColors)}`
 
     const chatMessage = {
       timestamp: messageTime,
       message: msg.message,
       user: username,
     }
-    pub.hmsetAsync(`rooms:${roomId}`, 'latest', messageTime, 'color', newColor)
+    pub.hmsetAsync(`rooms:${roomId}`, 'latest', messageTime)
     pub.rpushAsync(`rooms:${roomId}:messages`, JSON.stringify(chatMessage))
 
     pub.publish('messages:new', JSON.stringify({
       sockets: await pub.smembersAsync(`rooms:${roomId}:users`),
       message: {
         roomId,
-        color: newColor,
+        color: mixedColor,
         message: chatMessage
       }
     }))
   } catch(e) {
     console.log('messages:new error!', e)
+  }
+}
+
+export const create_sticker = async(username, msg) => {
+  try {
+
+  } catch(e) {
+    console.log('create sticker error', e)
   }
 }
