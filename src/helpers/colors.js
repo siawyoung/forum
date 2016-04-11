@@ -183,7 +183,7 @@ const angryPhrases = combine([
   'lanpah',
   'lanpaji',
   'knn',
-  'kaopeh'
+  'kaopeh',
   'cb',
   'bloody',
   'hell',
