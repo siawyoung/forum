@@ -16,5 +16,5 @@ var env = require('../env');
 var client = exports.client = _knox2.default.createClient({
   key: env.aws.key,
   secret: env.aws.secret,
-  bucket: 'sy-forum-1'
+  bucket: env.aws.bucket
 });

@@ -540,6 +540,11 @@ var StickerPane = function (_React$Component6) {
       };
 
       var renderSticker = function renderSticker(emotion) {
+
+        if (!_this7.props.stickers) {
+          return React.createElement("img", { src: "http://placehold.it/115x90", alt: "" });
+        }
+
         return _this7.props.stickers[emotion] ? React.createElement("video", { src: getSticker(emotion).video }) : React.createElement("img", { src: "http://placehold.it/115x90", alt: "" });
       };
 

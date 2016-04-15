@@ -341,6 +341,11 @@ class StickerPane extends React.Component {
     }
 
     const renderSticker = (emotion) => {
+
+      if (!this.props.stickers) {
+        return (<img src="http://placehold.it/115x90" alt=""/>)
+      }
+
       return this.props.stickers[emotion] ? (
         <video src={getSticker(emotion).video}></video>
       ) : (
