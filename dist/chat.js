@@ -24,7 +24,7 @@ var init = function () {
                   chatHandler(socket);
                 });
 
-                _redis.sub.subscribe('messages:new', 'rooms:created');
+                _redis.sub.subscribe('messages:new', 'rooms:created', 'stickers:new');
                 _redis.sub.on('message', function (channel, message) {
                   console.log(channel + ': ' + message);
                   var parsedMsg = JSON.parse(message);

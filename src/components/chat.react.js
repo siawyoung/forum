@@ -336,10 +336,6 @@ class StickerPane extends React.Component {
 
   render() {
 
-    const getSticker = (emotion) => {
-      return this.props.stickers[emotion] || { audio: '', video: 'http://placehold.it/80x80' }
-    }
-
     const renderSticker = (emotion) => {
 
       if (!this.props.stickers) {
@@ -347,7 +343,7 @@ class StickerPane extends React.Component {
       }
 
       return this.props.stickers[emotion] ? (
-        <video src={getSticker(emotion).video}></video>
+        <video src={this.props.stickers[emotion].video}></video>
       ) : (
         <img src="http://placehold.it/115x90" alt=""/>
       )
@@ -479,6 +475,10 @@ $(document).ready(() => {
 
       let data = response
 
+      if (!data.stickers) {
+        data.stickers = {}
+      }
+
       var socket = io.connect()
       socket.on('connect', function () {
         socket.on('authenticated', () => {
@@ -513,6 +513,14 @@ $(document).ready(() => {
         if (msg.message.sticker) {
           play(msg)
         }
+      })
+
+      socket.on('stickers:new', function(msg) {
+        data['stickers'][msg['emotion']] = {
+          audio: msg.audio,
+          video: msg.video
+        }
+        initialLoad({ socket, data })
       })
 
       initialLoad({ socket, data })

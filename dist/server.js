@@ -82,7 +82,7 @@ server.register([_inert2.default, _vision2.default], _asyncToGenerator(regenerat
               // check for malicious request params
               return reply.file(__dirname + '/../dist/components/' + req.params.react + '.react.js');
             }
-          }, { method: 'GET', path: '/store.min.js', handler: { file: __dirname + '/scripts/store.min.js' } }, { method: 'GET', path: '/avgrund.js', handler: { file: __dirname + '/scripts/avgrund.js' } }, { method: 'GET', path: '/jquery.tagsinput.js', handler: { file: __dirname + '/scripts/jquery.tagsinput.js' } }, { method: 'GET', path: '/main.css', handler: { file: __dirname + '/../dist/main.css' } }, {
+          }, { method: 'GET', path: '/store.min.js', handler: { file: __dirname + '/scripts/store.min.js' } }, { method: 'GET', path: '/avgrund.js', handler: { file: __dirname + '/scripts/avgrund.js' } }, { method: 'GET', path: '/mediaStreamRecorder.js', handler: { file: __dirname + '/scripts/mediaStreamRecorder.js' } }, { method: 'GET', path: '/jquery.tagsinput.js', handler: { file: __dirname + '/scripts/jquery.tagsinput.js' } }, { method: 'GET', path: '/main.css', handler: { file: __dirname + '/../dist/main.css' } }, {
             method: 'POST', path: '/register',
             handler: AuthController.register
           }, {

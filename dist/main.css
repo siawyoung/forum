@@ -818,7 +818,7 @@ button[type="submit"] {
 }
 
 .chat-bubble {
-  margin: 20px 0;
+  margin: 10px 0;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -1160,6 +1160,16 @@ button[type="submit"] {
 #StickerEmotion {
   width: 100%;
   margin-top: 20px;
+}
+
+#StartRecordingSticker.Recording {
+  background: #b8312f;
+  color: #eee;
+}
+
+#StartRecordingSticker.Done {
+  background: #296ab1;
+  color: #eee;
 }
 
 @media (max-width: 1000px) {

@@ -347,7 +347,7 @@ var putBufferAsync = _bluebird2.default.promisify(_knox.client.putBuffer, { cont
 
 var create_sticker = exports.create_sticker = function () {
   var ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee6(req, reply) {
-    var username, _req$payload, audio, video, emotion, audioRes, videoRes;
+    var username, _req$payload, audio, video, emotion, stickerId, audioRes, videoRes;
 
     return regeneratorRuntime.wrap(function _callee6$(_context6) {
       while (1) {
@@ -359,21 +359,22 @@ var create_sticker = exports.create_sticker = function () {
             audio = _req$payload.audio;
             video = _req$payload.video;
             emotion = _req$payload.emotion;
-            _context6.next = 8;
-            return putBufferAsync(audio, '/audio/' + username + '-' + emotion + '.wav', {
+            stickerId = _nodeUuid2.default.v4();
+            _context6.next = 9;
+            return putBufferAsync(audio, '/audio/' + username + '-' + emotion + '-' + stickerId + '.wav', {
               'Content-Type': 'audio/wav',
               'x-amz-acl': 'public-read'
             });
 
-          case 8:
+          case 9:
             audioRes = _context6.sent.req.url;
-            _context6.next = 11;
-            return putBufferAsync(video, '/video/' + username + '-' + emotion + '.webm', {
+            _context6.next = 12;
+            return putBufferAsync(video, '/video/' + username + '-' + emotion + '-' + stickerId + '.webm', {
               'Content-Type': 'video/webm',
               'x-amz-acl': 'public-read'
             });
 
-          case 11:
+          case 12:
             videoRes = _context6.sent.req.url;
 
 
@@ -393,18 +394,18 @@ var create_sticker = exports.create_sticker = function () {
 
             return _context6.abrupt('return', reply());
 
-          case 17:
-            _context6.prev = 17;
+          case 18:
+            _context6.prev = 18;
             _context6.t0 = _context6['catch'](0);
 
             console.log('create sticker error', _context6.t0);
 
-          case 20:
+          case 21:
           case 'end':
             return _context6.stop();
         }
       }
-    }, _callee6, undefined, [[0, 17]]);
+    }, _callee6, undefined, [[0, 18]]);
   }));
 
   return function create_sticker(_x9, _x10) {

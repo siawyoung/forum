@@ -535,17 +535,13 @@ var StickerPane = function (_React$Component6) {
     value: function render() {
       var _this7 = this;
 
-      var getSticker = function getSticker(emotion) {
-        return _this7.props.stickers[emotion] || { audio: '', video: 'http://placehold.it/80x80' };
-      };
-
       var renderSticker = function renderSticker(emotion) {
 
         if (!_this7.props.stickers) {
           return React.createElement("img", { src: "http://placehold.it/115x90", alt: "" });
         }
 
-        return _this7.props.stickers[emotion] ? React.createElement("video", { src: getSticker(emotion).video }) : React.createElement("img", { src: "http://placehold.it/115x90", alt: "" });
+        return _this7.props.stickers[emotion] ? React.createElement("video", { src: _this7.props.stickers[emotion].video }) : React.createElement("img", { src: "http://placehold.it/115x90", alt: "" });
       };
 
       var sendSticker = this.sendSticker;
@@ -724,6 +720,10 @@ $(document).ready(function () {
 
       var data = response;
 
+      if (!data.stickers) {
+        data.stickers = {};
+      }
+
       var socket = io.connect();
       socket.on('connect', function () {
         socket.on('authenticated', function () {}).emit('authenticate', { token: token }); //send the jwt
@@ -756,6 +756,14 @@ $(document).ready(function () {
         if (msg.message.sticker) {
           play(msg);
         }
+      });
+
+      socket.on('stickers:new', function (msg) {
+        data['stickers'][msg['emotion']] = {
+          audio: msg.audio,
+          video: msg.video
+        };
+        initialLoad({ socket: socket, data: data });
       });
 
       initialLoad({ socket: socket, data: data });

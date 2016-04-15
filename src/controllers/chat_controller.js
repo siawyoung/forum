@@ -136,12 +136,13 @@ export const create_sticker = async (req, reply) => {
     const username = verifyToken(req)
     const { audio, video, emotion } = req.payload
 
-    const audioRes = (await putBufferAsync(audio, `/audio/${username}-${emotion}.wav`, {
+    const stickerId = uuid.v4()
+    const audioRes = (await putBufferAsync(audio, `/audio/${username}-${emotion}-${stickerId}.wav`, {
       'Content-Type': 'audio/wav',
       'x-amz-acl': 'public-read'
     })).req.url
 
-    const videoRes = (await putBufferAsync(video, `/video/${username}-${emotion}.webm`, {
+    const videoRes = (await putBufferAsync(video, `/video/${username}-${emotion}-${stickerId}.webm`, {
       'Content-Type': 'video/webm',
       'x-amz-acl': 'public-read'
     })).req.url

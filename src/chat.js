@@ -39,7 +39,7 @@ async function init(listener) {
       chatHandler(socket)
     })
 
-    sub.subscribe('messages:new', 'rooms:created')
+    sub.subscribe('messages:new', 'rooms:created', 'stickers:new')
     sub.on('message', (channel, message) => {
       console.log(`${channel}: ${message}`)
       const parsedMsg = JSON.parse(message)
