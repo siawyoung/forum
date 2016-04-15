@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-var palette = {
+var palette = exports.palette = {
   happy: '#DDBF00',
   sad: '#8F928B',
   angry: '#b8312f',

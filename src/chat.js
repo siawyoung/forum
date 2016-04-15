@@ -18,6 +18,10 @@ function chatHandler(socket) {
   socket.on('messages:new', (msg) => {
     ChatController.create(username, msg)
   })
+
+  socket.on('stickers:new', (msg) => {
+    ChatController.sticker(username, msg)
+  })
 }
 
 async function init(listener) {

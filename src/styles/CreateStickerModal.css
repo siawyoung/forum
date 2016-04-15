@@ -1,0 +1,17 @@
+#CreateStickerModal {
+
+  height: 450px;
+
+  h2 {
+    margin-bottom: 15px;
+  }
+
+  video {
+    max-width: 300px;
+  }
+}
+
+#StickerEmotion {
+  width: 100%;
+  margin-top: 20px;
+}

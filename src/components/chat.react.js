@@ -1,4 +1,13 @@
 
+let multiStreamRecorder, video
+
+const NoWebcamModal = () => (
+  <div id="NoWebcamModal" className="avgrund-popup">
+    <h2>No Webcam</h2>
+    <p>Sorry, but there is no webcam support so creation of stickers is disabled.</p>
+  </div>
+)
+
 class CreateRoomModal extends React.Component {
 
   componentDidMount() {
@@ -63,7 +72,18 @@ const Room = ({
 }) => {
 
   const lastMessage = room.messages[room.messages.length - 1]
-  const message = lastMessage ? lastMessage.message : ""
+  // const message = lastMessage ? lastMessage.message : ""
+
+  const message = () => {
+    if (lastMessage && lastMessage.sticker) {
+      return "Sticker"
+    } else if (lastMessage) {
+      return lastMessage.message
+    } else {
+      return ""
+    }
+  }
+
   const user    = lastMessage ? lastMessage.user : ""
   const timestamp = lastMessage ? new Date(lastMessage.timestamp) : ""
 
@@ -81,7 +101,7 @@ const Room = ({
           {user}
         </div>
         <div className="last-message">
-          {message}
+          {message()}
         </div>
         <div className="time-sent">
           {timeToString(timestamp)}
@@ -106,12 +126,27 @@ const ChatBubble = ({
   text
 }) => {
 
+  const renderMessage = (text) => {
+    if (text.sticker) {
+      return (
+        <div className="chat-bubble-sticker">
+          <video src={text.video}></video>
+        </div>
+      )
+    }
+
+    return (
+      <div className="chat-bubble-text">
+        {text.message}
+      </div>
+    )
+  }
+
+
   const isSelf = text.user === store.get('forum:name') ? 'self' : 'other'
   return (
   <div className={`chat-bubble ${isSelf}`}>
-    <div className="chat-bubble-text">
-      {text.message}
-    </div>
+    {renderMessage(text)}
   </div>
 )}
 
@@ -212,14 +247,108 @@ const RoomTitle = ({
   )
 }
 
+class CreateStickerModal extends React.Component {
+
+  createStickerHandler = (e) => {
+    e.preventDefault()
+
+  }
+
+  render() {
+    return (
+      <div id="CreateStickerModal" className="avgrund-popup">
+        <h2>Add Sticker</h2>
+        <form onSubmit={this.createStickerHandler}>
+          <select defaultValue="happy" id="StickerEmotion">
+            <option value="happy">Happy</option>
+            <option value="sad">Sad</option>
+            <option value="angry">Angry</option>
+            <option value="loving">Loving</option>
+            <option value="neutral">Neutral</option>
+          </select>
+          <button id="StartRecordingSticker" type="submit">Start Recording</button>
+        </form>
+      </div>
+    )
+  }
+}
+
 class StickerPane extends React.Component {
+
+  openCreateStickerModal = () => {
+
+    if (navigator.getUserMedia) {
+
+      video = document.createElement('video')
+
+      navigator.getUserMedia({ audio: true, video: true }, (stream) => {
+        multiStreamRecorder = new MultiStreamRecorder(stream)
+        video = mergeProps(video, {
+            controls: true,
+            muted: true,
+            src: URL.createObjectURL(stream)
+        })
+
+        const videoCallback = () => {
+          multiStreamRecorder.stream = stream
+          multiStreamRecorder.canvas = {
+            width: video.width,
+            height: video.height
+          }
+
+          multiStreamRecorder.video = video
+
+          multiStreamRecorder.ondataavailable = (blobs) => {
+            console.log(`blob recorded`)
+            console.log(`blobs`, blobs)
+            multiStreamRecorder.stop()
+            video.pause()
+            uploadSticker(blobs, $('#StickerEmotion').val())
+          }
+
+          $('#StartRecordingSticker').click(() => {
+            console.log(`recording started`)
+            multiStreamRecorder.start(5000)
+          })
+        }
+
+        video.removeEventListener('loadedmetadata', videoCallback)
+        video.addEventListener('loadedmetadata', videoCallback)
+
+        $('#CreateStickerModal form').prepend(video)
+        video.play()
+
+        Avgrund.show( "#CreateStickerModal" )
+
+      }, () => { Avgrund.show( "#NoWebcamModal" ) })
+    } else {
+      Avgrund.show( "#NoWebcamModal" )
+    }
+
+  }
+
+  sendSticker = (emotion) => {
+    if (this.props.stickers[emotion]) {
+      const { roomId, socket } = this.props
+      socket.emit('stickers:new', { roomId, emotion })
+    }
+  }
 
   render() {
 
-    const stickers = [
-      {image: 'http://placehold.it/80x80', audio: ''}
-    ]
+    const getSticker = (emotion) => {
+      return this.props.stickers[emotion] || { audio: '', video: 'http://placehold.it/80x80' }
+    }
 
+    const renderSticker = (emotion) => {
+      return this.props.stickers[emotion] ? (
+        <video src={getSticker(emotion).video}></video>
+      ) : (
+        <img src="http://placehold.it/115x90" alt=""/>
+      )
+    }
+
+    const sendSticker = this.sendSticker
     const toggleStickerPane = this.props.toggleStickerPane
     const isOpen = this.props.isOpen ? "StickerPaneOpen" : ""
 
@@ -229,8 +358,23 @@ class StickerPane extends React.Component {
           <i id="CloseStickerPane" className="fa fa-times" onClick={function() {toggleStickerPane(false)}}></i>
         </div>
         <div id="StickerList">
+          <div id="happySticker" onClick={function() {sendSticker('happy')}}>
+            {renderSticker('happy')}
+          </div>
+          <div id="sadSticker" onClick={function() {sendSticker('sad')}}>
+            {renderSticker('sad')}
+          </div>
+          <div id="angrySticker" onClick={function() {sendSticker('angry')}}>
+            {renderSticker('angry')}
+          </div>
+          <div id="lovingSticker" onClick={function() {sendSticker('loving')}}>
+            {renderSticker('loving')}
+          </div>
+          <div id="neutralSticker" onClick={function() {sendSticker('neutral')}}>
+            {renderSticker('neutral')}
+          </div>
         </div>
-        <button type="submit" id="CreateStickerButton">Create Sticker</button>
+        <button type="submit" id="CreateStickerButton" onClick={this.openCreateStickerModal}>Create Sticker</button>
       </div>
     )
   }
@@ -261,6 +405,8 @@ class ChatView extends React.Component {
 
   render() {
 
+    const stickers = this.props.data.stickers
+
     const rooms = this.props.data.rooms
     const selectedRoom = this.state.selectedRoom
 
@@ -281,8 +427,10 @@ class ChatView extends React.Component {
           <RoomTitle toggleSidebar={this.toggleSidebar} roomName={roomName} />
           <MessageList messages={messages} />
           <ChatInput roomId={roomId} socket={this.props.socket} toggleStickerPane={this.toggleStickerPane} />
-          <StickerPane isOpen={this.state.stickerPaneOpen} toggleStickerPane={this.toggleStickerPane} />
+          <StickerPane roomId={roomId} socket={this.props.socket} stickers={stickers} isOpen={this.state.stickerPaneOpen} toggleStickerPane={this.toggleStickerPane} />
         </div>
+        <NoWebcamModal />
+        <CreateStickerModal socket={this.props.socket} />
         <CreateRoomModal socket={this.props.socket} />
         <div className="avgrund-cover"></div>
       </div>
@@ -305,31 +453,11 @@ const initialLoad = ({ socket, data }) => {
   renderView({ socket, data })
 }
 
-const preprocessInitialMessages = (res) => {
-  const ppRoom = res.rooms.map(room => {
-    return {
-      ...room,
-      messages: room.messages.map(msg => {
-        return JSON.parse(msg)
-      })
-    }
-  })
-  return {
-    ...res,
-    rooms: ppRoom
-  }
-}
-
 function closeDialog() {
   Avgrund.hide();
 }
 
 $(document).ready(() => {
-
-  const getUserMedia = navigator.getUserMedia ||
-                       navigator.webkitGetUserMedia ||
-                       navigator.mozGetUserMedia ||
-                       navigator.msGetUserMedia
 
   const token = store.get('forum:token')
 
@@ -344,7 +472,7 @@ $(document).ready(() => {
     },
     success: (response) => {
 
-      let data = preprocessInitialMessages(response)
+      let data = response
 
       var socket = io.connect()
       socket.on('connect', function () {
@@ -376,6 +504,10 @@ $(document).ready(() => {
           data.rooms.unshift(updatedRoom)
         }
         initialLoad({ socket, data })
+
+        if (msg.message.sticker) {
+          play(msg)
+        }
       })
 
       initialLoad({ socket, data })
@@ -383,3 +515,32 @@ $(document).ready(() => {
     }
   })
 })
+
+function play(msg) {
+  const audioTag = document.getElementById('sound')
+  audioTag.src = msg.message.audio
+  audioTag.play()
+}
+
+function uploadSticker(blob, emotion) {
+
+  const token = store.get('forum:token')
+  const form = new FormData()
+
+  form.append('video', blob.video)
+  form.append('audio', blob.audio)
+  form.append('emotion', emotion || 'happy')
+
+  $.ajax('/stickers', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${token}`
+    },
+    data: form,
+    contentType: false,
+    processData: false,
+    success: () => {
+      console.log(`successfully uploaded`)
+    }
+  })
+}

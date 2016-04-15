@@ -54,6 +54,10 @@ var Avgrund = function () {
 
     removeClass(container, 'avgrund-active');
     removeClass(popup, 'avgrund-popup-animate');
+
+    console.log('removed video');
+    $('#CreateStickerModal video').remove();
+    multiStreamRecorder = null;
   }
 
   function disableBlur() {

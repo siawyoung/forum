@@ -1,4 +1,4 @@
-const palette = {
+export const palette = {
   happy: '#DDBF00',
   sad: '#8F928B',
   angry: '#b8312f',

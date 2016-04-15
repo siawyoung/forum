@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
@@ -11,6 +11,26 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var multiStreamRecorder = void 0,
+    video = void 0;
+
+var NoWebcamModal = function NoWebcamModal() {
+  return React.createElement(
+    "div",
+    { id: "NoWebcamModal", className: "avgrund-popup" },
+    React.createElement(
+      "h2",
+      null,
+      "No Webcam"
+    ),
+    React.createElement(
+      "p",
+      null,
+      "Sorry, but there is no webcam support so creation of stickers is disabled."
+    )
+  );
+};
 
 var CreateRoomModal = function (_React$Component) {
   _inherits(CreateRoomModal, _React$Component);
@@ -41,7 +61,7 @@ var CreateRoomModal = function (_React$Component) {
   }
 
   _createClass(CreateRoomModal, [{
-    key: 'componentDidMount',
+    key: "componentDidMount",
     value: function componentDidMount() {
       $(this.refs.recipients).tagsInput({
         width: 336,
@@ -50,46 +70,46 @@ var CreateRoomModal = function (_React$Component) {
       });
     }
   }, {
-    key: 'render',
+    key: "render",
     value: function render() {
       return React.createElement(
-        'div',
-        { id: 'CreateRoomModal', className: 'avgrund-popup' },
+        "div",
+        { id: "CreateRoomModal", className: "avgrund-popup" },
         React.createElement(
-          'h2',
+          "h2",
           null,
-          'New Room'
+          "New Room"
         ),
         React.createElement(
-          'form',
+          "form",
           { onSubmit: this.createRoomHandler },
           React.createElement(
-            'div',
-            { className: 'form-group' },
+            "div",
+            { className: "form-group" },
             React.createElement(
-              'label',
+              "label",
               null,
-              'Name of Room'
+              "Name of Room"
             ),
-            React.createElement('input', { className: 'roomname', type: 'text' })
+            React.createElement("input", { className: "roomname", type: "text" })
           ),
           React.createElement(
-            'div',
-            { className: 'form-group' },
+            "div",
+            { className: "form-group" },
             React.createElement(
-              'label',
+              "label",
               null,
-              'Recipients'
+              "Recipients"
             ),
-            React.createElement('input', { className: 'recipients', type: 'text', ref: 'recipients' })
+            React.createElement("input", { className: "recipients", type: "text", ref: "recipients" })
           ),
           React.createElement(
-            'div',
-            { className: 'form-group' },
+            "div",
+            { className: "form-group" },
             React.createElement(
-              'button',
-              { type: 'submit' },
-              'Create'
+              "button",
+              { type: "submit" },
+              "Create"
             )
           )
         )
@@ -104,7 +124,7 @@ function timeToString(time) {
   if (!time) {
     return "";
   }
-  return time.getHours() + ':' + time.getMinutes();
+  return time.getHours() + ":" + time.getMinutes();
 }
 
 var Room = function Room(_ref) {
@@ -114,41 +134,52 @@ var Room = function Room(_ref) {
 
 
   var lastMessage = room.messages[room.messages.length - 1];
-  var message = lastMessage ? lastMessage.message : "";
+  // const message = lastMessage ? lastMessage.message : ""
+
+  var message = function message() {
+    if (lastMessage && lastMessage.sticker) {
+      return "Sticker";
+    } else if (lastMessage) {
+      return lastMessage.message;
+    } else {
+      return "";
+    }
+  };
+
   var user = lastMessage ? lastMessage.user : "";
   var timestamp = lastMessage ? new Date(lastMessage.timestamp) : "";
 
   return React.createElement(
-    'div',
-    { className: 'room flex', onClick: function onClick() {
+    "div",
+    { className: "room flex", onClick: function onClick() {
         changeSelectedRoom(index);
       } },
     React.createElement(
-      'div',
-      { className: 'user' },
-      React.createElement('img', { src: 'http://placehold.it/80x80', alt: '' })
+      "div",
+      { className: "user" },
+      React.createElement("img", { src: "http://placehold.it/80x80", alt: "" })
     ),
     React.createElement(
-      'div',
-      { className: 'info' },
+      "div",
+      { className: "info" },
       React.createElement(
-        'div',
-        { className: 'roomName' },
+        "div",
+        { className: "roomName" },
         room.name
       ),
       React.createElement(
-        'div',
-        { className: 'username' },
+        "div",
+        { className: "username" },
         user
       ),
       React.createElement(
-        'div',
-        { className: 'last-message' },
-        message
+        "div",
+        { className: "last-message" },
+        message()
       ),
       React.createElement(
-        'div',
-        { className: 'time-sent' },
+        "div",
+        { className: "time-sent" },
         timeToString(timestamp)
       )
     )
@@ -161,8 +192,8 @@ var RoomList = function RoomList(_ref2) {
 
 
   return React.createElement(
-    'div',
-    { id: 'RoomList' },
+    "div",
+    { id: "RoomList" },
     rooms.map(function (room, index) {
       return React.createElement(Room, { key: index, index: index, room: room, changeSelectedRoom: changeSelectedRoom });
     })
@@ -173,15 +204,27 @@ var ChatBubble = function ChatBubble(_ref3) {
   var text = _ref3.text;
 
 
+  var renderMessage = function renderMessage(text) {
+    if (text.sticker) {
+      return React.createElement(
+        "div",
+        { className: "chat-bubble-sticker" },
+        React.createElement("video", { src: text.video })
+      );
+    }
+
+    return React.createElement(
+      "div",
+      { className: "chat-bubble-text" },
+      text.message
+    );
+  };
+
   var isSelf = text.user === store.get('forum:name') ? 'self' : 'other';
   return React.createElement(
-    'div',
-    { className: 'chat-bubble ' + isSelf },
-    React.createElement(
-      'div',
-      { className: 'chat-bubble-text' },
-      text.message
-    )
+    "div",
+    { className: "chat-bubble " + isSelf },
+    renderMessage(text)
   );
 };
 
@@ -195,23 +238,23 @@ var MessageList = function (_React$Component2) {
   }
 
   _createClass(MessageList, [{
-    key: 'componentDidUpdate',
+    key: "componentDidUpdate",
     value: function componentDidUpdate() {
       var x = document.getElementById('MessageList');
       x.scrollTop = x.scrollHeight;
     }
   }, {
-    key: 'componentDidMount',
+    key: "componentDidMount",
     value: function componentDidMount() {
       var x = document.getElementById('MessageList');
       x.scrollTop = x.scrollHeight;
     }
   }, {
-    key: 'render',
+    key: "render",
     value: function render() {
       return React.createElement(
-        'div',
-        { id: 'MessageList' },
+        "div",
+        { id: "MessageList" },
         this.props.messages.map(function (msg, index) {
           return React.createElement(ChatBubble, { key: index, text: msg });
         })
@@ -248,23 +291,23 @@ var ChatInput = function (_React$Component3) {
   }
 
   _createClass(ChatInput, [{
-    key: 'render',
+    key: "render",
     value: function render() {
 
       var toggleStickerPane = this.props.toggleStickerPane;
 
       return React.createElement(
-        'div',
-        { id: 'ChatInput', className: 'faint-top-border' },
-        React.createElement('i', { id: 'StickerButton', className: 'fa fa-smile-o', onClick: function onClick() {
+        "div",
+        { id: "ChatInput", className: "faint-top-border" },
+        React.createElement("i", { id: "StickerButton", className: "fa fa-smile-o", onClick: function onClick() {
             toggleStickerPane(true);
           } }),
         React.createElement(
-          'form',
+          "form",
           { onSubmit: this.sendMessage },
-          React.createElement('input', { type: 'text', className: 'message' })
+          React.createElement("input", { type: "text", className: "message" })
         ),
-        React.createElement('i', { id: 'SendButton', className: 'fa fa-paper-plane' })
+        React.createElement("i", { id: "SendButton", className: "fa fa-paper-plane" })
       );
     }
   }]);
@@ -292,24 +335,24 @@ var SearchBar = function (_React$Component4) {
   }
 
   _createClass(SearchBar, [{
-    key: 'render',
+    key: "render",
     value: function render() {
 
       var toggleSidebar = this.props.toggleSidebar;
 
       return React.createElement(
-        'div',
-        { id: 'SearchBar' },
-        React.createElement('i', {
-          className: 'fa fa-arrow-left',
-          id: 'CloseSidebar',
+        "div",
+        { id: "SearchBar" },
+        React.createElement("i", {
+          className: "fa fa-arrow-left",
+          id: "CloseSidebar",
           onClick: function onClick() {
             toggleSidebar(false);
           }
         }),
-        React.createElement('i', {
-          className: 'fa fa-plus-square-o',
-          id: 'NewRoomButton',
+        React.createElement("i", {
+          className: "fa fa-plus-square-o",
+          id: "NewRoomButton",
           onClick: this.openCreateRoomModal
         })
       );
@@ -324,12 +367,12 @@ var RoomTitle = function RoomTitle(_ref4) {
   var toggleSidebar = _ref4.toggleSidebar;
 
   return React.createElement(
-    'div',
-    { id: 'RoomTitle', className: 'faint-bottom-border' },
+    "div",
+    { id: "RoomTitle", className: "faint-bottom-border" },
     React.createElement(
-      'div',
-      { className: 'back-button' },
-      React.createElement('i', { className: 'fa fa-bars', onClick: function onClick() {
+      "div",
+      { className: "back-button" },
+      React.createElement("i", { className: "fa fa-bars", onClick: function onClick() {
           toggleSidebar(true);
         } })
     ),
@@ -337,39 +380,226 @@ var RoomTitle = function RoomTitle(_ref4) {
   );
 };
 
-var StickerPane = function (_React$Component5) {
-  _inherits(StickerPane, _React$Component5);
+var CreateStickerModal = function (_React$Component5) {
+  _inherits(CreateStickerModal, _React$Component5);
+
+  function CreateStickerModal() {
+    var _Object$getPrototypeO3;
+
+    var _temp3, _this5, _ret3;
+
+    _classCallCheck(this, CreateStickerModal);
+
+    for (var _len3 = arguments.length, args = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+      args[_key3] = arguments[_key3];
+    }
+
+    return _ret3 = (_temp3 = (_this5 = _possibleConstructorReturn(this, (_Object$getPrototypeO3 = Object.getPrototypeOf(CreateStickerModal)).call.apply(_Object$getPrototypeO3, [this].concat(args))), _this5), _this5.createStickerHandler = function (e) {
+      e.preventDefault();
+    }, _temp3), _possibleConstructorReturn(_this5, _ret3);
+  }
+
+  _createClass(CreateStickerModal, [{
+    key: "render",
+    value: function render() {
+      return React.createElement(
+        "div",
+        { id: "CreateStickerModal", className: "avgrund-popup" },
+        React.createElement(
+          "h2",
+          null,
+          "Add Sticker"
+        ),
+        React.createElement(
+          "form",
+          { onSubmit: this.createStickerHandler },
+          React.createElement(
+            "select",
+            { defaultValue: "happy", id: "StickerEmotion" },
+            React.createElement(
+              "option",
+              { value: "happy" },
+              "Happy"
+            ),
+            React.createElement(
+              "option",
+              { value: "sad" },
+              "Sad"
+            ),
+            React.createElement(
+              "option",
+              { value: "angry" },
+              "Angry"
+            ),
+            React.createElement(
+              "option",
+              { value: "loving" },
+              "Loving"
+            ),
+            React.createElement(
+              "option",
+              { value: "neutral" },
+              "Neutral"
+            )
+          ),
+          React.createElement(
+            "button",
+            { id: "StartRecordingSticker", type: "submit" },
+            "Start Recording"
+          )
+        )
+      );
+    }
+  }]);
+
+  return CreateStickerModal;
+}(React.Component);
+
+var StickerPane = function (_React$Component6) {
+  _inherits(StickerPane, _React$Component6);
 
   function StickerPane() {
+    var _Object$getPrototypeO4;
+
+    var _temp4, _this6, _ret4;
+
     _classCallCheck(this, StickerPane);
 
-    return _possibleConstructorReturn(this, Object.getPrototypeOf(StickerPane).apply(this, arguments));
+    for (var _len4 = arguments.length, args = Array(_len4), _key4 = 0; _key4 < _len4; _key4++) {
+      args[_key4] = arguments[_key4];
+    }
+
+    return _ret4 = (_temp4 = (_this6 = _possibleConstructorReturn(this, (_Object$getPrototypeO4 = Object.getPrototypeOf(StickerPane)).call.apply(_Object$getPrototypeO4, [this].concat(args))), _this6), _this6.openCreateStickerModal = function () {
+
+      if (navigator.getUserMedia) {
+
+        video = document.createElement('video');
+
+        navigator.getUserMedia({ audio: true, video: true }, function (stream) {
+          multiStreamRecorder = new MultiStreamRecorder(stream);
+          video = mergeProps(video, {
+            controls: true,
+            muted: true,
+            src: URL.createObjectURL(stream)
+          });
+
+          var videoCallback = function videoCallback() {
+            multiStreamRecorder.stream = stream;
+            multiStreamRecorder.canvas = {
+              width: video.width,
+              height: video.height
+            };
+
+            multiStreamRecorder.video = video;
+
+            multiStreamRecorder.ondataavailable = function (blobs) {
+              console.log("blob recorded");
+              console.log("blobs", blobs);
+              multiStreamRecorder.stop();
+              video.pause();
+              uploadSticker(blobs, $('#StickerEmotion').val());
+            };
+
+            $('#StartRecordingSticker').click(function () {
+              console.log("recording started");
+              multiStreamRecorder.start(5000);
+            });
+          };
+
+          video.removeEventListener('loadedmetadata', videoCallback);
+          video.addEventListener('loadedmetadata', videoCallback);
+
+          $('#CreateStickerModal form').prepend(video);
+          video.play();
+
+          Avgrund.show("#CreateStickerModal");
+        }, function () {
+          Avgrund.show("#NoWebcamModal");
+        });
+      } else {
+        Avgrund.show("#NoWebcamModal");
+      }
+    }, _this6.sendSticker = function (emotion) {
+      if (_this6.props.stickers[emotion]) {
+        var _this6$props = _this6.props;
+        var roomId = _this6$props.roomId;
+        var socket = _this6$props.socket;
+
+        socket.emit('stickers:new', { roomId: roomId, emotion: emotion });
+      }
+    }, _temp4), _possibleConstructorReturn(_this6, _ret4);
   }
 
   _createClass(StickerPane, [{
-    key: 'render',
+    key: "render",
     value: function render() {
+      var _this7 = this;
 
-      var stickers = [{ image: 'http://placehold.it/80x80', audio: '' }];
+      var getSticker = function getSticker(emotion) {
+        return _this7.props.stickers[emotion] || { audio: '', video: 'http://placehold.it/80x80' };
+      };
 
+      var renderSticker = function renderSticker(emotion) {
+        return _this7.props.stickers[emotion] ? React.createElement("video", { src: getSticker(emotion).video }) : React.createElement("img", { src: "http://placehold.it/115x90", alt: "" });
+      };
+
+      var sendSticker = this.sendSticker;
       var toggleStickerPane = this.props.toggleStickerPane;
       var isOpen = this.props.isOpen ? "StickerPaneOpen" : "";
 
       return React.createElement(
-        'div',
-        { className: 'StickerPane ' + isOpen },
+        "div",
+        { className: "StickerPane " + isOpen },
         React.createElement(
-          'div',
-          { id: 'CloseStickerPaneDiv' },
-          React.createElement('i', { id: 'CloseStickerPane', className: 'fa fa-times', onClick: function onClick() {
+          "div",
+          { id: "CloseStickerPaneDiv" },
+          React.createElement("i", { id: "CloseStickerPane", className: "fa fa-times", onClick: function onClick() {
               toggleStickerPane(false);
             } })
         ),
-        React.createElement('div', { id: 'StickerList' }),
         React.createElement(
-          'button',
-          { type: 'submit', id: 'CreateStickerButton' },
-          'Create Sticker'
+          "div",
+          { id: "StickerList" },
+          React.createElement(
+            "div",
+            { id: "happySticker", onClick: function onClick() {
+                sendSticker('happy');
+              } },
+            renderSticker('happy')
+          ),
+          React.createElement(
+            "div",
+            { id: "sadSticker", onClick: function onClick() {
+                sendSticker('sad');
+              } },
+            renderSticker('sad')
+          ),
+          React.createElement(
+            "div",
+            { id: "angrySticker", onClick: function onClick() {
+                sendSticker('angry');
+              } },
+            renderSticker('angry')
+          ),
+          React.createElement(
+            "div",
+            { id: "lovingSticker", onClick: function onClick() {
+                sendSticker('loving');
+              } },
+            renderSticker('loving')
+          ),
+          React.createElement(
+            "div",
+            { id: "neutralSticker", onClick: function onClick() {
+                sendSticker('neutral');
+              } },
+            renderSticker('neutral')
+          )
+        ),
+        React.createElement(
+          "button",
+          { type: "submit", id: "CreateStickerButton", onClick: this.openCreateStickerModal },
+          "Create Sticker"
         )
       );
     }
@@ -378,37 +608,39 @@ var StickerPane = function (_React$Component5) {
   return StickerPane;
 }(React.Component);
 
-var ChatView = function (_React$Component6) {
-  _inherits(ChatView, _React$Component6);
+var ChatView = function (_React$Component7) {
+  _inherits(ChatView, _React$Component7);
 
   function ChatView() {
     _classCallCheck(this, ChatView);
 
-    var _this6 = _possibleConstructorReturn(this, Object.getPrototypeOf(ChatView).call(this));
+    var _this8 = _possibleConstructorReturn(this, Object.getPrototypeOf(ChatView).call(this));
 
-    _this6.changeSelectedRoom = function (id) {
-      _this6.setState({ selectedRoom: id });
+    _this8.changeSelectedRoom = function (id) {
+      _this8.setState({ selectedRoom: id });
     };
 
-    _this6.toggleSidebar = function (s) {
-      _this6.setState({ sidebarOpen: s });
+    _this8.toggleSidebar = function (s) {
+      _this8.setState({ sidebarOpen: s });
     };
 
-    _this6.toggleStickerPane = function (s) {
-      _this6.setState({ stickerPaneOpen: s });
+    _this8.toggleStickerPane = function (s) {
+      _this8.setState({ stickerPaneOpen: s });
     };
 
-    _this6.state = {
+    _this8.state = {
       selectedRoom: 0,
       sidebarOpen: false,
       stickerPaneOpen: false
     };
-    return _this6;
+    return _this8;
   }
 
   _createClass(ChatView, [{
-    key: 'render',
+    key: "render",
     value: function render() {
+
+      var stickers = this.props.data.stickers;
 
       var rooms = this.props.data.rooms;
       var selectedRoom = this.state.selectedRoom;
@@ -421,24 +653,26 @@ var ChatView = function (_React$Component6) {
       var sideOpen = this.state.sidebarOpen ? "sidebarOpen" : "";
 
       return React.createElement(
-        'div',
-        { id: 'ChatView', className: 'top-level', style: { background: roomColor } },
+        "div",
+        { id: "ChatView", className: "top-level", style: { background: roomColor } },
         React.createElement(
-          'div',
-          { className: 'sidebar faint-right-border ' + sideOpen },
+          "div",
+          { className: "sidebar faint-right-border " + sideOpen },
           React.createElement(SearchBar, { toggleSidebar: this.toggleSidebar }),
           React.createElement(RoomList, { rooms: rooms, changeSelectedRoom: this.changeSelectedRoom })
         ),
         React.createElement(
-          'div',
-          { className: 'main-body' },
+          "div",
+          { className: "main-body" },
           React.createElement(RoomTitle, { toggleSidebar: this.toggleSidebar, roomName: roomName }),
           React.createElement(MessageList, { messages: messages }),
           React.createElement(ChatInput, { roomId: roomId, socket: this.props.socket, toggleStickerPane: this.toggleStickerPane }),
-          React.createElement(StickerPane, { isOpen: this.state.stickerPaneOpen, toggleStickerPane: this.toggleStickerPane })
+          React.createElement(StickerPane, { roomId: roomId, socket: this.props.socket, stickers: stickers, isOpen: this.state.stickerPaneOpen, toggleStickerPane: this.toggleStickerPane })
         ),
+        React.createElement(NoWebcamModal, null),
+        React.createElement(CreateStickerModal, { socket: this.props.socket }),
         React.createElement(CreateRoomModal, { socket: this.props.socket }),
-        React.createElement('div', { className: 'avgrund-cover' })
+        React.createElement("div", { className: "avgrund-cover" })
       );
     }
   }]);
@@ -464,26 +698,11 @@ var initialLoad = function initialLoad(_ref6) {
   renderView({ socket: socket, data: data });
 };
 
-var preprocessInitialMessages = function preprocessInitialMessages(res) {
-  var ppRoom = res.rooms.map(function (room) {
-    return _extends({}, room, {
-      messages: room.messages.map(function (msg) {
-        return JSON.parse(msg);
-      })
-    });
-  });
-  return _extends({}, res, {
-    rooms: ppRoom
-  });
-};
-
 function closeDialog() {
   Avgrund.hide();
 }
 
 $(document).ready(function () {
-
-  var getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
 
   var token = store.get('forum:token');
 
@@ -494,11 +713,11 @@ $(document).ready(function () {
   $.ajax('/load', {
     method: 'GET',
     headers: {
-      'Authorization': 'Bearer ' + token
+      'Authorization': "Bearer " + token
     },
     success: function success(response) {
 
-      var data = preprocessInitialMessages(response);
+      var data = response;
 
       var socket = io.connect();
       socket.on('connect', function () {
@@ -528,9 +747,42 @@ $(document).ready(function () {
           data.rooms.unshift(updatedRoom);
         }
         initialLoad({ socket: socket, data: data });
+
+        if (msg.message.sticker) {
+          play(msg);
+        }
       });
 
       initialLoad({ socket: socket, data: data });
     }
   });
 });
+
+function play(msg) {
+  var audioTag = document.getElementById('sound');
+  audioTag.src = msg.message.audio;
+  audioTag.play();
+}
+
+function uploadSticker(blob, emotion) {
+
+  var token = store.get('forum:token');
+  var form = new FormData();
+
+  form.append('video', blob.video);
+  form.append('audio', blob.audio);
+  form.append('emotion', emotion || 'happy');
+
+  $.ajax('/stickers', {
+    method: 'POST',
+    headers: {
+      'Authorization': "Bearer " + token
+    },
+    data: form,
+    contentType: false,
+    processData: false,
+    success: function success() {
+      console.log("successfully uploaded");
+    }
+  });
+}

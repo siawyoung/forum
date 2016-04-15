@@ -1,9 +1,9 @@
 .StickerPane {
   position: fixed;
-  bottom: -275px;
+  bottom: -242px;
   background: var(--dark-grey);
   width: calc(100vw - 380px + 15px);
-  height: 275px;
+  height: 242px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -16,10 +16,42 @@
 }
 
 #StickerList {
-  height: 160px;
+  height: 100px;
   width: 100%;
-  margin: 10px 0;
-  lost-column: 1/5;
+  margin: 20px 0;
+  lost-flex-container: row;
+
+  div {
+    justify-content: center;
+    align-items: flex-start;
+    display: flex;
+    lost-column: 1/5 0;
+    overflow: hidden;
+  }
+
+  video, img {
+    width: 100%;
+  }
+}
+
+#happySticker {
+  border-bottom: 8px solid #DDBF00;
+}
+
+#sadSticker {
+  border-bottom: 8px solid #8F928B;
+}
+
+#angrySticker {
+  border-bottom: 8px solid #b8312f;
+}
+
+#lovingSticker {
+  border-bottom: 8px solid #F07D7D;
+}
+
+#neutralSticker {
+  border-bottom: 8px solid #296ab1;
 }
 
 #CloseStickerPaneDiv {
@@ -30,8 +62,8 @@
   font-size: 2rem;
   color: var(--light);
   float: right;
-  margin-right: 21px;
-  margin-top: 5px;
+  margin-right: 26px;
+  margin-top: 10px;
 }
 
 #CreateStickerButton {

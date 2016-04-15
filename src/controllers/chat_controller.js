@@ -1,16 +1,20 @@
 
+import Promise from 'bluebird'
 import uuid from 'node-uuid'
 import { pub, sub } from '../redis'
+import { client as knox } from '../knox'
 
 import { verifyToken } from '../helpers/hash'
 import { timestamp } from '../helpers/time'
-import { calculateColorOfMessage } from '../helpers/colors'
+import { palette, calculateColorOfMessage } from '../helpers/colors'
 
 const rybColorMixer = require('../helpers/mix')
 
+// const putBufferAsync = Promise.promisify(knox.putBuffer)
+
 async function getMessages(roomId) {
   if (await pub.existsAsync(`rooms:${roomId}:messages`)) {
-    return await pub.lrangeAsync(`rooms:${roomId}:messages`, -100, -1)
+    return (await pub.lrangeAsync(`rooms:${roomId}:messages`, -100, -1)).map(x => { return JSON.parse(x) })
   } else {
     return []
   }
@@ -42,8 +46,16 @@ export const index = async (req, reply) => {
       }
     }))
     hydratedRooms.sort(sortRoomOrder)
+
+    let stickers = await pub.hgetallAsync(`users:${username}:stickers`)
+
+    for (let s in stickers) {
+      stickers[s] = JSON.parse(stickers[s])
+    }
+
     reply({
-      rooms: hydratedRooms
+      rooms: hydratedRooms,
+      stickers
     })
   } catch(e) {
     console.log('e', e)
@@ -82,8 +94,73 @@ export const create = async (username, msg) => {
   }
 }
 
-export const create_sticker = async(username, msg) => {
+export const sticker = async(username, msg) => {
   try {
+    const {roomId, emotion} = msg
+    const messageTime = timestamp()
+    const sticker = JSON.parse(await pub.hgetAsync(`users:${username}:stickers`, emotion))
+    pub.lpushAsync(`rooms:${roomId}:colors`, palette[emotion])
+    pub.ltrimAsync(`rooms:${roomId}:colors`, 0, 9)
+    const newColors = await pub.lrangeAsync(`rooms:${roomId}:colors`, 0, 9)
+    const mixedColor = `#${rybColorMixer.mix(newColors)}`
+
+    const chatMessage = {
+      timestamp: messageTime,
+      sticker: true,
+      audio: sticker.audio,
+      video: sticker.video,
+      user: username
+    }
+
+    pub.hmsetAsync(`rooms:${roomId}`, 'latest', messageTime)
+    pub.rpushAsync(`rooms:${roomId}:messages`, JSON.stringify(chatMessage))
+
+    pub.publish('messages:new', JSON.stringify({
+      sockets: await pub.smembersAsync(`rooms:${roomId}:users`),
+      message: {
+        roomId,
+        color: mixedColor,
+        message: chatMessage
+      }
+    }))
+  } catch(e) {
+    console.log(`stickers:new error!`, e)
+  }
+}
+
+const putBufferAsync = Promise.promisify(knox.putBuffer, { context: knox })
+
+export const create_sticker = async (req, reply) => {
+  try {
+
+    const username = verifyToken(req)
+    const { audio, video, emotion } = req.payload
+
+    const audioRes = (await putBufferAsync(audio, `/audio/${username}-${emotion}.wav`, {
+      'Content-Type': 'audio/wav',
+      'x-amz-acl': 'public-read'
+    })).req.url
+
+    const videoRes = (await putBufferAsync(video, `/video/${username}-${emotion}.webm`, {
+      'Content-Type': 'video/webm',
+      'x-amz-acl': 'public-read'
+    })).req.url
+
+    pub.hsetAsync(`users:${username}:stickers`, emotion, JSON.stringify({
+      audio: audioRes,
+      video: videoRes
+    }))
+
+    pub.publish('stickers:new', JSON.stringify({
+      sockets: [username],
+      message: {
+        emotion,
+        audio: audioRes,
+        video: videoRes
+      }
+    }))
+
+    return reply()
 
   } catch(e) {
     console.log('create sticker error', e)

@@ -82,6 +82,11 @@ server.register([Inert, Vision], async () => {
         handler: ChatController.index
       },
 
+      {
+        method: 'POST', path: '/stickers',
+        handler: ChatController.create_sticker
+      }
+
     ]);
 
     await server.start()

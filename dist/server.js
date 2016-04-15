@@ -91,6 +91,9 @@ server.register([_inert2.default, _vision2.default], _asyncToGenerator(regenerat
           }, {
             method: 'GET', path: '/load',
             handler: ChatController.index
+          }, {
+            method: 'POST', path: '/stickers',
+            handler: ChatController.create_sticker
           }]);
 
           _context.next = 5;

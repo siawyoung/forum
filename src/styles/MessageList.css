@@ -33,3 +33,12 @@
   border-radius: 12px;
   padding: 8px 18px;
 }
+
+.chat-bubble-sticker {
+  max-width: 250px;
+
+  video {
+    border-radius: 12px;
+    width: 100%;
+  }
+}

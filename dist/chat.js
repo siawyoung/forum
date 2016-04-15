@@ -82,6 +82,10 @@ function chatHandler(socket) {
   socket.on('messages:new', function (msg) {
     ChatController.create(username, msg);
   });
+
+  socket.on('stickers:new', function (msg) {
+    ChatController.sticker(username, msg);
+  });
 }
 
 exports.default = init;
