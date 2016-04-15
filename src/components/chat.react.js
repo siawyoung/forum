@@ -1,5 +1,6 @@
 
 let multiStreamRecorder, video
+let canUpload = true
 
 const NoWebcamModal = () => (
   <div id="NoWebcamModal" className="avgrund-popup">
@@ -276,7 +277,9 @@ class CreateStickerModal extends React.Component {
 class StickerPane extends React.Component {
 
   openCreateStickerModal = () => {
-
+    $('#StartRecordingSticker').removeClass('Done')
+    $('#StartRecordingSticker').removeClass('Recording')
+    $('#StartRecordingSticker').html('Start Recording')
     if (navigator.getUserMedia) {
 
       video = document.createElement('video')
@@ -299,15 +302,28 @@ class StickerPane extends React.Component {
           multiStreamRecorder.video = video
 
           multiStreamRecorder.ondataavailable = (blobs) => {
+            canUpload = false
             console.log(`blob recorded`)
             console.log(`blobs`, blobs)
             multiStreamRecorder.stop()
             video.pause()
-            uploadSticker(blobs, $('#StickerEmotion').val())
+            if (!canUpload) {
+              console.log(`uploading`)
+              $('#StartRecordingSticker').html('Sticker Created!')
+              $('#StartRecordingSticker').removeClass('Recording')
+              $('#StartRecordingSticker').addClass('Done')
+              setTimeout(() => {
+                Avgrund.hide( "#CreateStickerModal" )
+              }, 1000)
+              uploadSticker(blobs, $('#StickerEmotion').val())
+            }
           }
 
           $('#StartRecordingSticker').click(() => {
             console.log(`recording started`)
+            $('#StartRecordingSticker').html('Recording...')
+            $('#StartRecordingSticker').addClass('Recording')
+            canUpload = true
             multiStreamRecorder.start(5000)
           })
         }

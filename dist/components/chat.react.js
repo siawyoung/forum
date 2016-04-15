@@ -14,6 +14,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var multiStreamRecorder = void 0,
     video = void 0;
+var canUpload = true;
 
 var NoWebcamModal = function NoWebcamModal() {
   return React.createElement(
@@ -470,7 +471,9 @@ var StickerPane = function (_React$Component6) {
     }
 
     return _ret4 = (_temp4 = (_this6 = _possibleConstructorReturn(this, (_Object$getPrototypeO4 = Object.getPrototypeOf(StickerPane)).call.apply(_Object$getPrototypeO4, [this].concat(args))), _this6), _this6.openCreateStickerModal = function () {
-
+      $('#StartRecordingSticker').removeClass('Done');
+      $('#StartRecordingSticker').removeClass('Recording');
+      $('#StartRecordingSticker').html('Start Recording');
       if (navigator.getUserMedia) {
 
         video = document.createElement('video');
@@ -493,15 +496,28 @@ var StickerPane = function (_React$Component6) {
             multiStreamRecorder.video = video;
 
             multiStreamRecorder.ondataavailable = function (blobs) {
+              canUpload = false;
               console.log("blob recorded");
               console.log("blobs", blobs);
               multiStreamRecorder.stop();
               video.pause();
-              uploadSticker(blobs, $('#StickerEmotion').val());
+              if (!canUpload) {
+                console.log("uploading");
+                $('#StartRecordingSticker').html('Sticker Created!');
+                $('#StartRecordingSticker').removeClass('Recording');
+                $('#StartRecordingSticker').addClass('Done');
+                setTimeout(function () {
+                  Avgrund.hide("#CreateStickerModal");
+                }, 1000);
+                uploadSticker(blobs, $('#StickerEmotion').val());
+              }
             };
 
             $('#StartRecordingSticker').click(function () {
               console.log("recording started");
+              $('#StartRecordingSticker').html('Recording...');
+              $('#StartRecordingSticker').addClass('Recording');
+              canUpload = true;
               multiStreamRecorder.start(5000);
             });
           };
