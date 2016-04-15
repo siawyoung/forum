@@ -1041,6 +1041,7 @@ button[type="submit"] {
   flex: 0 0 auto;
   width: calc(99.99% * 1/5 - (30px - 30px * 1/5));
   overflow: hidden;
+  height: 100%;
 }
 
 #StickerList div:nth-child(1n) {
