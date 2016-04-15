@@ -481,7 +481,7 @@ var StickerPane = function (_React$Component6) {
         navigator.getUserMedia({ audio: true, video: true }, function (stream) {
           multiStreamRecorder = new MultiStreamRecorder(stream);
           video = mergeProps(video, {
-            controls: true,
+            controls: false,
             muted: true,
             src: URL.createObjectURL(stream)
           });

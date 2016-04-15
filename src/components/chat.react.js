@@ -287,7 +287,7 @@ class StickerPane extends React.Component {
       navigator.getUserMedia({ audio: true, video: true }, (stream) => {
         multiStreamRecorder = new MultiStreamRecorder(stream)
         video = mergeProps(video, {
-            controls: true,
+            controls: false,
             muted: true,
             src: URL.createObjectURL(stream)
         })
