@@ -78,7 +78,7 @@ export const create = async (username, msg) => {
       message: msg.message,
       user: username,
     }
-    pub.hmsetAsync(`rooms:${roomId}`, 'latest', messageTime)
+    pub.hmsetAsync(`rooms:${roomId}`, 'latest', messageTime, 'color', mixedColor)
     pub.rpushAsync(`rooms:${roomId}:messages`, JSON.stringify(chatMessage))
 
     pub.publish('messages:new', JSON.stringify({

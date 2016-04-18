@@ -249,6 +249,12 @@ var MessageList = function (_React$Component2) {
     value: function componentDidMount() {
       var x = document.getElementById('MessageList');
       x.scrollTop = x.scrollHeight;
+
+      $('.chat-bubble-text').longpress(function () {
+        $(this).css({
+          'background': '#b8312f'
+        });
+      });
     }
   }, {
     key: "render",

@@ -5,10 +5,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 var palette = exports.palette = {
   happy: '#DDBF00',
-  sad: '#8F928B',
+  sad: '#296ab1',
   angry: '#b8312f',
   loving: '#F07D7D',
-  neutral: '#296ab1'
+  neutral: '#8F928B'
 };
 
 String.prototype.contains = function (regex) {

@@ -65,6 +65,7 @@ server.register([Inert, Vision], async () => {
       { method: 'GET', path: '/avgrund.js', handler: { file: `${__dirname}/scripts/avgrund.js` } },
       { method: 'GET', path: '/mediaStreamRecorder.js', handler: { file: `${__dirname}/scripts/mediaStreamRecorder.js` } },
       { method: 'GET', path: '/jquery.tagsinput.js', handler: { file: `${__dirname}/scripts/jquery.tagsinput.js` } },
+      { method: 'GET', path: '/longpress.js', handler: { file: `${__dirname}/scripts/longpress.js` } },
 
       { method: 'GET', path: '/main.css',  handler: { file: `${__dirname}/../dist/main.css` } },
 

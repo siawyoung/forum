@@ -216,7 +216,7 @@ var create = exports.create = function () {
               user: username
             };
 
-            _redis.pub.hmsetAsync('rooms:' + roomId, 'latest', messageTime);
+            _redis.pub.hmsetAsync('rooms:' + roomId, 'latest', messageTime, 'color', mixedColor);
             _redis.pub.rpushAsync('rooms:' + roomId + ':messages', JSON.stringify(chatMessage));
 
             _context4.t0 = _redis.pub;
