@@ -162,7 +162,7 @@ class MessageList extends React.Component {
     const x = document.getElementById('MessageList')
     x.scrollTop = x.scrollHeight
 
-    $('.chat-bubble-text').longpress(function() {
+    $('.self .chat-bubble-text').longpress(function() {
       $(this).css({
         'background': '#b8312f'
       })
